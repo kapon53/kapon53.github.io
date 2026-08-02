@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kapon | Portfolyo</title>
     <style>
-        /* Terminal / Hacker Tema */
+        /* Açık Tema (Minimalist) */
         :root {
-            --bg-main: #050505; /* Neredeyse tam siyah */
-            --text-main: #00FF41; /* Matrix yeşili */
-            --text-muted: #008F11; /* Koyu yeşil alt metinler */
-            --border-color: #00FF41;
+            --bg-main: #f8fafc; /* Uçuk gri/beyaz ferah arka plan */
+            --bg-card: #ffffff; /* Bembeyaz kartlar */
+            --text-main: #0f172a; /* Koyu lacivert/siyah metin */
+            --text-muted: #64748b; /* Gri alt başlıklar */
+            --accent: #2563eb; /* Zarif bir mavi vurgu */
+            --border-color: #e2e8f0;
         }
 
         body {
-            /* Gerçekçi terminal fontları */
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--bg-main);
@@ -26,31 +27,20 @@
         header {
             text-align: center;
             padding: 80px 20px 60px;
-            border-bottom: 1px dashed var(--border-color);
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
         }
 
         h1 {
             margin: 0;
-            font-size: 3em;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 3.2em;
+            color: var(--text-main);
+            letter-spacing: -1px;
+            font-weight: 800;
         }
 
-        /* Başlığın başına > koyar */
-        h1::before {
-            content: "> ";
-            color: var(--text-muted);
-        }
-
-        /* Başlığın sonuna yanıp sönen _ imleci ekler */
-        h1::after {
-            content: "_";
-            animation: blink 1s step-end infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+        h1 span {
+            color: var(--accent);
         }
 
         p.subtitle {
@@ -58,6 +48,7 @@
             color: var(--text-muted);
             max-width: 600px;
             margin: 15px auto;
+            font-weight: 400;
         }
 
         .container {
@@ -68,17 +59,11 @@
 
         .section-title {
             font-size: 1.8em;
-            border-bottom: 1px solid var(--text-main);
+            color: var(--text-main);
             padding-bottom: 10px;
             margin-bottom: 40px;
             display: inline-block;
-            text-transform: uppercase;
-        }
-
-        /* Bölüm başlığına klasör görünümü verir */
-        .section-title::before {
-            content: "./";
-            color: var(--text-muted);
+            font-weight: 700;
         }
 
         .projects-grid {
@@ -88,33 +73,29 @@
         }
 
         .project-card {
-            background-color: #000;
+            background-color: var(--bg-card);
             padding: 30px;
+            border-radius: 12px;
             border: 1px solid var(--border-color);
-            transition: all 0.2s;
+            /* Çok hafif, zarif bir gölge */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            /* Retro gölge efekti */
-            box-shadow: 5px 5px 0px var(--text-muted);
         }
 
+        /* Üzerine gelince kart hafifçe kalkar ve gölgesi belirginleşir */
         .project-card:hover {
-            transform: translate(-3px, -3px);
-            box-shadow: 8px 8px 0px var(--text-main);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            border-color: #cbd5e1;
         }
 
         .project-title {
             font-size: 1.5em;
-            margin: 0 0 15px 0;
-            text-transform: uppercase;
-        }
-        
-        .project-title::before {
-            content: "[ ";
-        }
-        
-        .project-title::after {
-            content: " ]";
+            color: var(--text-main);
+            margin: 0 0 10px 0;
+            font-weight: 700;
         }
 
         .project-desc {
@@ -131,30 +112,30 @@
         }
 
         .tag {
-            color: var(--bg-main);
-            background-color: var(--text-muted);
-            padding: 4px 10px;
+            background-color: #f1f5f9;
+            color: #475569;
+            padding: 6px 14px;
+            border-radius: 20px;
             font-size: 0.85em;
-            font-weight: bold;
-            text-transform: uppercase;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
         }
 
         .play-btn {
             display: inline-block;
             text-align: center;
             padding: 12px 24px;
-            background: transparent;
-            color: var(--text-main);
+            background-color: var(--text-main); /* Buton başlangıçta siyah/koyu lacivert */
+            color: #ffffff;
             text-decoration: none;
-            font-weight: bold;
-            border: 1px solid var(--text-main);
-            text-transform: uppercase;
-            transition: all 0.2s;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.1s;
         }
 
+        /* Butonun üzerine gelince şık bir maviye döner */
         .play-btn:hover {
-            background: var(--text-main);
-            color: var(--bg-main);
+            background-color: var(--accent);
         }
 
         .play-btn:active {
@@ -165,37 +146,37 @@
 <body>
 
     <header>
-        <h1>Kapon</h1>
-        <p class="subtitle">Kendince takılan biri...</p>
+        <h1>Kap<span>on</span></h1>
+        <p class="subtitle">Kendince takılan biri</p>
     </header>
 
     <div class="container">
-        <h2 class="section-title">Projeler_ve_Uygulamalar</h2>
+        <h2 class="section-title">Proje ve Uygulamalar</h2>
         
         <div class="projects-grid">
             
             <!-- Proje 1 -->
             <div class="project-card">
                 <h3 class="project-title">Minigame</h3>
-                <p class="project-desc">Birazcik sinir eden bir minik oyun.</p>
+                <p class="project-desc">Birazcık sinir eden bir minik oyun 😅</p>
                 <div class="tags">
                     <span class="tag">HTML5</span>
                     <span class="tag">CSS3</span>
                     <span class="tag">JavaScript</span>
                 </div>
-                <a href="/minigame" class="play-btn">Oyna.exe</a>
+                <a href="/minigame" class="play-btn">Oyunu Oyna</a>
             </div>
 
             <!-- Proje 2 -->
             <div class="project-card">
-                <h3 class="project-title">Irem_1</h3>
-                <p class="project-desc">Bakalim dedigin kadar miymissin.</p>
+                <h3 class="project-title">❤️</h3>
+                <p class="project-desc">Bakalım dediğin kadarmıymışsın🤔🤔</p>
                 <div class="tags">
                     <span class="tag">HTML5</span>
                     <span class="tag">CSS3</span>
                     <span class="tag">JavaScript</span>
                 </div>
-                <a href="/ikincioyun" class="play-btn">Oyna.exe</a>
+                <a href="/ikincioyun" class="play-btn">Oyunu Oyna</a>
             </div>
 
         </div>
