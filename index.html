@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerem Yazıcı (Kapon) | Portfolyo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a;
+            color: #f8fafc;
+            line-height: 1.6;
+        }
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-bottom: 2px solid #38bdf8;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #38bdf8;
+            letter-spacing: 1px;
+        }
+        p.subtitle {
+            font-size: 1.2em;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 15px auto;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .section-title {
+            font-size: 1.8em;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .project-card {
+            background-color: #1e293b;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+        .project-title {
+            font-size: 1.4em;
+            color: #e2e8f0;
+            margin-top: 0;
+        }
+        .tags {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .tag {
+            background-color: #334155;
+            color: #38bdf8;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        .play-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #38bdf8;
+            color: #0f172a;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+        .play-btn:hover {
+            background-color: #0ea5e9;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Kerem Yazıcı</h1>
+        <p class="subtitle">Yönetim Bilişim Sistemleri (YBS) Öğrencisi | Bilgisayar Programlama, Veri Analitiği ve Dijital Pazarlama Geliştiricisi</p>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">Projelerim ve Uygulamalarım</h2>
+        
+        <div class="projects-grid">
+            
+            <!-- Proje 1: Minigame -->
+            <div class="project-card">
+                <h3 class="project-title">🎮 İnteraktif Troll Oyun</h3>
+                <p>Kullanıcı etkileşimini, dinamik algoritmaları ve DOM manipülasyonunu test etmek amacıyla geliştirdiğim interaktif bir web oyunu.</p>
+                <div class="tags">
+                    <span class="tag">HTML5</span>
+                    <span class="tag">CSS3</span>
+                    <span class="tag">JavaScript</span>
+                </div>
+                <!-- Otomatik olarak diğer depodaki oyuna yönlendirir -->
+                <a href="/minigame" class="play-btn">Oyunu Oyna 🚀</a>
+            </div>
+
+            <!-- Proje 2: Gelecek Proje Şablonu -->
+            <div class="project-card" style="opacity: 0.7;">
+                <h3 class="project-title">📊 Veri Analitiği Dashboard</h3>
+                <p>Büyük veri setlerini görselleştirmek ve içgörüler çıkarmak üzere tasarlanan interaktif analiz paneli. (Çok Yakında)</p>
+                <div class="tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">Data Analytics</span>
+                    <span class="tag">SQL</span>
+                </div>
+                <a href="#" class="play-btn" style="background-color: #475569; color: #cbd5e1; cursor: default;">Yapım Aşamasında ⏳</a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
