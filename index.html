@@ -3,99 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kapon</title>
+    <title>Kapon | Portfolyo</title>
     <style>
+        /* Modern ve Profesyonel Tema */
+        :root {
+            --bg-main: #0B1120; /* Koyu lacivert/siyah arka plan */
+            --bg-card: #1E293B; /* Kartların rengi */
+            --text-main: #F8FAFC; /* Ana metin rengi (beyaza yakın) */
+            --text-muted: #94A3B8; /* Alt başlık rengi (gri) */
+            --accent: #38BDF8; /* Vurgu rengi: Buz Mavisi */
+            --accent-hover: #0EA5E9;
+            --border-color: #334155;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #0f172a;
-            color: #f8fafc;
+            background-color: var(--bg-main);
+            color: var(--text-main);
             line-height: 1.6;
         }
+
         header {
             text-align: center;
-            padding: 60px 20px;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border-bottom: 2px solid #38bdf8;
+            padding: 80px 20px 60px;
+            background: radial-gradient(circle at top, #1e293b 0%, #0b1120 100%);
+            border-bottom: 1px solid var(--border-color);
         }
+
         h1 {
             margin: 0;
-            font-size: 2.5em;
-            color: #38bdf8;
-            letter-spacing: 1px;
+            font-size: 3em;
+            color: var(--text-main);
+            letter-spacing: -1px;
+            font-weight: 700;
         }
+
+        /* İsmine ufak bir renk vurgusu */
+        h1 span {
+            color: var(--accent);
+        }
+
         p.subtitle {
             font-size: 1.2em;
-            color: #94a3b8;
+            color: var(--text-muted);
             max-width: 600px;
             margin: 15px auto;
+            font-weight: 300;
         }
+
         .container {
-            max-width: 900px;
-            margin: 40px auto;
+            max-width: 1000px;
+            margin: 50px auto;
             padding: 0 20px;
         }
+
         .section-title {
             font-size: 1.8em;
-            border-bottom: 2px solid #334155;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--accent);
             padding-bottom: 10px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            display: inline-block;
         }
+
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
+
         .project-card {
-            background-color: #1e293b;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            transition: transform 0.2s;
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
+
+        /* Fareyle kartın üzerine gelindiğindeki şık efekt */
         .project-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(56, 189, 248, 0.15);
         }
+
         .project-title {
-            font-size: 1.4em;
-            color: #e2e8f0;
-            margin-top: 0;
+            font-size: 1.5em;
+            color: var(--text-main);
+            margin: 0 0 15px 0;
         }
+
+        .project-desc {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
         .tags {
             display: flex;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 8px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
         }
+
         .tag {
-            background-color: #334155;
-            color: #38bdf8;
-            padding: 5px 12px;
-            border-radius: 20px;
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 6px;
             font-size: 0.85em;
-            font-weight: bold;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
+
         .play-btn {
             display: inline-block;
-            margin-top: 15px;
-            padding: 10px 20px;
-            background-color: #38bdf8;
-            color: #0f172a;
+            text-align: center;
+            padding: 12px 24px;
+            background-color: var(--accent);
+            color: #0F172A;
             text-decoration: none;
-            font-weight: bold;
-            border-radius: 6px;
-            transition: background-color 0.2s;
+            font-weight: 700;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.1s;
         }
+
         .play-btn:hover {
-            background-color: #0ea5e9;
+            background-color: var(--accent-hover);
+        }
+
+        .play-btn:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Kapon</h1>
+        <h1>Kap<span>on</span></h1>
         <p class="subtitle">Kendince takılan biri</p>
     </header>
 
@@ -104,32 +154,32 @@
         
         <div class="projects-grid">
             
-            <!-- Proje 1: Minigame -->
+            <!-- Proje 1 -->
             <div class="project-card">
                 <h3 class="project-title">Minigame</h3>
-                <p>Birazcık sinir eden bir minik oyun😇</p>
+                <p class="project-desc">Birazcık sinir eden bir minik oyun 😅</p>
                 <div class="tags">
                     <span class="tag">HTML5</span>
                     <span class="tag">CSS3</span>
                     <span class="tag">JavaScript</span>
                 </div>
-                <!-- Otomatik olarak diğer depodaki oyuna yönlendirir -->
-                <a href="/minigame" class="play-btn">Oyunu Oyna 😝</a>
+                <a href="/minigame" class="play-btn">Oyunu Oyna 😅</a>
             </div>
 
-                        <!-- Proje 2: Yeni Eklenen Oyun -->
+            <!-- Proje 2 -->
             <div class="project-card">
                 <h3 class="project-title">❤️</h3>
-                <p>Bakalım dediğin kadarmıymışsın🤭🤔.</p>
+                <p class="project-desc">Bakalım dediğin kadarmıymışsın🤔🤔</p>
                 <div class="tags">
                     <span class="tag">HTML5</span>
                     <span class="tag">CSS3</span>
                     <span class="tag">JavaScript</span>
                 </div>
-                <!-- href kısmına 1. aşamada verdiğin depo adını yazmayı unutma! -->
                 <a href="/ikincioyun" class="play-btn">Oyunu Oyna 🚀</a>
-
             </div>
 
+        </div>
+    </div>
 
-           
+</body>
+</html>
