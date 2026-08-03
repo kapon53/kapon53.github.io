@@ -135,6 +135,28 @@
             transform: scale(0.98);
         }
 
+        /* --- 4. OYUN: YAPBOZ (TURUNCU) --- */
+        .card-orange {
+            border: 3px solid #ff8c00;
+        }
+        .card-orange .tag {
+            color: #ff8c00;
+            background: rgba(255, 140, 0, 0.1);
+        }
+        .card-orange .play-btn {
+            background: transparent;
+            color: #ff8c00;
+            border: 2px solid #ff8c00;
+        }
+        .card-orange .play-btn:hover {
+            background: #ff8c00;
+            color: #000000;
+        }
+        .card-orange:active, .card-orange .play-btn:active {
+            box-shadow: 0 0 25px 5px #ff8c00;
+            transform: scale(0.98);
+        }
+
         .project-title {
             font-size: 1.5em;
             color: #ffffff;
@@ -222,8 +244,20 @@
                     <span class="tag">CSS3</span>
                     <span class="tag">JavaScript</span>
                 </div>
-                <!-- DİKKAT: Eğer Tetris'in GitHub depo adını farklı koyduysan aşağıdaki "tetris-oyunu" kısmını ona göre değiştir. -->
                 <a href="/tetris-oyunu" class="play-btn">Oyunu Oyna 🕹️</a>
+            </div>
+
+            <!-- Proje 4: YAPBOZ -->
+            <div class="project-card card-orange">
+                <h3 class="project-title">Yapboz</h3>
+                <p class="project-desc">Kendi resmini yükle ve çözmeye başla 🧩</p>
+                <div class="tags">
+                    <span class="tag">HTML5</span>
+                    <span class="tag">CSS3</span>
+                    <span class="tag">JavaScript</span>
+                </div>
+                <!-- Eğer yapboz deponun adını "kaydirmaca-oyunu" dışında bir şey yaptıysan burayı değiştirmeyi unutma -->
+                <a href="/kaydirmaca-oyunu" class="play-btn">Oyunu Oyna 🔥</a>
             </div>
 
         </div>
