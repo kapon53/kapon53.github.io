@@ -86,7 +86,6 @@
             background: #00ff66;
             color: #000000;
         }
-        /* Basınca kalın yeşil ışık efekti */
         .card-green:active, .card-green .play-btn:active {
             box-shadow: 0 0 25px 5px #00ff66;
             transform: scale(0.98);
@@ -109,9 +108,30 @@
             background: #b026ff;
             color: #000000;
         }
-        /* Basınca kalın mor ışık efekti */
         .card-purple:active, .card-purple .play-btn:active {
             box-shadow: 0 0 25px 5px #b026ff;
+            transform: scale(0.98);
+        }
+
+        /* --- 3. OYUN: TETRİS (BUZ MAVİSİ) --- */
+        .card-cyan {
+            border: 3px solid #00f3ff;
+        }
+        .card-cyan .tag {
+            color: #00f3ff;
+            background: rgba(0, 243, 255, 0.1);
+        }
+        .card-cyan .play-btn {
+            background: transparent;
+            color: #00f3ff;
+            border: 2px solid #00f3ff;
+        }
+        .card-cyan .play-btn:hover {
+            background: #00f3ff;
+            color: #000000;
+        }
+        .card-cyan:active, .card-cyan .play-btn:active {
+            box-shadow: 0 0 25px 5px #00f3ff;
             transform: scale(0.98);
         }
 
@@ -191,6 +211,19 @@
                     <span class="tag">JavaScript</span>
                 </div>
                 <a href="/ikincioyun" class="play-btn">Oyunu Oyna 🚀</a>
+            </div>
+
+            <!-- Proje 3: TETRİS -->
+            <div class="project-card card-cyan">
+                <h3 class="project-title">Tetris</h3>
+                <p class="project-desc">Klasik blok yerleştirme heyecanı 🧊</p>
+                <div class="tags">
+                    <span class="tag">HTML5</span>
+                    <span class="tag">CSS3</span>
+                    <span class="tag">JavaScript</span>
+                </div>
+                <!-- DİKKAT: Eğer Tetris'in GitHub depo adını farklı koyduysan aşağıdaki "tetris-oyunu" kısmını ona göre değiştir. -->
+                <a href="/tetris-oyunu" class="play-btn">Oyunu Oyna 🕹️</a>
             </div>
 
         </div>
