@@ -9,46 +9,49 @@
             font-family: 'Segoe UI', system-ui, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #000000; /* Simsiyah Arka Plan */
+            background-color: #000000;
             color: #ffffff;
             line-height: 1.6;
         }
 
         header {
             text-align: center;
-            padding: 80px 20px 60px;
+            padding: 60px 20px 40px;
             background-color: #000000;
-            border-bottom: 1px solid #151515;
+            border-bottom: 2px solid #ffffff; 
+            margin-bottom: 40px;
         }
 
         h1 {
             margin: 0;
             font-size: 3.5em;
-            color: #ffffff; /* Beyaz Kapon Yazısı */
+            color: #ffffff;
             letter-spacing: 2px;
-            font-weight: 800;
+            font-weight: bold;
         }
 
         p.subtitle {
-            font-size: 1.2em;
-            color: #777777;
+            font-size: 1.1em;
+            color: #888888;
             max-width: 600px;
-            margin: 15px auto;
+            margin: 15px auto 0;
         }
 
         .container {
             max-width: 1000px;
-            margin: 50px auto;
+            margin: 0 auto 50px;
             padding: 0 20px;
         }
 
         .section-title {
-            font-size: 1.8em;
+            font-size: 1.5em;
             color: #ffffff;
-            border-bottom: 2px solid #222;
-            padding-bottom: 10px;
-            margin-bottom: 40px;
+            border: 2px solid #ffffff;
+            padding: 10px 20px;
             display: inline-block;
+            border-radius: 6px;
+            margin-bottom: 40px;
+            font-weight: bold;
         }
 
         .projects-grid {
@@ -61,23 +64,18 @@
             background-color: #0a0a0c;
             padding: 30px;
             border-radius: 12px;
-            border: 1px solid #1a1a1e;
-            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            position: relative;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        /* --- 1. OYUN: MİNİGAME (YEŞİL LED EFEKTİ) --- */
-        .card-green:hover {
-            border-color: #00ff66;
-            box-shadow: 0 0 25px rgba(0, 255, 102, 0.25);
-            transform: translateY(-5px);
+        /* --- 1. OYUN: MİNİGAME (YEŞİL) --- */
+        .card-green {
+            border: 3px solid #00ff66;
         }
         .card-green .tag {
             color: #00ff66;
-            background: rgba(0, 255, 102, 0.08);
-            border: 1px solid rgba(0, 255, 102, 0.2);
+            background: rgba(0, 255, 102, 0.1);
         }
         .card-green .play-btn {
             background: transparent;
@@ -87,19 +85,20 @@
         .card-green .play-btn:hover {
             background: #00ff66;
             color: #000000;
-            box-shadow: 0 0 20px #00ff66;
+        }
+        /* Basınca kalın yeşil ışık efekti */
+        .card-green:active, .card-green .play-btn:active {
+            box-shadow: 0 0 25px 5px #00ff66;
+            transform: scale(0.98);
         }
 
-        /* --- 2. OYUN: ❤️ (MOR LED EFEKTİ) --- */
-        .card-purple:hover {
-            border-color: #b026ff;
-            box-shadow: 0 0 25px rgba(176, 38, 255, 0.25);
-            transform: translateY(-5px);
+        /* --- 2. OYUN: ❤️ (MOR) --- */
+        .card-purple {
+            border: 3px solid #b026ff;
         }
         .card-purple .tag {
             color: #b026ff;
-            background: rgba(176, 38, 255, 0.08);
-            border: 1px solid rgba(176, 38, 255, 0.2);
+            background: rgba(176, 38, 255, 0.1);
         }
         .card-purple .play-btn {
             background: transparent;
@@ -109,7 +108,11 @@
         .card-purple .play-btn:hover {
             background: #b026ff;
             color: #000000;
-            box-shadow: 0 0 20px #b026ff;
+        }
+        /* Basınca kalın mor ışık efekti */
+        .card-purple:active, .card-purple .play-btn:active {
+            box-shadow: 0 0 25px 5px #b026ff;
+            transform: scale(0.98);
         }
 
         .project-title {
@@ -119,39 +122,38 @@
         }
 
         .project-desc {
-            color: #888888;
+            color: #cccccc;
             margin-bottom: 25px;
             flex-grow: 1;
         }
 
         .tags {
             display: flex;
-            gap: 8px;
-            margin-bottom: 25px;
+            gap: 10px;
+            margin-bottom: 30px;
             flex-wrap: wrap;
         }
 
         .tag {
-            padding: 6px 14px;
-            border-radius: 6px;
+            padding: 6px 12px;
+            border-radius: 4px;
             font-size: 0.85em;
-            font-weight: 600;
+            font-weight: bold;
         }
 
         .play-btn {
-            display: inline-block;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
             text-align: center;
-            padding: 12px 24px;
+            padding: 14px 20px;
             text-decoration: none;
-            font-weight: 700;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            font-weight: bold;
+            border-radius: 6px;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
-        }
-
-        .play-btn:active {
-            transform: scale(0.95);
+            margin-top: auto;
         }
     </style>
 </head>
@@ -163,11 +165,11 @@
     </header>
 
     <div class="container">
-        <h2 class="section-title">Proje ve Uygulamalar</h2>
+        <div class="section-title">Proje ve Uygulamalar</div>
         
         <div class="projects-grid">
             
-            <!-- Proje 1: Yeşil LED Tema -->
+            <!-- Proje 1 -->
             <div class="project-card card-green">
                 <h3 class="project-title">Minigame</h3>
                 <p class="project-desc">Birazcık sinir eden bir minik oyun 😅</p>
@@ -179,7 +181,7 @@
                 <a href="/minigame" class="play-btn">Oyunu Oyna 😅</a>
             </div>
 
-            <!-- Proje 2: Mor LED Tema -->
+            <!-- Proje 2 -->
             <div class="project-card card-purple">
                 <h3 class="project-title">❤️</h3>
                 <p class="project-desc">Bakalım dediğin kadarmıymışsın🤔🤔</p>
