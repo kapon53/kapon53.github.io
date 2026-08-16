@@ -31,20 +31,31 @@
         .tab-btn.vip-tab:hover { border-color: #b026ff; text-shadow: 0 0 10px #b026ff; }
         .tab-btn.vip-tab.active { border-color: #b026ff; box-shadow: 0 0 20px rgba(176,38,255,0.4); background: rgba(176,38,255,0.05); }
 
-        .tab-content { display: none; perspective: 1200px; transform-style: preserve-3d; }
-        .tab-content.active { display: block; animation: foldIn3D 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; transform-origin: top center; }
-        @keyframes foldIn3D { 0% { opacity: 0; transform: rotateX(-90deg) scale(0.8); } 100% { opacity: 1; transform: rotateX(0deg) scale(1); } }
+        /* --- 3D Sekme Geçiş Efekti (DONMAYI ÇÖZEN YENİ ANİMASYON) --- */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: smooth3D 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes smooth3D { 
+            0% { opacity: 0; transform: perspective(1000px) rotateX(-15deg) translateY(30px) scale(0.95); } 
+            100% { opacity: 1; transform: perspective(1000px) rotateX(0deg) translateY(0) scale(1); } 
+        }
 
-        /* --- VIP Şifre Ekranı --- */
-        .vip-unlock-screen { text-align: center; padding: 60px 20px; background: #0a0a0c; border: 2px dashed #b026ff; border-radius: 12px; max-width: 500px; margin: 0 auto; box-shadow: inset 0 0 30px rgba(176,38,255,0.05); }
-        .vip-icon { font-size: 4em; color: #b026ff; margin-bottom: 20px; display: block; text-shadow: 0 0 20px rgba(176,38,255,0.5); }
-        .vip-instruction { color: #ccc; margin-bottom: 25px; font-size: 1.1em; }
-        .password-input { background: #111; border: 2px solid #333; color: #fff; padding: 15px 20px; font-size: 1.2em; border-radius: 8px; width: 80%; max-width: 300px; text-align: center; outline: none; transition: border-color 0.3s; margin-bottom: 20px; letter-spacing: 3px; }
-        .password-input:focus { border-color: #b026ff; }
-        .password-input.error { border-color: #ff3333; animation: shake 0.4s; }
+        /* --- VIP Şifre Ekranı (8 Basamaklı Pin Tasarımı) --- */
+        .vip-unlock-screen { text-align: center; padding: 50px 20px; background: #0a0a0c; border: 2px dashed #b026ff; border-radius: 12px; max-width: 550px; margin: 0 auto; box-shadow: inset 0 0 30px rgba(176,38,255,0.05); }
+        .vip-icon { font-size: 3.5em; color: #b026ff; margin-bottom: 15px; display: block; text-shadow: 0 0 20px rgba(176,38,255,0.5); }
+        .vip-instruction { color: #ccc; margin-bottom: 30px; font-size: 1.1em; }
+        
+        .pin-container { display: flex; gap: 12px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
+        .pin-digit { 
+            width: 45px; height: 55px; background: transparent; border: none; border-bottom: 3px solid #444; 
+            color: #fff; font-size: 1.8em; text-align: center; outline: none; transition: all 0.3s; font-family: monospace;
+        }
+        .pin-digit:focus { border-bottom-color: #b026ff; transform: translateY(-3px); text-shadow: 0 0 10px #b026ff; }
+        .pin-digit.error { border-bottom-color: #ff3333; color: #ff3333; animation: shake 0.4s; }
+        
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
-        .unlock-btn { background: #b026ff; color: #fff; border: none; padding: 12px 30px; font-size: 1.1em; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
-        .unlock-btn:hover { box-shadow: 0 0 20px rgba(176,38,255,0.6); transform: translateY(-2px); }
+        
+        .unlock-btn { background: #b026ff; color: #fff; border: none; padding: 12px 40px; font-size: 1.1em; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.3s; letter-spacing: 1px; }
+        .unlock-btn:hover { box-shadow: 0 0 25px rgba(176,38,255,0.6); transform: translateY(-2px); }
         #vip-secret-content { display: none; }
 
         /* --- Proje Kartları (3D Tilt İçin Ayarlandı) --- */
@@ -185,13 +196,24 @@
                 <span class="vip-icon">🔒</span>
                 <h3 style="color:#fff; font-size:1.5em; margin-bottom:10px;">Özel Erişim</h3>
                 <p class="vip-instruction">Bu alana erişmek için 8 haneli şifreyi girmelisin.</p>
-                <input type="password" id="vip-password" class="password-input" placeholder="********" maxlength="8">
-                <br>
+                
+                <!-- YENİ 8 BASAMAKLI ŞİFRE KUTULARI -->
+                <div class="pin-container">
+                    <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
+                    <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
+                    <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
+                    <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
+                    <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
+                    <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
+                    <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
+                    <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
+                </div>
+                
                 <button onclick="checkPassword()" class="unlock-btn">Kilidi Aç</button>
             </div>
 
             <div id="vip-secret-content">
-                <div style="text-align:center; margin-bottom:30px; animation: foldIn3D 0.8s ease;">
+                <div style="text-align:center; margin-bottom:30px;">
                     <h2 style="color:#b026ff; text-shadow: 0 0 10px rgba(176,38,255,0.5);">Hoş geldin! 💜</h2>
                     <p style="color:#ccc;">Burası sadece sana özel...</p>
                 </div>
@@ -212,7 +234,7 @@
             </div>
         </div> 
 
-        <!-- --- YOUTUBE TARZI YORUM VE ÖNERİ SİSTEMİ --- -->
+        <!-- --- YOUTUBE TARZI YORUM SİSTEMİ --- -->
         <div class="comments-section">
             <div class="comments-header" id="comment-count">2 Yorum</div>
             
@@ -225,13 +247,13 @@
             </div>
 
             <div class="comment-list" id="comment-list">
-                <!-- Yorumlar buraya JavaScript ile eklenecek -->
+                <!-- JavaScript ile Yükleniyor -->
             </div>
         </div>
 
     </div>
 
-    <!-- Vanilla-tilt.js -->
+    <!-- Vanilla-tilt.js (3D Efekt) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <script>
         VanillaTilt.init(document.querySelectorAll(".project-card"), { max: 12, speed: 400, glare: true, "max-glare": 0.15, scale: 1.02 });
@@ -247,9 +269,10 @@
                 document.getElementById('user-greeting').style.display = 'block';
                 document.getElementById('current-user-avatar').textContent = currentUser.charAt(0).toUpperCase();
             }
-            renderComments(); // Yorumları yükle
+            renderComments(); 
         };
 
+        // GİRİŞ MODALI
         document.getElementById('login-btn').addEventListener('click', () => {
             const inputVal = document.getElementById('username-input').value.trim();
             currentUser = inputVal !== "" ? inputVal : "GizemliOyuncu_" + Math.floor(Math.random() * 1000);
@@ -261,30 +284,55 @@
             document.getElementById('current-user-avatar').textContent = currentUser.charAt(0).toUpperCase();
         });
 
+        // SEKME GEÇİŞİ
         window.switchTab = (tabName) => {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             if(tabName === 'normal') { document.querySelector('.tab-btn:not(.vip-tab)').classList.add('active'); } 
             else { document.querySelector('.vip-tab').classList.add('active'); }
 
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-                void content.offsetWidth; 
-            });
+            document.querySelectorAll('.tab-content').forEach(content => { content.classList.remove('active'); });
             document.getElementById('tab-' + tabName).classList.add('active');
         };
 
+        // --- 8 BASAMAKLI PİN KODU MANTIĞI ---
+        const pinInputs = document.querySelectorAll('.pin-digit');
+        pinInputs.forEach((input, index) => {
+            // Rakam girildiğinde bir sonrakine atla
+            input.addEventListener('input', (e) => {
+                if(e.target.value && index < pinInputs.length - 1) {
+                    pinInputs[index + 1].focus();
+                }
+            });
+            // Backspace basıldığında bir öncekine geri dön
+            input.addEventListener('keydown', (e) => {
+                if(e.key === 'Backspace' && !e.target.value && index > 0) {
+                    pinInputs[index - 1].focus();
+                }
+            });
+        });
+
         window.checkPassword = () => {
-            const input = document.getElementById('vip-password');
-            if(input.value === "13022026") {
+            let pass = "";
+            document.querySelectorAll('.pin-digit').forEach(inp => pass += inp.value);
+            
+            if(pass === "13022026") {
                 document.getElementById('vip-unlock-area').style.display = 'none';
                 document.getElementById('vip-secret-content').style.display = 'block';
                 VanillaTilt.init(document.querySelectorAll("#vip-secret-content .project-card"), { max: 12, speed: 400, glare: true, "max-glare": 0.15, scale: 1.02 });
             } else {
-                input.classList.add('error'); input.value = ""; input.placeholder = "Yanlış Şifre!";
-                setTimeout(() => input.classList.remove('error'), 500);
+                // Hatalıysa kutuları titret ve sil
+                document.querySelectorAll('.pin-digit').forEach(inp => {
+                    inp.classList.add('error');
+                    inp.value = "";
+                });
+                pinInputs[0].focus();
+                setTimeout(() => {
+                    document.querySelectorAll('.pin-digit').forEach(inp => inp.classList.remove('error'));
+                }, 500);
             }
         };
 
+        // PORTAL (WARP) EFEKTİ
         window.openGame = (oyunAdi, linkUrl, colorCode) => {
             const portal = document.getElementById('portal-overlay');
             portal.style.background = `radial-gradient(circle, ${colorCode} 0%, rgba(0,0,0,1) 80%)`;
@@ -292,8 +340,7 @@
             setTimeout(() => { window.location.href = linkUrl; }, 700);
         };
 
-        /* --- YORUM SİSTEMİ MANTIĞI --- */
-        // Deneme amaçlı sahte yorum verileri (Firebase gelene kadar)
+        // --- YORUM SİSTEMİ MANTIĞI ---
         let commentsData = [
             { id: 1, author: "Geliştirici_Efe", text: "Özel fizik motoru çok iyi çalışıyor. Zıplama mekaniğine biraz daha ağırlık (gravity) eklenebilir. Eline sağlık!", date: "2 saat önce", likes: 5, dislikes: 0 },
             { id: 2, author: "KuponBey", text: "VIP sekmesindeki şifreyi bulamadım jwadlqwd", date: "5 saat önce", likes: 12, dislikes: 1 }
