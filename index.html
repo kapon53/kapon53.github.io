@@ -61,7 +61,6 @@
         .comment-header { display: flex; justify-content: space-between; font-size: 0.85em; color: #aaa; margin-bottom: 8px; }
         .comment-text { margin: 0; }
         .delete-btn { background: transparent; color: #ff3366; border: none; cursor: pointer; text-decoration: underline; font-size: 0.85em;}
-        .replies { margin-left: 30px; margin-top: 10px; border-left: 2px solid #555; padding-left: 10px; }
 
         /* --- Modallar (Profil & VIP) --- */
         .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:none; justify-content:center; align-items:center; z-index: 1000; }
@@ -72,7 +71,6 @@
 </head>
 <body>
 
-    <!-- 1. AUTH EKRANI -->
     <div id="auth-screen" class="screen active">
         <div class="glass auth-box">
             <h2 id="auth-title">Sisteme Giriş</h2>
@@ -83,7 +81,6 @@
         </div>
     </div>
 
-    <!-- 2. ANA DASHBOARD -->
     <div id="dashboard-screen" class="screen">
         <div class="glass header-bar">
             <div class="profile-area" onclick="openProfileModal()">
@@ -97,7 +94,6 @@
         </div>
 
         <div class="game-list">
-            <!-- Normal Oyunlar -->
             <div class="glass game-row">
                 <div class="game-info">
                     <h3>Minigame</h3>
@@ -114,7 +110,6 @@
                 <button class="play-btn" onclick="startGame('Block Blast', 'https://kapon53.github.io/blockblast/')">Oyna</button>
             </div>
 
-            <!-- VIP Bölge -->
             <div class="glass game-row vip-row">
                 <div class="game-info">
                     <h3>VIP Bölge 🔒</h3>
@@ -124,7 +119,6 @@
             </div>
         </div>
 
-        <!-- Yorumlar Bölümü -->
         <div class="glass comments-section">
             <h3 style="margin-top:0;">Geri Bildirimler</h3>
             <div class="comment-input-area">
@@ -132,12 +126,10 @@
                 <button class="btn" style="width:auto; margin:0;" id="send-comment-btn">Gönder</button>
             </div>
             <div id="comments-container">
-                <!-- Yorumlar buraya JS ile yüklenecek -->
-            </div>
+                </div>
         </div>
     </div>
 
-    <!-- Profil Ayarları Modalı -->
     <div id="profile-modal" class="modal">
         <div class="glass modal-content">
             <span class="close-modal" onclick="closeModals()">&times;</span>
@@ -148,7 +140,6 @@
         </div>
     </div>
 
-    <!-- VIP PIN Modalı -->
     <div id="vip-modal" class="modal">
         <div class="glass modal-content">
             <span class="close-modal" onclick="closeModals()">&times;</span>
@@ -159,20 +150,19 @@
         </div>
     </div>
 
-    <!-- FIREBASE MODULES (v10) -->
     <script type="module">
-        // 1. BURAYA FIREBASE CONSOLE'DAN ALDIĞIN AYARLARI GİR!
+        // --- SENİN BİREBİR FIREBASE AYARLARIN ---
         const firebaseConfig = {
-            apiKey: "SENİN_API_KEY_BURAYA",
-            authDomain: "SENİN_PROJEN.firebaseapp.com",
-            projectId: "SENİN_PROJEN_ID",
-            storageBucket: "SENİN_PROJEN.appspot.com",
-            messagingSenderId: "SAYI",
-            appId: "APP_ID"
+            apiKey: "AIzaSyBDQp_5qHOxSbq_zRTwFqAY_kepLnDq6dw",
+            authDomain: "kapon-portfolyo.firebaseapp.com",
+            projectId: "kapon-portfolyo",
+            storageBucket: "kapon-portfolyo.firebasestorage.app",
+            messagingSenderId: "885668575733",
+            appId: "1:885668575733:web:20ac9c4750f71ff12f88bc",
+            measurementId: "G-K8XLM6Y4HE"
         };
 
-        // 2. YÖNETİCİ UID'Sİ (Bu UID'ye sahip kişi tüm yorumları silebilir)
-        // Kendi hesabını açtıktan sonra Firebase Console > Authentication sekmesinden UID'ni kopyalayıp buraya yapıştır.
+        // YÖNETİCİ UID'Sİ (Şimdilik boş, sen kayıt olunca UID'ni buraya ekleyeceğiz ki yorum silebilesin)
         const ADMIN_UID = "BURAYA_KENDI_UID_DEGERINI_YAPISTIR";
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
