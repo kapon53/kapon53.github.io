@@ -3,445 +3,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kapon | Portfolyo</title>
+    <title>Kapon | Oyun Portalı</title>
     <style>
-        /* --- Temel Ayarlar & Hareketli Canlı Arka Plan --- */
-        *, *::before, *::after { box-sizing: border-box; }
-        body { 
-            font-family: 'Segoe UI', system-ui, sans-serif; 
-            margin: 0; padding: 0; 
-            min-height: 100vh;
-            color: #333; 
-            overflow-x: hidden;
-            /* Canlı Akışkan Gradient */
-            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
+        /* --- Temel Ayarlar ve Canlı Arka Plan --- */
+        body {
+            margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(-45deg, #1e1e2f, #2a2a4a, #3f2b47, #1e1e2f);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
+            color: #fff; overflow-x: hidden;
         }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* --- 3D Kamera Açısı (Sahne) --- */
-        .scene {
-            width: 100vw;
-            min-height: 100vh;
-            perspective: 1200px; /* 3D derinlik */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* --- Glassmorphism (Buzlu Cam) Ortak Stili --- */
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
         .glass {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
-        /* ========================================= */
-        /* --- 1. 3D GİRİŞ EKRANI (LOGIN) --- */
-        /* ========================================= */
-        #login-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 9999;
-            transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            transform-style: preserve-3d;
-        }
+        /* --- Ekran Geçişleri --- */
+        .screen { display: none; opacity: 0; transition: opacity 0.6s ease; width: 100%; min-height: 100vh; align-items: center; justify-content: center; flex-direction: column; }
+        .screen.active { display: flex; opacity: 1; }
 
-        /* Giriş yapınca ekranın geriye doğru uçup kaybolması için eklenecek class */
-        #login-screen.fly-away {
-            opacity: 0;
-            transform: translateZ(-1000px) rotateX(45deg) translateY(-200px);
-            pointer-events: none;
-        }
+        /* --- Auth (Giriş/Kayıt) Ekranı --- */
+        .auth-box { padding: 40px; text-align: center; width: 90%; max-width: 400px; animation: slideUp 0.6s ease; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .auth-box h2 { margin-top: 0; color: #00f3ff; }
+        .auth-input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: none; background: rgba(255,255,255,0.2); color: #fff; outline: none; box-sizing: border-box; }
+        .auth-input::placeholder { color: #ccc; }
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; background: linear-gradient(90deg, #00f3ff, #b026ff); color: #fff; font-weight: bold; cursor: pointer; transition: transform 0.2s; margin-bottom: 10px; }
+        .btn:hover { transform: scale(1.05); }
+        .toggle-auth { color: #aaa; cursor: pointer; font-size: 0.9em; text-decoration: underline; }
 
-        .login-box {
-            padding: 50px 40px;
-            text-align: center;
-            width: 90%; max-width: 400px;
-            transform: translateZ(50px); /* Kutu kameraya biraz daha yakın */
-        }
+        /* --- Ana Dashboard & Profil --- */
+        #dashboard-screen { padding: 20px; justify-content: flex-start; }
+        .header-bar { width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; margin-bottom: 30px; box-sizing: border-box; }
+        .profile-area { display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        .profile-pic { width: 50px; height: 50px; border-radius: 50%; background: #555; background-size: cover; background-position: center; border: 2px solid #00f3ff; }
+        .logout-btn { background: #ff3366; padding: 8px 15px; border-radius: 8px; border: none; color: #fff; font-weight: bold; cursor: pointer; }
 
-        .login-box h2 {
-            margin: 0 0 10px; font-size: 2.5em; color: #222;
-            text-transform: uppercase; letter-spacing: 2px;
-        }
-        .login-box p { color: #555; margin-bottom: 30px; font-weight: 500; }
+        /* --- Kalın Satırlı Oyun Listesi --- */
+        .game-list { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 20px; }
+        .game-row { display: flex; justify-content: space-between; align-items: center; padding: 25px; transition: transform 0.3s, box-shadow 0.3s; }
+        .game-row:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(0,243,255,0.2); }
+        .game-info h3 { margin: 0 0 10px 0; font-size: 1.8em; color: #00f3ff; }
+        .game-info p { margin: 0; color: #ddd; font-size: 1em; }
+        .game-row.vip-row .game-info h3 { color: #ff3366; }
+        .play-btn { background: #00f3ff; color: #000; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; text-transform: uppercase; border: none; cursor: pointer; }
+        .vip-row .play-btn { background: #ff3366; color: #fff; }
 
-        .input-group { margin-bottom: 20px; position: relative; }
-        .login-input {
-            width: 100%; padding: 15px 20px;
-            background: rgba(255, 255, 255, 0.5);
-            border: 2px solid transparent;
-            color: #333; font-size: 1.1em; border-radius: 12px;
-            outline: none; transition: all 0.3s;
-            font-weight: 600;
-        }
-        .login-input::placeholder { color: #777; }
-        .login-input:focus {
-            background: rgba(255, 255, 255, 0.8);
-            border-color: #667eea;
-            box-shadow: 0 0 15px rgba(102, 126, 234, 0.4);
-            transform: scale(1.02);
-        }
+        /* --- Yorum Sistemi --- */
+        .comments-section { width: 100%; max-width: 900px; margin-top: 50px; padding: 20px; box-sizing: border-box; }
+        .comment-input-area { display: flex; gap: 10px; margin-bottom: 20px; }
+        .comment-input-area input { flex-grow: 1; padding: 12px; border-radius: 8px; border: none; background: rgba(255,255,255,0.2); color: #fff; }
+        .comment-item { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin-bottom: 10px; }
+        .comment-header { display: flex; justify-content: space-between; font-size: 0.85em; color: #aaa; margin-bottom: 8px; }
+        .comment-text { margin: 0; }
+        .delete-btn { background: transparent; color: #ff3366; border: none; cursor: pointer; text-decoration: underline; font-size: 0.85em;}
+        .replies { margin-left: 30px; margin-top: 10px; border-left: 2px solid #555; padding-left: 10px; }
 
-        .login-btn {
-            width: 100%; padding: 15px; margin-top: 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff; border: none; border-radius: 12px;
-            font-size: 1.2em; font-weight: bold; cursor: pointer;
-            transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);
-        }
-        .login-btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(118, 75, 162, 0.6);
-        }
-        .login-btn:active { transform: translateY(1px); }
-
-
-        /* ========================================= */
-        /* --- 2. ANA OYUN EKRANI (DASHBOARD) --- */
-        /* ========================================= */
-        #main-dashboard {
-            width: 100%; max-width: 1200px;
-            padding: 20px;
-            opacity: 0; /* Başlangıçta görünmez */
-            transform: translateZ(800px) scale(0.8); /* Kameranın arkasında saklı */
-            transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
-            pointer-events: none;
-        }
-
-        /* Giriş başarılı olunca öne doğru gelmesi için eklenecek class */
-        #main-dashboard.arrive {
-            opacity: 1;
-            transform: translateZ(0) scale(1);
-            pointer-events: auto;
-        }
-
-        header { text-align: center; padding: 40px 20px; margin-bottom: 40px; border-radius: 20px; position: relative; }
-        h1 { margin: 0; font-size: 3.5em; color: #222; letter-spacing: 4px; font-weight: 900; text-transform: uppercase; }
-        p.subtitle { font-size: 1.2em; color: #555; margin: 10px auto 0; font-weight: 600; }
-        
-        #user-greeting { position: absolute; top: 20px; right: 25px; color: #444; font-size: 1em; font-weight: 500; }
-        #user-greeting span { color: #764ba2; font-weight: 800; font-size: 1.1em;}
-
-        /* --- Sekme Sistemi --- */
-        .tabs-container { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
-        .tab-btn {
-            background: rgba(255,255,255,0.4); color: #555;
-            border: 2px solid transparent; padding: 12px 35px;
-            font-size: 1.1em; font-weight: 800; border-radius: 30px;
-            cursor: pointer; transition: all 0.3s ease; text-transform: uppercase;
-        }
-        .tab-btn:hover { background: rgba(255,255,255,0.8); transform: translateY(-2px); }
-        .tab-btn.active {
-            background: #fff; color: #764ba2;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .tab-btn.vip-tab { color: #ff0844; }
-        .tab-btn.vip-tab.active { background: #ff0844; color: #fff; box-shadow: 0 5px 20px rgba(255, 8, 68, 0.4); }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        @keyframes popIn { 
-            0% { opacity: 0; transform: translateY(40px) scale(0.9); } 
-            100% { opacity: 1; transform: translateY(0) scale(1); } 
-        }
-
-        /* --- Proje Kartları (Glassmorphism + 3D) --- */
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; transform-style: preserve-3d; }
-        
-        .project-card {
-            padding: 35px; display: flex; flex-direction: column;
-            position: relative; overflow: hidden; transform-style: preserve-3d;
-            border-left: 1px solid rgba(255,255,255,0.8);
-            border-top: 1px solid rgba(255,255,255,0.8);
-            transition: box-shadow 0.3s;
-        }
-        .project-card:hover { box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
-
-        .project-title { font-size: 2em; color: #222; margin: 0 0 10px 0; font-weight: 900; transform: translateZ(40px); }
-        .project-desc { color: #444; margin-bottom: 25px; flex-grow: 1; font-size: 1.1em; font-weight: 500; transform: translateZ(25px); }
-        
-        .tags { display: flex; gap: 8px; margin-bottom: 30px; flex-wrap: wrap; transform: translateZ(30px); }
-        .tag { padding: 6px 14px; border-radius: 20px; font-size: 0.85em; font-weight: 700; background: rgba(255,255,255,0.6); color: #333; }
-        
-        .play-btn {
-            display: block; width: 100%; text-align: center; padding: 15px;
-            font-weight: 900; border-radius: 12px; transition: all 0.3s ease;
-            text-transform: uppercase; letter-spacing: 2px; border: none;
-            cursor: pointer; transform: translateZ(50px);
-            text-decoration: none;
-        }
-
-        /* Kart Renklendirmeleri (Butonlara Özel) */
-        .btn-green { background: #11998e; color: #fff; box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4); }
-        .btn-green:hover { background: #38ef7d; color: #000; }
-        
-        .btn-cyan { background: #4facfe; color: #fff; box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4); }
-        .btn-cyan:hover { background: #00f2fe; color: #000; }
-        
-        .btn-red { background: #ff0844; color: #fff; box-shadow: 0 4px 15px rgba(255, 8, 68, 0.4); }
-        .btn-red:hover { background: #ffb199; color: #000; }
-        
-        .btn-purple { background: #b224ef; color: #fff; box-shadow: 0 4px 15px rgba(178, 36, 239, 0.4); }
-        .btn-purple:hover { background: #7579ff; }
-        
-        .btn-orange { background: #f83600; color: #fff; box-shadow: 0 4px 15px rgba(248, 54, 0, 0.4); }
-        .btn-orange:hover { background: #f9d423; color: #000; }
-
-        /* --- VIP Şifre Ekranı --- */
-        .vip-unlock-screen { text-align: center; padding: 50px 20px; max-width: 500px; margin: 0 auto; }
-        .vip-icon { font-size: 4em; display: block; text-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 10px; }
-        .vip-instruction { color: #444; margin-bottom: 30px; font-size: 1.2em; font-weight: bold; }
-        
-        .pin-container { display: flex; gap: 10px; justify-content: center; margin-bottom: 35px; flex-wrap: wrap; }
-        .pin-digit {
-            width: 45px; height: 55px; background: rgba(255,255,255,0.7);
-            border: 2px solid transparent; border-bottom: 4px solid #b224ef;
-            color: #333; font-size: 2em; font-weight: 900; text-align: center;
-            border-radius: 8px; outline: none; transition: all 0.3s;
-        }
-        .pin-digit:focus { transform: translateY(-5px); background: #fff; box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
-        .pin-digit.error { border-bottom-color: #ff0844; color: #ff0844; animation: shake 0.4s; }
-        
-        .unlock-btn {
-            background: linear-gradient(135deg, #b224ef 0%, #7579ff 100%);
-            color: #fff; border: none; padding: 15px 50px; font-size: 1.2em;
-            font-weight: 900; border-radius: 30px; cursor: pointer; transition: all 0.3s;
-            box-shadow: 0 5px 20px rgba(178, 36, 239, 0.4); text-transform: uppercase;
-        }
-        .unlock-btn:hover { transform: translateY(-3px) scale(1.05); }
-
-        #vip-secret-content { display: none; }
-
-        /* Portal Geçiş Efekti (Renkli Yuvarlak) */
-        .warp-overlay { position: fixed; top: 50%; left: 50%; width: 5vw; height: 5vw; border-radius: 50%; transform: translate(-50%, -50%) scale(0); z-index: 99999; opacity: 0; pointer-events: none; transition: transform 0.8s cubic-bezier(0.5, 0, 0.1, 1), opacity 0.5s ease; }
-        .warp-overlay.active { transform: translate(-50%, -50%) scale(60); opacity: 1; }
-
+        /* --- Modallar (Profil & VIP) --- */
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:none; justify-content:center; align-items:center; z-index: 1000; }
+        .modal.active { display: flex; }
+        .modal-content { padding: 30px; width: 90%; max-width: 400px; text-align: center; }
+        .close-modal { float: right; cursor: pointer; font-size: 1.5em; font-weight: bold; color: #fff; }
     </style>
 </head>
 <body>
 
-    <div id="portal-overlay" class="warp-overlay"></div>
-
-    <div class="scene">
-        
-        <!-- 1. 3D GİRİŞ EKRANI -->
-        <div id="login-screen">
-            <div class="glass login-box" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.3">
-                <h2>Portala Gir</h2>
-                <p>Oyun evrenine erişmek için kimliğini doğrula.</p>
-                
-                <div class="input-group">
-                    <input type="text" id="username-input" class="login-input" placeholder="Kullanıcı Adı (Nickname)">
-                </div>
-                <div class="input-group">
-                    <!-- Şifre alanı eklendi (Herhangi bir şifre girilebilir) -->
-                    <input type="password" id="password-input" class="login-input" placeholder="Şifre">
-                </div>
-                
-                <button id="login-btn" class="login-btn">Sisteme Bağlan</button>
-            </div>
-        </div>
-
-        <!-- 2. ANA OYUN EKRANI (DASHBOARD) -->
-        <div id="main-dashboard">
-            <header class="glass">
-                <div id="user-greeting">Hoş geldin, <span id="display-name">Oyuncu</span>!</div>
-                <h1>KAPON</h1>
-                <p class="subtitle">Eğlence ve Kodlama Evreni</p>
-            </header>
-
-            <div class="tabs-container">
-                <button class="tab-btn active" onclick="switchTab('normal')">Oyun Merkezi</button>
-                <button class="tab-btn vip-tab" onclick="switchTab('vip')">VIP Bölge 🔒</button>
-            </div>
-
-            <!-- NORMAL OYUNLAR -->
-            <div id="tab-normal" class="tab-content active">
-                <div class="projects-grid">
-                    
-                    <div class="project-card glass">
-                        <h3 class="project-title">Minigame</h3>
-                        <p class="project-desc">Birazcık🤏🏻 sinir edebilecek oyun. Bakalım hediye kutusunu yakalayabilecek misin?</p>
-                        <div class="tags"><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JS</span></div>
-                        <a class="play-btn btn-green" onclick="openGame('Minigame', 'https://kapon53.github.io/minigame/', '#38ef7d')">Hemen Oyna</a>
-                    </div>
-
-                    <div class="project-card glass">
-                        <h3 class="project-title">Tetris</h3>
-                        <p class="project-desc">Klasik blok yerleştirme efsanesi. Valla öylesine ekledim.</p>
-                        <div class="tags"><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JS</span></div>
-                        <a class="play-btn btn-cyan" onclick="openGame('Tetris', 'https://kapon53.github.io/tetris-oyunu/', '#00f2fe')">Meydan Oku</a>
-                    </div>
-
-                    <div class="project-card glass">
-                        <h3 class="project-title">Block Blast</h3>
-                        <p class="project-desc">Orijinalini aratmayan, kombo sistemi ve lazer efektleriyle tam bir bağımlılık makinesi.</p>
-                        <div class="tags"><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JS</span></div>
-                        <a class="play-btn btn-red" onclick="openGame('Block Blast', 'https://kapon53.github.io/blockblast/', '#ff0844')">Patlat Gitsin</a>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- VIP BÖLGE -->
-            <div id="tab-vip" class="tab-content">
-                <div id="vip-unlock-area" class="glass vip-unlock-screen">
-                    <span class="vip-icon">💎</span>
-                    <h3 style="color:#222; font-size:1.8em; margin-bottom:10px;">Çok Gizli Alan</h3>
-                    <p class="vip-instruction">Buraya sadece özel davetliler girebilir.</p>
-                    
-                    <div class="pin-container">
-                        <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
-                        <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
-                        <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
-                        <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
-                        <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
-                        <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
-                        <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
-                        <input type="text" class="pin-digit" maxlength="1" autocomplete="off">
-                    </div>
-                    
-                    <button onclick="checkPassword()" class="unlock-btn">Kilidi Aç</button>
-                </div>
-
-                <div id="vip-secret-content">
-                    <div style="text-align:center; margin-bottom:40px;">
-                        <h2 style="color:#7579ff; font-size: 2.5em; font-weight: 900;">Hoş geldin! 💜</h2>
-                        <p style="color:#555; font-size: 1.2em; font-weight:bold;">Burası sadece sana özel...</p>
-                    </div>
-                    <div class="projects-grid">
-                        
-                        <div class="project-card glass">
-                            <h3 class="project-title">❤️</h3>
-                            <p class="project-desc">Bakalım dediğin kadar mıymışsın 🤔</p>
-                            <div class="tags"><span class="tag">Özel</span><span class="tag">JS</span></div>
-                            <a class="play-btn btn-purple" onclick="openGame('Kalp Oyunu', 'https://kapon53.github.io/ikincioyun/', '#b224ef')">HADİİİ 🤭</a>
-                        </div>
-
-                        <div class="project-card glass">
-                            <h3 class="project-title">Süprizz</h3>
-                            <p class="project-desc">Bunu beraber olunca yapıcaz tamam mı 🫣</p>
-                            <div class="tags"><span class="tag">Puzzle</span><span class="tag">JS</span></div>
-                            <a class="play-btn btn-orange" onclick="openGame('Yapboz', 'https://kapon53.github.io/kayd-rmaoyun/', '#f9d423')">Başlaaa</a>
-                        </div>
-
-                    </div>
-                </div>
-            </div> 
-
+    <!-- 1. AUTH EKRANI -->
+    <div id="auth-screen" class="screen active">
+        <div class="glass auth-box">
+            <h2 id="auth-title">Sisteme Giriş</h2>
+            <input type="email" id="email" class="auth-input" placeholder="E-posta Adresi">
+            <input type="password" id="password" class="auth-input" placeholder="Şifre">
+            <button id="auth-btn" class="btn">Giriş Yap</button>
+            <p class="toggle-auth" id="toggle-auth-btn">Hesabın yok mu? Kayıt Ol</p>
         </div>
     </div>
 
-    <!-- 3D Kart efekti kütüphanesi -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
-    <script>
-        // Giriş kartına ve proje kartlarına 3D Tilt efekti veriyoruz
-        VanillaTilt.init(document.querySelectorAll(".project-card"), { max: 10, speed: 400, glare: true, "max-glare": 0.3, scale: 1.05 });
+    <!-- 2. ANA DASHBOARD -->
+    <div id="dashboard-screen" class="screen">
+        <div class="glass header-bar">
+            <div class="profile-area" onclick="openProfileModal()">
+                <div class="profile-pic" id="user-pp"></div>
+                <div>
+                    <div style="font-weight:bold; font-size:1.2em;" id="user-display-name">Oyuncu</div>
+                    <div style="font-size:0.8em; color:#aaa;">Ayarlar için tıkla</div>
+                </div>
+            </div>
+            <button class="logout-btn" id="logout-btn">Çıkış Yap</button>
+        </div>
 
-        // --- GİRİŞ SİSTEMİ VE 3D GEÇİŞ EFEKTİ ---
-        const loginScreen = document.getElementById('login-screen');
-        const mainDashboard = document.getElementById('main-dashboard');
+        <div class="game-list">
+            <!-- Normal Oyunlar -->
+            <div class="glass game-row">
+                <div class="game-info">
+                    <h3>Minigame</h3>
+                    <p>Hediye kutusunu yakalayabilecek misin?</p>
+                </div>
+                <button class="play-btn" onclick="startGame('Minigame', 'https://kapon53.github.io/minigame/')">Oyna</button>
+            </div>
+            
+            <div class="glass game-row">
+                <div class="game-info">
+                    <h3>Block Blast</h3>
+                    <p>Efsanevi kombo sistemiyle bağımlılık makinesi.</p>
+                </div>
+                <button class="play-btn" onclick="startGame('Block Blast', 'https://kapon53.github.io/blockblast/')">Oyna</button>
+            </div>
+
+            <!-- VIP Bölge -->
+            <div class="glass game-row vip-row">
+                <div class="game-info">
+                    <h3>VIP Bölge 🔒</h3>
+                    <p>Sadece özel davetliler ve şifreyi bilenler...</p>
+                </div>
+                <button class="play-btn" onclick="openVipModal()">Giriş Yap</button>
+            </div>
+        </div>
+
+        <!-- Yorumlar Bölümü -->
+        <div class="glass comments-section">
+            <h3 style="margin-top:0;">Geri Bildirimler</h3>
+            <div class="comment-input-area">
+                <input type="text" id="comment-input" placeholder="Bir şeyler yaz...">
+                <button class="btn" style="width:auto; margin:0;" id="send-comment-btn">Gönder</button>
+            </div>
+            <div id="comments-container">
+                <!-- Yorumlar buraya JS ile yüklenecek -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Profil Ayarları Modalı -->
+    <div id="profile-modal" class="modal">
+        <div class="glass modal-content">
+            <span class="close-modal" onclick="closeModals()">&times;</span>
+            <h2>Profil Ayarları</h2>
+            <input type="text" id="new-name" class="auth-input" placeholder="Yeni İsim">
+            <input type="text" id="new-photo-url" class="auth-input" placeholder="Profil Fotoğrafı URL (Link)">
+            <button class="btn" id="update-profile-btn">Güncelle</button>
+        </div>
+    </div>
+
+    <!-- VIP PIN Modalı -->
+    <div id="vip-modal" class="modal">
+        <div class="glass modal-content">
+            <span class="close-modal" onclick="closeModals()">&times;</span>
+            <h2 style="color:#ff3366;">VIP Erişim</h2>
+            <p>8 Haneli Şifreyi Girin:</p>
+            <input type="password" id="vip-pin-input" class="auth-input" maxlength="8" style="text-align:center; font-size:1.5em; letter-spacing:5px;">
+            <button class="btn" style="background:#ff3366;" id="vip-submit-btn">Doğrula</button>
+        </div>
+    </div>
+
+    <!-- FIREBASE MODULES (v10) -->
+    <script type="module">
+        // 1. BURAYA FIREBASE CONSOLE'DAN ALDIĞIN AYARLARI GİR!
+        const firebaseConfig = {
+            apiKey: "SENİN_API_KEY_BURAYA",
+            authDomain: "SENİN_PROJEN.firebaseapp.com",
+            projectId: "SENİN_PROJEN_ID",
+            storageBucket: "SENİN_PROJEN.appspot.com",
+            messagingSenderId: "SAYI",
+            appId: "APP_ID"
+        };
+
+        // 2. YÖNETİCİ UID'Sİ (Bu UID'ye sahip kişi tüm yorumları silebilir)
+        // Kendi hesabını açtıktan sonra Firebase Console > Authentication sekmesinden UID'ni kopyalayıp buraya yapıştır.
+        const ADMIN_UID = "BURAYA_KENDI_UID_DEGERINI_YAPISTIR";
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- DOM Elementleri ---
+        const authScreen = document.getElementById('auth-screen');
+        const dashboardScreen = document.getElementById('dashboard-screen');
+        const authTitle = document.getElementById('auth-title');
+        const authBtn = document.getElementById('auth-btn');
+        const toggleAuthBtn = document.getElementById('toggle-auth-btn');
         
-        let currentUser = localStorage.getItem("kapon_username");
+        let isLogin = true;
+        let currentUser = null;
 
-        // Sayfa yüklendiğinde daha önce giriş yapılmış mı kontrol et
-        window.onload = () => {
-            if (currentUser) {
-                // Önceden giriş yapılmışsa animasyonsuz direkt dashboard'u göster
-                loginScreen.style.display = 'none';
-                document.getElementById('display-name').textContent = currentUser;
-                mainDashboard.classList.add('arrive');
+        // --- Auth Toggle Mantığı ---
+        toggleAuthBtn.addEventListener('click', () => {
+            isLogin = !isLogin;
+            authTitle.innerText = isLogin ? "Sisteme Giriş" : "Yeni Kayıt";
+            authBtn.innerText = isLogin ? "Giriş Yap" : "Kayıt Ol";
+            toggleAuthBtn.innerText = isLogin ? "Hesabın yok mu? Kayıt Ol" : "Zaten hesabın var mı? Giriş Yap";
+        });
+
+        // --- Giriş / Kayıt İşlemi ---
+        authBtn.addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            try {
+                if(isLogin) {
+                    await signInWithEmailAndPassword(auth, email, password);
+                } else {
+                    const userCred = await createUserWithEmailAndPassword(auth, email, password);
+                    // Yeni kayıtta default isim ata
+                    await updateProfile(userCred.user, { displayName: "Yeni Oyuncu" });
+                }
+            } catch (error) {
+                alert("Hata: " + error.message);
             }
-        };
+        });
 
-        // Giriş Butonuna Tıklanınca
-        document.getElementById('login-btn').addEventListener('click', () => {
-            const username = document.getElementById('username-input').value.trim();
-            const password = document.getElementById('password-input').value.trim();
+        // --- Çıkış İşlemi ---
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            signOut(auth);
+        });
 
-            if(username === "" || password === "") {
-                alert("Lütfen kullanıcı adı ve şifreni gir! (Şifre alanına şimdilik istediğini yazabilirsin)");
-                return;
-            }
-
-            // İsmi kaydet
-            currentUser = username;
-            localStorage.setItem("kapon_username", currentUser);
-            document.getElementById('display-name').textContent = currentUser;
-
-            // 1. Adım: Login kartını geriye uçur
-            loginScreen.classList.add('fly-away');
-
-            // 2. Adım: Yarım saniye sonra Login'i tamamen gizle ve Dashboard'u öne fırlat
-            setTimeout(() => {
-                loginScreen.style.display = 'none';
-                mainDashboard.classList.add('arrive');
+        // --- Oturum Dinleyici (Auth State) ---
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                authScreen.classList.remove('active');
+                dashboardScreen.classList.add('active');
                 
-                // Dashboard açılınca içindeki kartlara tilt efektini tekrar tanımla (garanti olsun diye)
-                VanillaTilt.init(document.querySelectorAll(".project-card"), { max: 10, speed: 400, glare: true, "max-glare": 0.3, scale: 1.05 });
-            }, 600);
-        });
-
-        // --- SEKME (TAB) SİSTEMİ ---
-        window.switchTab = (tabName) => {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            if(tabName === 'normal') { document.querySelector('.tab-btn:not(.vip-tab)').classList.add('active'); } 
-            else { document.querySelector('.vip-tab').classList.add('active'); }
-
-            document.querySelectorAll('.tab-content').forEach(content => { content.classList.remove('active'); });
-            document.getElementById('tab-' + tabName).classList.add('active');
-        };
-
-        // --- VIP ŞİFRE PİN SİSTEMİ ---
-        const pinInputs = document.querySelectorAll('.pin-digit');
-        pinInputs.forEach((input, index) => {
-            input.addEventListener('input', (e) => {
-                if(e.target.value && index < pinInputs.length - 1) { pinInputs[index + 1].focus(); }
-            });
-            input.addEventListener('keydown', (e) => {
-                if(e.key === 'Backspace' && !e.target.value && index > 0) { pinInputs[index - 1].focus(); }
-            });
-        });
-
-        window.checkPassword = () => {
-            let pass = "";
-            document.querySelectorAll('.pin-digit').forEach(inp => pass += inp.value);
-            
-            // Senin VIP şifren burada korunuyor
-            if(pass === "13022026") {
-                document.getElementById('vip-unlock-area').style.display = 'none';
-                document.getElementById('vip-secret-content').style.display = 'block';
-                VanillaTilt.init(document.querySelectorAll("#vip-secret-content .project-card"), { max: 10, speed: 400, glare: true, "max-glare": 0.3, scale: 1.05 });
+                document.getElementById('user-display-name').innerText = user.displayName || "İsimsiz Oyuncu";
+                if(user.photoURL) {
+                    document.getElementById('user-pp').style.backgroundImage = `url(${user.photoURL})`;
+                }
+                loadComments();
             } else {
-                document.querySelectorAll('.pin-digit').forEach(inp => { inp.classList.add('error'); inp.value = ""; });
-                pinInputs[0].focus();
-                setTimeout(() => { document.querySelectorAll('.pin-digit').forEach(inp => inp.classList.remove('error')); }, 500);
+                currentUser = null;
+                dashboardScreen.classList.remove('active');
+                authScreen.classList.add('active');
             }
+        });
+
+        // --- Profil Güncelleme ---
+        window.openProfileModal = () => document.getElementById('profile-modal').classList.add('active');
+        window.closeModals = () => document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+        
+        document.getElementById('update-profile-btn').addEventListener('click', async () => {
+            const newName = document.getElementById('new-name').value;
+            const newPhoto = document.getElementById('new-photo-url').value;
+            try {
+                await updateProfile(currentUser, { 
+                    displayName: newName || currentUser.displayName, 
+                    photoURL: newPhoto || currentUser.photoURL 
+                });
+                alert("Profil güncellendi! Sayfayı yenileyin.");
+                location.reload();
+            } catch(e) { alert(e.message); }
+        });
+
+        // --- ANALİZ VE LOG SİSTEMİ (Oyun Tıklamaları) ---
+        window.startGame = async (gameName, url) => {
+            if(!currentUser) return;
+            // Adminin görebileceği şekilde veritabanına log düşüyoruz
+            try {
+                await addDoc(collection(db, "analytics_logs"), {
+                    userId: currentUser.uid,
+                    userName: currentUser.displayName,
+                    game: gameName,
+                    action: "Started Game",
+                    timestamp: serverTimestamp()
+                });
+                window.location.href = url;
+            } catch(e) { console.error("Log error", e); window.location.href = url; }
         };
 
-        // --- OYUNLARA GEÇİŞ PORTALI (RENKLİ YUVARLAK BÜYÜMESİ) ---
-        window.openGame = (oyunAdi, linkUrl, colorCode) => {
-            const portal = document.getElementById('portal-overlay');
-            portal.style.background = `radial-gradient(circle, ${colorCode} 0%, rgba(255,255,255,1) 80%)`;
-            portal.classList.add('active');
+        // --- VIP LOG VE GİRİŞ SİSTEMİ ---
+        window.openVipModal = () => document.getElementById('vip-modal').classList.add('active');
+        
+        document.getElementById('vip-submit-btn').addEventListener('click', async () => {
+            const pin = document.getElementById('vip-pin-input').value;
+            const isSuccess = (pin === "13022026");
             
-            setTimeout(() => { 
-                window.location.href = linkUrl; 
-            }, 700);
+            // Gizlice Veritabanına Logla (Senin için)
+            try {
+                await addDoc(collection(db, "vip_logs"), {
+                    userId: currentUser.uid,
+                    userName: currentUser.displayName,
+                    enteredPin: pin,
+                    isSuccess: isSuccess,
+                    timestamp: serverTimestamp()
+                });
+            } catch(e) {}
+
+            if(isSuccess) {
+                alert("VIP Doğrulandı! Oyun açılıyor...");
+                window.location.href = "https://kapon53.github.io/ikincioyun/";
+            } else {
+                alert("Hatalı Şifre!");
+                document.getElementById('vip-pin-input').value = "";
+            }
+        });
+
+        // --- YORUM SİSTEMİ (Kalıcı ve Yönetilebilir) ---
+        const commentsContainer = document.getElementById('comments-container');
+        
+        document.getElementById('send-comment-btn').addEventListener('click', async () => {
+            const text = document.getElementById('comment-input').value;
+            if(text.trim() === "") return;
+            
+            await addDoc(collection(db, "comments"), {
+                userId: currentUser.uid,
+                userName: currentUser.displayName,
+                text: text,
+                timestamp: serverTimestamp()
+            });
+            document.getElementById('comment-input').value = "";
+        });
+
+        function loadComments() {
+            const q = query(collection(db, "comments"), orderBy("timestamp", "desc"));
+            onSnapshot(q, (snapshot) => {
+                commentsContainer.innerHTML = "";
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const div = document.createElement('div');
+                    div.className = 'comment-item';
+                    
+                    // Silme yetkisi: Yorumun sahibi VEYA Sistem Yöneticisi (Admin)
+                    let deleteBtnHTML = "";
+                    if(currentUser.uid === data.userId || currentUser.uid === ADMIN_UID) {
+                        deleteBtnHTML = `<button class="delete-btn" onclick="deleteComment('${docSnap.id}')">Sil</button>`;
+                    }
+
+                    div.innerHTML = `
+                        <div class="comment-header">
+                            <strong>${data.userName}</strong>
+                            ${deleteBtnHTML}
+                        </div>
+                        <p class="comment-text">${data.text}</p>
+                    `;
+                    commentsContainer.appendChild(div);
+                });
+            });
+        }
+
+        window.deleteComment = async (commentId) => {
+            if(confirm("Bu yorumu silmek istiyor musun?")) {
+                await deleteDoc(doc(db, "comments", commentId));
+            }
         };
     </script>
 </body>
