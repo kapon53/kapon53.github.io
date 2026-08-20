@@ -14,7 +14,7 @@
             color: #fff; overflow-x: hidden;
         }
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        
+
         .glass {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -67,6 +67,15 @@
         .modal.active { display: flex; }
         .modal-content { padding: 30px; width: 90%; max-width: 400px; text-align: center; }
         .close-modal { float: right; cursor: pointer; font-size: 1.5em; font-weight: bold; color: #fff; }
+
+        /* --- VIP Oyun Listesi (Modal içinde) --- */
+        .vip-game-btn { width: 100%; padding: 14px; border: none; border-radius: 8px; background: #ff3366; color: #fff; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
+        .vip-game-btn:hover { opacity: 0.9; }
+
+        /* --- Oyun Oynatıcı (Fullscreen) --- */
+        #game-player-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:2000; }
+        #close-game-player-btn { position:absolute; top:10px; right:10px; z-index:2001; background:#ff3366; color:#fff; border:none; border-radius:8px; padding:10px 15px; font-weight:bold; cursor:pointer; }
+        #vip-game-frame { width:100%; height:100%; border:none; }
     </style>
 </head>
 <body>
@@ -101,7 +110,7 @@
                 </div>
                 <button class="play-btn" onclick="startGame('Minigame', 'https://kapon53.github.io/minigame/')">Oyna</button>
             </div>
-            
+
             <div class="glass game-row">
                 <div class="game-info">
                     <h3>Block Blast</h3>
@@ -110,10 +119,18 @@
                 <button class="play-btn" onclick="startGame('Block Blast', 'https://kapon53.github.io/blockblast/')">Oyna</button>
             </div>
 
+            <div class="glass game-row">
+                <div class="game-info">
+                    <h3>Tetris</h3>
+                    <p>Klasik blok dizme oyunu.</p>
+                </div>
+                <button class="play-btn" onclick="startGame('Tetris', 'https://kapon53.github.io/tetris-oyunu/')">Oyna</button>
+            </div>
+
             <div class="glass game-row vip-row">
                 <div class="game-info">
                     <h3>VIP Bölge 🔒</h3>
-                    <p>Sadece özel davetliler ve şifreyi bilenler...</p>
+                    <p>Sadece özel davetliler...</p>
                 </div>
                 <button class="play-btn" onclick="openVipModal()">Giriş Yap</button>
             </div>
@@ -143,11 +160,16 @@
     <div id="vip-modal" class="modal">
         <div class="glass modal-content">
             <span class="close-modal" onclick="closeModals()">&times;</span>
-            <h2 style="color:#ff3366;">VIP Erişim</h2>
-            <p>8 Haneli Şifreyi Girin:</p>
-            <input type="password" id="vip-pin-input" class="auth-input" maxlength="8" style="text-align:center; font-size:1.5em; letter-spacing:5px;">
-            <button class="btn" style="background:#ff3366;" id="vip-submit-btn">Doğrula</button>
+            <h2 style="color:#ff3366;">VIP Alan</h2>
+            <div id="vip-games-list" style="margin-top:20px;">
+                <p style="color:#aaa;">Yükleniyor...</p>
+            </div>
         </div>
+    </div>
+
+    <div id="game-player-overlay">
+        <button id="close-game-player-btn" onclick="closeGamePlayer()">Kapat ✕</button>
+        <iframe id="vip-game-frame"></iframe>
     </div>
 
     <script type="module">
@@ -162,12 +184,20 @@
             measurementId: "G-K8XLM6Y4HE"
         };
 
-        // YÖNETİCİ UID'Sİ (Şimdilik boş, sen kayıt olunca UID'ni buraya ekleyeceğiz ki yorum silebilesin)
-        const ADMIN_UID = "BURAYA_KENDI_UID_DEGERINI_YAPISTIR";
+        // YÖNETİCİ UID'Sİ — yorumları silebilecek hesap (senin UID'in)
+        const ADMIN_UID = "cSO6CuRLeCht3Ei003OXSLDkta63";
+
+        // VIP OYUNLARIN LİSTESİ — Firestore'daki "vip_games" koleksiyonundaki döküman ID'leri
+        // Yeni bir VIP oyun eklediğinde (Firestore'a yükledikten sonra) buraya bir satır daha ekle.
+        const vipGamesMeta = {
+            kalpoyunu: "Kalp Oyunu",
+            minigame: "Minigame"
+            // bizimhikaye: "Bizim Hikaye"  <-- mario reposu bitince bu satırı aç ve Firestore'a yükle
+        };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -179,7 +209,7 @@
         const authTitle = document.getElementById('auth-title');
         const authBtn = document.getElementById('auth-btn');
         const toggleAuthBtn = document.getElementById('toggle-auth-btn');
-        
+
         let isLogin = true;
         let currentUser = null;
 
@@ -200,7 +230,6 @@
                     await signInWithEmailAndPassword(auth, email, password);
                 } else {
                     const userCred = await createUserWithEmailAndPassword(auth, email, password);
-                    // Yeni kayıtta default isim ata
                     await updateProfile(userCred.user, { displayName: "Yeni Oyuncu" });
                 }
             } catch (error) {
@@ -219,7 +248,7 @@
                 currentUser = user;
                 authScreen.classList.remove('active');
                 dashboardScreen.classList.add('active');
-                
+
                 document.getElementById('user-display-name').innerText = user.displayName || "İsimsiz Oyuncu";
                 if(user.photoURL) {
                     document.getElementById('user-pp').style.backgroundImage = `url(${user.photoURL})`;
@@ -235,24 +264,23 @@
         // --- Profil Güncelleme ---
         window.openProfileModal = () => document.getElementById('profile-modal').classList.add('active');
         window.closeModals = () => document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
-        
+
         document.getElementById('update-profile-btn').addEventListener('click', async () => {
             const newName = document.getElementById('new-name').value;
             const newPhoto = document.getElementById('new-photo-url').value;
             try {
-                await updateProfile(currentUser, { 
-                    displayName: newName || currentUser.displayName, 
-                    photoURL: newPhoto || currentUser.photoURL 
+                await updateProfile(currentUser, {
+                    displayName: newName || currentUser.displayName,
+                    photoURL: newPhoto || currentUser.photoURL
                 });
                 alert("Profil güncellendi! Sayfayı yenileyin.");
                 location.reload();
             } catch(e) { alert(e.message); }
         });
 
-        // --- ANALİZ VE LOG SİSTEMİ (Oyun Tıklamaları) ---
+        // --- ANALİZ VE LOG SİSTEMİ (Herkese açık oyun tıklamaları) ---
         window.startGame = async (gameName, url) => {
             if(!currentUser) return;
-            // Adminin görebileceği şekilde veritabanına log düşüyoruz
             try {
                 await addDoc(collection(db, "analytics_logs"), {
                     userId: currentUser.uid,
@@ -265,40 +293,82 @@
             } catch(e) { console.error("Log error", e); window.location.href = url; }
         };
 
-        // --- VIP LOG VE GİRİŞ SİSTEMİ ---
-        window.openVipModal = () => document.getElementById('vip-modal').classList.add('active');
-        
-        document.getElementById('vip-submit-btn').addEventListener('click', async () => {
-            const pin = document.getElementById('vip-pin-input').value;
-            const isSuccess = (pin === "13022026");
-            
-            // Gizlice Veritabanına Logla (Senin için)
+        // --- VIP SİSTEMİ (Firestore Tabanlı — şifre YOK, yetki kontrolü var) ---
+        window.openVipModal = async () => {
+            document.getElementById('vip-modal').classList.add('active');
+            const listEl = document.getElementById('vip-games-list');
+            listEl.innerHTML = "<p style='color:#aaa;'>Kontrol ediliyor...</p>";
+
+            if (!currentUser) {
+                listEl.innerHTML = "<p style='color:#ff3366;'>Önce giriş yapmalısın.</p>";
+                return;
+            }
+
             try {
-                await addDoc(collection(db, "vip_logs"), {
+                const userSnap = await getDoc(doc(db, "users", currentUser.uid));
+                const isVip = userSnap.exists() && userSnap.data().vip === true;
+
+                if (!isVip) {
+                    listEl.innerHTML = "<p style='color:#ff3366;'>Bu alana erişim yetkin yok.</p>";
+                    return;
+                }
+
+                listEl.innerHTML = "";
+                const entries = Object.entries(vipGamesMeta);
+                if (entries.length === 0) {
+                    listEl.innerHTML = "<p style='color:#aaa;'>Henüz VIP oyun eklenmedi.</p>";
+                    return;
+                }
+                entries.forEach(([gameId, gameName]) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'vip-game-btn';
+                    btn.innerText = gameName;
+                    btn.onclick = () => window.openVipGame(gameId, gameName);
+                    listEl.appendChild(btn);
+                });
+            } catch (e) {
+                listEl.innerHTML = "<p style='color:#ff3366;'>Bir hata oluştu.</p>";
+                console.error(e);
+            }
+        };
+
+        window.openVipGame = async (gameId, gameName) => {
+            try {
+                const gameSnap = await getDoc(doc(db, "vip_games", gameId));
+                if (!gameSnap.exists()) {
+                    alert("Oyun bulunamadı.");
+                    return;
+                }
+                const html = gameSnap.data().html;
+                document.getElementById('vip-game-frame').srcdoc = html;
+                document.getElementById('game-player-overlay').style.display = 'block';
+                window.closeModals();
+
+                // Erişim logu (opsiyonel, sana bilgi için)
+                addDoc(collection(db, "vip_logs"), {
                     userId: currentUser.uid,
                     userName: currentUser.displayName,
-                    enteredPin: pin,
-                    isSuccess: isSuccess,
+                    game: gameName,
                     timestamp: serverTimestamp()
-                });
-            } catch(e) {}
-
-            if(isSuccess) {
-                alert("VIP Doğrulandı! Oyun açılıyor...");
-                window.location.href = "https://kapon53.github.io/ikincioyun/";
-            } else {
-                alert("Hatalı Şifre!");
-                document.getElementById('vip-pin-input').value = "";
+                }).catch(() => {});
+            } catch (e) {
+                alert("Oyun yüklenirken hata oluştu.");
+                console.error(e);
             }
-        });
+        };
+
+        window.closeGamePlayer = () => {
+            document.getElementById('game-player-overlay').style.display = 'none';
+            document.getElementById('vip-game-frame').srcdoc = "";
+        };
 
         // --- YORUM SİSTEMİ (Kalıcı ve Yönetilebilir) ---
         const commentsContainer = document.getElementById('comments-container');
-        
+
         document.getElementById('send-comment-btn').addEventListener('click', async () => {
             const text = document.getElementById('comment-input').value;
             if(text.trim() === "") return;
-            
+
             await addDoc(collection(db, "comments"), {
                 userId: currentUser.uid,
                 userName: currentUser.displayName,
@@ -316,8 +386,7 @@
                     const data = docSnap.data();
                     const div = document.createElement('div');
                     div.className = 'comment-item';
-                    
-                    // Silme yetkisi: Yorumun sahibi VEYA Sistem Yöneticisi (Admin)
+
                     let deleteBtnHTML = "";
                     if(currentUser.uid === data.userId || currentUser.uid === ADMIN_UID) {
                         deleteBtnHTML = `<button class="delete-btn" onclick="deleteComment('${docSnap.id}')">Sil</button>`;
