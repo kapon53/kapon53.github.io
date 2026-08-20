@@ -203,6 +203,14 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // İkincil "kapı" hesabı — VIP şifresini bilen herkesin geçici olarak
+        // yükseltilmiş yetkiyle vip_games'i okuyabilmesi için ayrı bir Firebase örneği.
+        // Bu hesabın şifresi ASLA bu dosyada yazmıyor — kullanıcı ne yazarsa onu deniyoruz.
+        const vipApp = initializeApp(firebaseConfig, "vipAccessApp");
+        const vipAuth = getAuth(vipApp);
+        const vipDb = getFirestore(vipApp);
+        const VIP_GATE_EMAIL = "vipkapi@kapon53.com";
+
         // --- DOM Elementleri ---
         const authScreen = document.getElementById('auth-screen');
         const dashboardScreen = document.getElementById('dashboard-screen');
@@ -293,7 +301,9 @@
             } catch(e) { console.error("Log error", e); window.location.href = url; }
         };
 
-        // --- VIP SİSTEMİ (Firestore Tabanlı — şifre YOK, yetki kontrolü var) ---
+        // --- VIP SİSTEMİ ---
+        // İki yol var: 1) Kişiye özel Firestore'da vip:true verilmiş olabilir (kalıcı VIP)
+        //              2) Kişi paylaşılan özel şifreyi (VIP kapı hesabının parolası) bilebilir
         window.openVipModal = async () => {
             document.getElementById('vip-modal').classList.add('active');
             const listEl = document.getElementById('vip-games-list');
@@ -308,33 +318,73 @@
                 const userSnap = await getDoc(doc(db, "users", currentUser.uid));
                 const isVip = userSnap.exists() && userSnap.data().vip === true;
 
-                if (!isVip) {
-                    listEl.innerHTML = "<p style='color:#ff3366;'>Bu alana erişim yetkin yok.</p>";
-                    return;
+                if (isVip) {
+                    renderVipGameList(listEl, db);
+                } else {
+                    renderPinForm(listEl);
                 }
-
-                listEl.innerHTML = "";
-                const entries = Object.entries(vipGamesMeta);
-                if (entries.length === 0) {
-                    listEl.innerHTML = "<p style='color:#aaa;'>Henüz VIP oyun eklenmedi.</p>";
-                    return;
-                }
-                entries.forEach(([gameId, gameName]) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'vip-game-btn';
-                    btn.innerText = gameName;
-                    btn.onclick = () => window.openVipGame(gameId, gameName);
-                    listEl.appendChild(btn);
-                });
             } catch (e) {
                 listEl.innerHTML = "<p style='color:#ff3366;'>Bir hata oluştu.</p>";
                 console.error(e);
             }
         };
 
-        window.openVipGame = async (gameId, gameName) => {
+        function renderVipGameList(listEl, dbInstance) {
+            listEl.innerHTML = "";
+            const entries = Object.entries(vipGamesMeta);
+            if (entries.length === 0) {
+                listEl.innerHTML = "<p style='color:#aaa;'>Henüz VIP oyun eklenmedi.</p>";
+                return;
+            }
+            entries.forEach(([gameId, gameName]) => {
+                const btn = document.createElement('button');
+                btn.className = 'vip-game-btn';
+                btn.innerText = gameName;
+                btn.onclick = () => window.openVipGame(gameId, gameName, dbInstance);
+                listEl.appendChild(btn);
+            });
+        }
+
+        function renderPinForm(listEl) {
+            listEl.innerHTML = `
+                <p style="color:#ddd; margin-bottom:12px;">Özel şifreyi gir:</p>
+                <input type="password" id="vip-pin-input" class="auth-input" style="text-align:center; letter-spacing:3px;">
+                <button class="vip-game-btn" id="vip-pin-submit-btn">Doğrula</button>
+                <p id="vip-pin-error" style="color:#ff3366; font-size:0.85em; margin-top:8px; min-height:1.2em;"></p>
+            `;
+            document.getElementById('vip-pin-submit-btn').addEventListener('click', handlePinSubmit);
+            document.getElementById('vip-pin-input').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') handlePinSubmit();
+            });
+        }
+
+        async function handlePinSubmit() {
+            const pin = document.getElementById('vip-pin-input').value;
+            const errorEl = document.getElementById('vip-pin-error');
+            errorEl.style.color = '#aaa';
+            errorEl.innerText = "Kontrol ediliyor...";
             try {
-                const gameSnap = await getDoc(doc(db, "vip_games", gameId));
+                await signInWithEmailAndPassword(vipAuth, VIP_GATE_EMAIL, pin);
+                errorEl.innerText = "";
+                const listEl = document.getElementById('vip-games-list');
+                renderVipGameList(listEl, vipDb);
+
+                addDoc(collection(db, "vip_logs"), {
+                    userId: currentUser.uid,
+                    userName: currentUser.displayName,
+                    action: "pin_success",
+                    timestamp: serverTimestamp()
+                }).catch(() => {});
+            } catch (e) {
+                errorEl.style.color = '#ff3366';
+                errorEl.innerText = "Hatalı şifre.";
+            }
+        }
+
+        window.openVipGame = async (gameId, gameName, dbInstance) => {
+            const useDb = dbInstance || db;
+            try {
+                const gameSnap = await getDoc(doc(useDb, "vip_games", gameId));
                 if (!gameSnap.exists()) {
                     alert("Oyun bulunamadı.");
                     return;
