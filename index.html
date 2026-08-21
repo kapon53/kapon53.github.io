@@ -4,22 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kapon | Oyun Portalı</title>
+    <!-- Modern Web Fontu -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         /* --- Temel Ayarlar ve Canlı Arka Plan --- */
         body {
-            margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: linear-gradient(-45deg, #1e1e2f, #2a2a4a, #3f2b47, #1e1e2f);
+            margin: 0; font-family: 'Outfit', sans-serif;
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #0f0c29);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             color: #fff; overflow-x: hidden;
         }
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
+        /* --- Yeni Nesil Glassmorphism --- */
         .glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            background: rgba(20, 20, 35, 0.4);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px; 
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transition: border 0.3s ease, box-shadow 0.3s ease;
         }
 
         /* --- Ekran Geçişleri --- */
@@ -29,57 +34,71 @@
         /* --- Auth (Giriş/Kayıt) Ekranı --- */
         .auth-box { padding: 40px; text-align: center; width: 90%; max-width: 400px; animation: slideUp 0.6s ease; }
         @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .auth-box h2 { margin-top: 0; color: #00f3ff; }
-        .auth-input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: none; background: rgba(255,255,255,0.2); color: #fff; outline: none; box-sizing: border-box; }
-        .auth-input::placeholder { color: #ccc; }
-        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; background: linear-gradient(90deg, #00f3ff, #b026ff); color: #fff; font-weight: bold; cursor: pointer; transition: transform 0.2s; margin-bottom: 10px; }
-        .btn:hover { transform: scale(1.05); }
-        .toggle-auth { color: #aaa; cursor: pointer; font-size: 0.9em; text-decoration: underline; }
+        .auth-box h2 { margin-top: 0; color: #00f3ff; font-weight: 700; letter-spacing: 1px; margin-bottom: 25px; text-shadow: 0 0 15px rgba(0,243,255,0.3); }
+        .auth-input { width: 100%; padding: 14px; margin-bottom: 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: #fff; outline: none; box-sizing: border-box; font-family: 'Outfit', sans-serif; transition: border-color 0.3s; }
+        .auth-input:focus { border-color: #00f3ff; box-shadow: 0 0 10px rgba(0,243,255,0.2); }
+        .auth-input::placeholder { color: #888; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(90deg, #00f3ff, #b026ff); color: #fff; font-weight: 700; cursor: pointer; transition: all 0.3s ease; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(176,38,255,0.4); }
+        .toggle-auth { color: #bbb; cursor: pointer; font-size: 0.9em; transition: color 0.3s; }
+        .toggle-auth:hover { color: #fff; text-decoration: underline; }
 
         /* --- Ana Dashboard & Profil --- */
-        #dashboard-screen { padding: 20px; justify-content: flex-start; }
-        .header-bar { width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; margin-bottom: 30px; box-sizing: border-box; }
-        .profile-area { display: flex; align-items: center; gap: 15px; cursor: pointer; }
-        .profile-pic { width: 50px; height: 50px; border-radius: 50%; background: #555; background-size: cover; background-position: center; border: 2px solid #00f3ff; }
-        .logout-btn { background: #ff3366; padding: 8px 15px; border-radius: 8px; border: none; color: #fff; font-weight: bold; cursor: pointer; }
+        #dashboard-screen { padding: 40px 20px; justify-content: flex-start; }
+        .header-bar { width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; padding: 20px 30px; margin-bottom: 40px; box-sizing: border-box; }
+        .profile-area { display: flex; align-items: center; gap: 15px; cursor: pointer; transition: transform 0.2s; }
+        .profile-area:hover { transform: scale(1.02); }
+        .profile-pic { width: 55px; height: 55px; border-radius: 50%; background: #333; background-size: cover; background-position: center; border: 2px solid #00f3ff; box-shadow: 0 0 15px rgba(0,243,255,0.3); }
+        .logout-btn { background: rgba(255,51,102,0.1); padding: 10px 20px; border-radius: 10px; border: 1px solid #ff3366; color: #ff3366; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        .logout-btn:hover { background: #ff3366; color: #fff; box-shadow: 0 0 15px rgba(255,51,102,0.4); }
 
-        /* --- Kalın Satırlı Oyun Listesi --- */
-        .game-list { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 20px; }
-        .game-row { display: flex; justify-content: space-between; align-items: center; padding: 25px; transition: transform 0.3s, box-shadow 0.3s; }
-        .game-row:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(0,243,255,0.2); }
-        .game-info h3 { margin: 0 0 10px 0; font-size: 1.8em; color: #00f3ff; }
-        .game-info p { margin: 0; color: #ddd; font-size: 1em; }
+        /* --- Oyun Listesi --- */
+        .game-list { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 25px; }
+        .game-row { display: flex; justify-content: space-between; align-items: center; padding: 30px; transition: all 0.4s ease; border: 1px solid rgba(255,255,255,0.05); }
+        .game-row:hover { transform: translateY(-5px); border-color: rgba(0,243,255,0.3); box-shadow: 0 15px 40px rgba(0,0,0,0.4), inset 0 0 20px rgba(0,243,255,0.05); }
+        .game-info h3 { margin: 0 0 8px 0; font-size: 1.8em; color: #00f3ff; font-weight: 700; }
+        .game-info p { margin: 0; color: #aaa; font-size: 1.05em; font-weight: 300; }
+        .play-btn { background: rgba(0,243,255,0.1); color: #00f3ff; padding: 12px 35px; border-radius: 10px; font-weight: 700; text-transform: uppercase; border: 1px solid #00f3ff; cursor: pointer; transition: all 0.3s; letter-spacing: 1px; }
+        .play-btn:hover { background: #00f3ff; color: #000; box-shadow: 0 0 20px rgba(0,243,255,0.4); }
+        
+        .game-row.vip-row:hover { border-color: rgba(255,51,102,0.4); box-shadow: 0 15px 40px rgba(0,0,0,0.4), inset 0 0 20px rgba(255,51,102,0.05); }
         .game-row.vip-row .game-info h3 { color: #ff3366; }
-        .play-btn { background: #00f3ff; color: #000; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; text-transform: uppercase; border: none; cursor: pointer; }
-        .vip-row .play-btn { background: #ff3366; color: #fff; }
+        .vip-row .play-btn { background: rgba(255,51,102,0.1); color: #ff3366; border-color: #ff3366; }
+        .vip-row .play-btn:hover { background: #ff3366; color: #fff; box-shadow: 0 0 20px rgba(255,51,102,0.4); }
 
         /* --- Yorum Sistemi --- */
-        .comments-section { width: 100%; max-width: 900px; margin-top: 50px; padding: 20px; box-sizing: border-box; }
-        .comment-input-area { display: flex; gap: 10px; margin-bottom: 20px; }
-        .comment-input-area input { flex-grow: 1; padding: 12px; border-radius: 8px; border: none; background: rgba(255,255,255,0.2); color: #fff; }
-        .comment-item { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin-bottom: 10px; }
-        .comment-header { display: flex; justify-content: space-between; font-size: 0.85em; color: #aaa; margin-bottom: 8px; }
-        .comment-text { margin: 0; }
-        .delete-btn { background: transparent; color: #ff3366; border: none; cursor: pointer; text-decoration: underline; font-size: 0.85em;}
+        .comments-section { width: 100%; max-width: 900px; margin-top: 60px; padding: 30px; box-sizing: border-box; }
+        .comment-input-area { display: flex; gap: 15px; margin-bottom: 30px; }
+        .comment-input-area input { flex-grow: 1; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: #fff; font-family: 'Outfit'; }
+        .comment-input-area input:focus { border-color: #b026ff; outline: none; }
+        .comment-item { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.03); }
+        .comment-header { display: flex; justify-content: space-between; font-size: 0.9em; color: #bbb; margin-bottom: 12px; align-items: center; }
+        .comment-header strong { color: #fff; font-weight: 500; font-size: 1.1em; }
+        .comment-text { margin: 0; color: #ddd; font-weight: 300; line-height: 1.5; }
+        .delete-btn { background: transparent; color: #ff3366; border: 1px solid #ff3366; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: 0.8em; transition: all 0.2s; }
+        .delete-btn:hover { background: #ff3366; color: #fff; }
 
-        /* --- Modallar (Profil & VIP) --- */
-        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:none; justify-content:center; align-items:center; z-index: 1000; }
+        /* --- Modallar --- */
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter: blur(5px); display:none; justify-content:center; align-items:center; z-index: 1000; }
         .modal.active { display: flex; }
-        .modal-content { padding: 30px; width: 90%; max-width: 400px; text-align: center; }
-        .close-modal { float: right; cursor: pointer; font-size: 1.5em; font-weight: bold; color: #fff; }
+        .modal-content { padding: 40px; width: 90%; max-width: 420px; text-align: center; position: relative; animation: slideUp 0.4s ease; }
+        .close-modal { position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 1.8em; color: #aaa; transition: color 0.2s; }
+        .close-modal:hover { color: #fff; }
 
         /* --- VIP Oyun Listesi (Modal içinde) --- */
-        .vip-game-btn { width: 100%; padding: 14px; border: none; border-radius: 8px; background: #ff3366; color: #fff; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
-        .vip-game-btn:hover { opacity: 0.9; }
+        .vip-game-btn { width: 100%; padding: 16px; border: 1px solid #ff3366; border-radius: 12px; background: rgba(255,51,102,0.1); color: #ff3366; font-weight: 700; cursor: pointer; margin-bottom: 12px; transition: all 0.3s; font-size: 1.1em; }
+        .vip-game-btn:hover { background: #ff3366; color: #fff; box-shadow: 0 5px 15px rgba(255,51,102,0.3); }
 
         /* --- Oyun Oynatıcı (Fullscreen) --- */
-        #game-player-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:2000; }
-        #close-game-player-btn { position:absolute; top:10px; right:10px; z-index:2001; background:#ff3366; color:#fff; border:none; border-radius:8px; padding:10px 15px; font-weight:bold; cursor:pointer; }
+        #game-player-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#050505; z-index:2000; }
+        #close-game-player-btn { position:absolute; top:15px; left:20px; z-index:2001; background:rgba(255,51,102,0.2); color:#ff3366; border:1px solid #ff3366; border-radius:10px; padding:10px 20px; font-weight:700; cursor:pointer; font-family:'Outfit'; transition:all 0.3s; }
+        #close-game-player-btn:hover { background:#ff3366; color:#fff; }
         #vip-game-frame { width:100%; height:100%; border:none; }
     </style>
 </head>
 <body>
 
+    <!-- AUTH EKRANI -->
     <div id="auth-screen" class="screen active">
         <div class="glass auth-box">
             <h2 id="auth-title">Sisteme Giriş</h2>
@@ -90,13 +109,14 @@
         </div>
     </div>
 
+    <!-- ANA DASHBOARD -->
     <div id="dashboard-screen" class="screen">
         <div class="glass header-bar">
             <div class="profile-area" onclick="openProfileModal()">
                 <div class="profile-pic" id="user-pp"></div>
                 <div>
-                    <div style="font-weight:bold; font-size:1.2em;" id="user-display-name">Oyuncu</div>
-                    <div style="font-size:0.8em; color:#aaa;">Ayarlar için tıkla</div>
+                    <div style="font-weight:700; font-size:1.3em;" id="user-display-name">Oyuncu</div>
+                    <div style="font-size:0.85em; color:#aaa; font-weight:300;">Profili düzenle</div>
                 </div>
             </div>
             <button class="logout-btn" id="logout-btn">Çıkış Yap</button>
@@ -136,44 +156,48 @@
             </div>
         </div>
 
+        <!-- YORUMLAR -->
         <div class="glass comments-section">
-            <h3 style="margin-top:0;">Geri Bildirimler</h3>
+            <h3 style="margin-top:0; font-size:1.5em; color:#fff;">Geri Bildirimler</h3>
             <div class="comment-input-area">
-                <input type="text" id="comment-input" placeholder="Bir şeyler yaz...">
-                <button class="btn" style="width:auto; margin:0;" id="send-comment-btn">Gönder</button>
+                <input type="text" id="comment-input" placeholder="Düşüncelerini paylaş...">
+                <button class="btn" style="width:auto; margin:0; padding:0 30px;" id="send-comment-btn">Gönder</button>
             </div>
             <div id="comments-container">
-                </div>
+            </div>
         </div>
     </div>
 
+    <!-- PROFIL MODALI -->
     <div id="profile-modal" class="modal">
         <div class="glass modal-content">
             <span class="close-modal" onclick="closeModals()">&times;</span>
-            <h2>Profil Ayarları</h2>
+            <h2 style="color:#fff; margin-bottom: 25px;">Profil Ayarları</h2>
             <input type="text" id="new-name" class="auth-input" placeholder="Yeni İsim">
             <input type="text" id="new-photo-url" class="auth-input" placeholder="Profil Fotoğrafı URL (Link)">
-            <button class="btn" id="update-profile-btn">Güncelle</button>
+            <button class="btn" id="update-profile-btn">Değişiklikleri Kaydet</button>
         </div>
     </div>
 
+    <!-- VIP MODALI -->
     <div id="vip-modal" class="modal">
         <div class="glass modal-content">
             <span class="close-modal" onclick="closeModals()">&times;</span>
-            <h2 style="color:#ff3366;">VIP Alan</h2>
+            <h2 style="color:#ff3366; font-size:2em; margin-bottom:10px;">VIP Alan</h2>
             <div id="vip-games-list" style="margin-top:20px;">
                 <p style="color:#aaa;">Yükleniyor...</p>
             </div>
         </div>
     </div>
 
+    <!-- OYUN OYNATICI OVERLAY -->
     <div id="game-player-overlay">
-        <button id="close-game-player-btn" onclick="closeGamePlayer()">Kapat ✕</button>
+        <button id="close-game-player-btn" onclick="closeGamePlayer()">◄ Portala Dön</button>
         <iframe id="vip-game-frame"></iframe>
     </div>
 
+    <!-- FIREBASE & SCRIPT (BURASI BİREBİR AYNI KALDI) -->
     <script type="module">
-        // --- SENİN BİREBİR FIREBASE AYARLARIN ---
         const firebaseConfig = {
             apiKey: "AIzaSyBDQp_5qHOxSbq_zRTwFqAY_kepLnDq6dw",
             authDomain: "kapon-portfolyo.firebaseapp.com",
@@ -184,15 +208,11 @@
             measurementId: "G-K8XLM6Y4HE"
         };
 
-        // YÖNETİCİ UID'Sİ — yorumları silebilecek hesap (senin UID'in)
         const ADMIN_UID = "cSO6CuRLeCht3Ei003OXSLDkta63";
 
-        // VIP OYUNLARIN LİSTESİ — Firestore'daki "vip_games" koleksiyonundaki döküman ID'leri
-        // Yeni bir VIP oyun eklediğinde (Firestore'a yükledikten sonra) buraya bir satır daha ekle.
         const vipGamesMeta = {
             kalpoyunu: "Kalp Oyunu",
             minigame: "Minigame"
-            // bizimhikaye: "Bizim Hikaye"  <-- mario reposu bitince bu satırı aç ve Firestore'a yükle
         };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -203,15 +223,11 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // İkincil "kapı" hesabı — VIP şifresini bilen herkesin geçici olarak
-        // yükseltilmiş yetkiyle vip_games'i okuyabilmesi için ayrı bir Firebase örneği.
-        // Bu hesabın şifresi ASLA bu dosyada yazmıyor — kullanıcı ne yazarsa onu deniyoruz.
         const vipApp = initializeApp(firebaseConfig, "vipAccessApp");
         const vipAuth = getAuth(vipApp);
         const vipDb = getFirestore(vipApp);
         const VIP_GATE_EMAIL = "vipkapi@kapon53.com";
 
-        // --- DOM Elementleri ---
         const authScreen = document.getElementById('auth-screen');
         const dashboardScreen = document.getElementById('dashboard-screen');
         const authTitle = document.getElementById('auth-title');
@@ -221,7 +237,6 @@
         let isLogin = true;
         let currentUser = null;
 
-        // --- Auth Toggle Mantığı ---
         toggleAuthBtn.addEventListener('click', () => {
             isLogin = !isLogin;
             authTitle.innerText = isLogin ? "Sisteme Giriş" : "Yeni Kayıt";
@@ -229,7 +244,6 @@
             toggleAuthBtn.innerText = isLogin ? "Hesabın yok mu? Kayıt Ol" : "Zaten hesabın var mı? Giriş Yap";
         });
 
-        // --- Giriş / Kayıt İşlemi ---
         authBtn.addEventListener('click', async () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -245,12 +259,10 @@
             }
         });
 
-        // --- Çıkış İşlemi ---
         document.getElementById('logout-btn').addEventListener('click', () => {
             signOut(auth);
         });
 
-        // --- Oturum Dinleyici (Auth State) ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
@@ -269,7 +281,6 @@
             }
         });
 
-        // --- Profil Güncelleme ---
         window.openProfileModal = () => document.getElementById('profile-modal').classList.add('active');
         window.closeModals = () => document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
 
@@ -286,7 +297,6 @@
             } catch(e) { alert(e.message); }
         });
 
-        // --- ANALİZ VE LOG SİSTEMİ (Herkese açık oyun tıklamaları) ---
         window.startGame = async (gameName, url) => {
             if(!currentUser) return;
             try {
@@ -301,9 +311,6 @@
             } catch(e) { console.error("Log error", e); window.location.href = url; }
         };
 
-        // --- VIP SİSTEMİ ---
-        // İki yol var: 1) Kişiye özel Firestore'da vip:true verilmiş olabilir (kalıcı VIP)
-        //              2) Kişi paylaşılan özel şifreyi (VIP kapı hesabının parolası) bilebilir
         window.openVipModal = async () => {
             document.getElementById('vip-modal').classList.add('active');
             const listEl = document.getElementById('vip-games-list');
@@ -349,7 +356,7 @@
             listEl.innerHTML = `
                 <p style="color:#ddd; margin-bottom:12px;">Özel şifreyi gir:</p>
                 <input type="password" id="vip-pin-input" class="auth-input" style="text-align:center; letter-spacing:3px;">
-                <button class="vip-game-btn" id="vip-pin-submit-btn">Doğrula</button>
+                <button class="vip-game-btn" id="vip-pin-submit-btn" style="background:#ff3366; color:#fff;">Doğrula</button>
                 <p id="vip-pin-error" style="color:#ff3366; font-size:0.85em; margin-top:8px; min-height:1.2em;"></p>
             `;
             document.getElementById('vip-pin-submit-btn').addEventListener('click', handlePinSubmit);
@@ -394,7 +401,6 @@
                 document.getElementById('game-player-overlay').style.display = 'block';
                 window.closeModals();
 
-                // Erişim logu (opsiyonel, sana bilgi için)
                 addDoc(collection(db, "vip_logs"), {
                     userId: currentUser.uid,
                     userName: currentUser.displayName,
@@ -412,7 +418,6 @@
             document.getElementById('vip-game-frame').srcdoc = "";
         };
 
-        // --- YORUM SİSTEMİ (Kalıcı ve Yönetilebilir) ---
         const commentsContainer = document.getElementById('comments-container');
 
         document.getElementById('send-comment-btn').addEventListener('click', async () => {
