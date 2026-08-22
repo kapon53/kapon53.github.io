@@ -23,7 +23,7 @@
         .brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:23px;font-weight:600}.brand span{display:grid;place-items:center;width:36px;height:36px;border:2px solid var(--ink);border-radius:11px;background:var(--yellow);font-size:16px}
         .profile-area{display:flex;align-items:center;gap:11px;cursor:pointer}.profile-pic{width:42px;height:42px;border:2px solid var(--ink);border-radius:14px;background:var(--yellow) center/cover}.profile-name{font-weight:700}.profile-caption{color:var(--muted);font-size:11px}.logout-btn{padding:11px 17px;background:var(--ink);color:#fff}
         .hero-copy{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:28px}.hero-copy h1{max-width:650px;margin:12px 0 0;font-size:clamp(50px,9vw,104px);line-height:.9}.hero-copy h1 em{color:var(--coral);font-weight:500}.hero-note{max-width:230px;color:var(--muted);font-size:14px;line-height:1.6}
-        .game-list{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.game-row{display:flex;min-height:230px;flex-direction:column;align-items:flex-start;justify-content:space-between;padding:24px;border:1px solid var(--line);border-radius:25px;background:#fbf6ee;box-shadow:0 6px 0 #20263b0b;transition:transform .3s,box-shadow .3s}.game-row:hover{transform:translateY(-7px) rotate(-.5deg);box-shadow:0 14px 0 #20263b12,0 24px 40px #20263b12}.game-row:nth-child(1){background:linear-gradient(145deg,#fbf6ee 55%,#f4cf58)}.game-row:nth-child(2){background:linear-gradient(145deg,#fbf6ee 55%,#aaa3d5)}.game-row:nth-child(3){background:linear-gradient(145deg,#fbf6ee 55%,#8ab7c3)}.game-info h3{margin:0 0 9px;font-size:30px}.game-info p{margin:0;color:var(--muted);line-height:1.55}.play-btn{padding:12px 20px;background:var(--ink);color:#fff}.vip-row{grid-column:1/-1;min-height:150px;flex-direction:row;align-items:center;background:var(--ink)!important;color:#fff}.vip-row .game-info h3{color:var(--yellow)}.vip-row .game-info p{color:#c7c1bd}.vip-row .play-btn{background:var(--coral)}
+        .game-list{display:grid;grid-template-columns:1fr;gap:17px}.game-row{display:flex;min-height:230px;flex-direction:column;align-items:flex-start;justify-content:space-between;padding:24px;border:1px solid var(--line);border-radius:25px;background:#fbf6ee;box-shadow:0 6px 0 #20263b0b;transition:transform .3s,box-shadow .3s}.game-row:hover{transform:translateY(-7px) rotate(-.5deg);box-shadow:0 14px 0 #20263b12,0 24px 40px #20263b12}.game-row:nth-child(1){background:linear-gradient(145deg,#fbf6ee 55%,#f4cf58)}.game-row:nth-child(2){background:linear-gradient(145deg,#fbf6ee 55%,#aaa3d5)}.game-row:nth-child(3){background:linear-gradient(145deg,#fbf6ee 55%,#8ab7c3)}.game-info h3{margin:0 0 9px;font-size:30px}.game-info p{margin:0;color:var(--muted);line-height:1.55}.play-btn{padding:12px 20px;background:var(--ink);color:#fff}.vip-row{min-height:150px;flex-direction:row;align-items:center;justify-content:space-between;background:var(--ink)!important;color:#fff}.vip-row .game-info h3{color:var(--yellow)}.vip-row .game-info p{color:#c7c1bd}.vip-row .play-btn{background:var(--coral)}
         .feedback{margin-top:48px;padding:26px;border:1px solid var(--line);border-radius:24px;background:#eee6da}.feedback h3{margin:0 0 15px;font-size:29px}.comment-input-area{display:flex;gap:10px}.comment-input-area input{flex:1;padding:13px 16px;border:1px solid var(--line);border-radius:13px;background:#fbf6ee}.comment-input-area .btn{width:auto;padding:12px 20px}.comment-item{padding:15px;margin-top:12px;border-radius:14px;background:#20263b0c}.comment-header{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.comment-text{margin-bottom:0}.delete-btn{background:transparent;border:0;color:var(--coral);cursor:pointer;text-decoration:underline;font-size:12px}
         .modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;background:#20263bb8;backdrop-filter:blur(8px)}.modal.active{display:flex}.modal-content{width:min(100%,470px);padding:32px;border:1px solid var(--line);border-radius:27px;background:var(--paper);box-shadow:0 24px 70px #20263b55;text-align:center;transition:max-width .3s ease}.modal-content.vip-wide{width:min(100%,640px)}.close-modal{float:right;color:var(--ink);font-size:26px;font-weight:700;cursor:pointer}.modal-content h2{margin:12px 0 22px;font-size:40px}.vip-game-btn{width:100%;padding:14px;margin:6px 0;border:0;border-radius:999px;background:var(--coral);color:#fff;font-weight:700;cursor:pointer}
 
@@ -45,6 +45,12 @@
         .vip-play-btn:hover{opacity:.9}
 
         #game-player-overlay{display:none;position:fixed;inset:0;z-index:2000;background:#090a10}.game-player-top{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#20263bee;color:#fff}.game-player-top strong{font-family:'Fraunces',serif;font-size:22px}#close-game-player-btn{padding:10px 16px;border:0;border-radius:999px;background:var(--coral);color:#fff;font-weight:700;cursor:pointer}#vip-game-frame{width:100%;height:100%;border:0;padding-top:62px}
+
+        /* --- VIP Alanı: tam ekran ayrı bölüm (dashboard ile aynı mantık, koyu tema) --- */
+        #vip-screen{position:relative;display:none;align-items:center;flex-direction:column;padding:24px 20px 70px;background:linear-gradient(180deg,var(--ink),#141829)}#vip-screen.active{display:flex}
+        #vip-screen .hero-copy h1{color:#fff}
+        #vip-screen .hero-note{color:#c7c1bd}
+        #vip-screen .header-bar .brand{color:var(--ink)}
         @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
         @media(max-width:760px){.auth-box{padding:32px 23px}.header-bar{margin-bottom:35px}.profile-name,.profile-caption{display:none}.hero-copy{display:block}.hero-note{margin-top:20px}.game-list{grid-template-columns:1fr}.game-row{min-height:205px}.vip-row{grid-column:auto;min-height:180px;flex-direction:column;align-items:flex-start}.vip-row .play-btn{width:100%}.comment-input-area{flex-direction:column}.comment-input-area .btn{width:100%}.otp-box{width:30px;height:42px}}
     </style>
@@ -79,6 +85,21 @@
             <section class="feedback"><h3>Geri bildirimler</h3><div class="comment-input-area"><input type="text" id="comment-input" placeholder="Bir şeyler yaz..."><button class="btn" id="send-comment-btn">Gönder</button></div><div id="comments-container"></div></section>
         </div>
     </section>
+
+    <section id="vip-screen" class="screen">
+        <div class="dashboard-wrap">
+            <header class="header-bar">
+                <div class="brand"><span>💕</span> VIP odamız</div>
+                <button class="logout-btn" id="vip-back-btn">← Ana menü</button>
+            </header>
+            <div class="hero-copy">
+                <div><span class="section-kicker">Sadece sana</span><h1>Sana özel<br><em>oyunlar.</em></h1></div>
+                <p class="hero-note">Burada sadece senin bildiğin küçük sürprizler var.</p>
+            </div>
+            <div class="game-list" id="vip-screen-games-list"></div>
+        </div>
+    </section>
+
     <div id="profile-modal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModals()">&times;</span><h2>Profil ayarları</h2><input type="text" id="new-name" class="auth-input" placeholder="Yeni isim"><input type="text" id="new-photo-url" class="auth-input" placeholder="Profil fotoğrafı URL'si"><button class="btn" id="update-profile-btn">Profili güncelle</button></div></div>
     <div id="vip-modal" class="modal"><div class="modal-content" id="vip-modal-content"><span class="close-modal" onclick="closeModals()">&times;</span><div id="vip-games-list"><p style="color:var(--muted)">Yükleniyor...</p></div></div></div>
     <div id="game-player-overlay"><div class="game-player-top"><strong id="game-player-title">Oyun</strong><button id="close-game-player-btn" onclick="closeGamePlayer()">Kapat ×</button></div><iframe id="vip-game-frame"></iframe></div>
@@ -211,71 +232,68 @@
             } catch(e) { console.error("Log error", e); window.location.href = url; }
         };
 
-        // --- VIP SİSTEMİ ---
-        window.openVipModal = async () => {
-            document.getElementById('vip-modal').classList.add('active');
-            const listEl = document.getElementById('vip-games-list');
-            listEl.innerHTML = "<p style='color:var(--muted)'>Kontrol ediliyor...</p>";
+        // --- Ekran Geçiş Yardımcısı ---
+        function switchScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+        document.getElementById('vip-back-btn').addEventListener('click', () => switchScreen('dashboard-screen'));
 
+        // --- VIP SİSTEMİ ---
+        // Kişisel VIP yetkisi varsa direkt VIP ekranına geç.
+        // Yoksa küçük bir pencerede (modal) sadece şifre sorulur; doğrulanınca VIP ekranına geçilir.
+        window.openVipModal = async () => {
             if (!currentUser) {
-                listEl.innerHTML = "<p style='color:var(--coral)'>Önce giriş yapmalısın.</p>";
+                alert("Önce giriş yapmalısın.");
                 return;
             }
-
             try {
                 const userSnap = await getDoc(doc(db, "users", currentUser.uid));
                 const isVip = userSnap.exists() && userSnap.data().vip === true;
 
                 if (isVip) {
-                    renderVipGameList(listEl, db);
+                    showVipScreen(db);
                 } else {
-                    renderPinForm(listEl);
+                    document.getElementById('vip-modal').classList.add('active');
+                    renderPinForm(document.getElementById('vip-games-list'));
                 }
             } catch (e) {
-                listEl.innerHTML = "<p style='color:var(--coral)'>Bir hata oluştu.</p>";
+                alert("Bir hata oluştu.");
                 console.error(e);
             }
         };
 
-        function renderVipGameList(listEl, dbInstance) {
-            document.getElementById('vip-modal-content').classList.add('vip-wide');
+        function showVipScreen(dbInstance) {
+            switchScreen('vip-screen');
+            renderVipScreenGames(document.getElementById('vip-screen-games-list'), dbInstance);
+        }
 
+        function renderVipScreenGames(listEl, dbInstance) {
             const entries = Object.entries(vipGamesMeta);
             if (entries.length === 0) {
-                listEl.innerHTML = "<p style='color:var(--muted)'>Henüz VIP oyun eklenmedi.</p>";
+                listEl.innerHTML = "<p style='color:#c7c1bd'>Henüz VIP oyun eklenmedi.</p>";
                 return;
             }
-
-            let html = `
-                <div class="vip-unlocked-header">
-                    <h2>VIP odamız 💕</h2>
-                    <p>Sana özel oyunlar</p>
-                </div>
-            `;
+            listEl.innerHTML = "";
             entries.forEach(([gameId, gameName]) => {
                 const desc = vipGamesDesc[gameId] || "";
-                html += `
-                    <div class="vip-game-card">
-                        <div class="vip-card-info">
-                            <h3>${gameName}</h3>
-                            <p>${desc}</p>
-                        </div>
-                        <button class="vip-play-btn" data-game-id="${gameId}" data-game-name="${gameName}">Oyna</button>
+                const article = document.createElement('article');
+                article.className = 'game-row vip-row';
+                article.innerHTML = `
+                    <div class="game-info">
+                        <h3>${gameName}</h3>
+                        <p>${desc}</p>
                     </div>
+                    <button class="play-btn">Oyunu aç →</button>
                 `;
-            });
-            listEl.innerHTML = html;
-
-            listEl.querySelectorAll('.vip-play-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    window.openVipGame(btn.dataset.gameId, btn.dataset.gameName, dbInstance);
+                article.querySelector('.play-btn').addEventListener('click', () => {
+                    window.openVipGame(gameId, gameName, dbInstance);
                 });
+                listEl.appendChild(article);
             });
         }
 
         function renderPinForm(listEl) {
-            document.getElementById('vip-modal-content').classList.remove('vip-wide');
-
             let boxesHTML = "";
             for (let i = 0; i < 8; i++) {
                 boxesHTML += `<input type="text" inputmode="numeric" maxlength="1" class="otp-box" data-index="${i}">`;
@@ -315,8 +333,8 @@
             try {
                 await signInWithEmailAndPassword(vipAuth, VIP_GATE_EMAIL, pin);
                 errorEl.innerText = "";
-                const listEl = document.getElementById('vip-games-list');
-                renderVipGameList(listEl, vipDb);
+                window.closeModals();
+                showVipScreen(vipDb);
 
                 addDoc(collection(db, "vip_logs"), {
                     userId: currentUser.uid,
