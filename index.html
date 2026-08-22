@@ -68,11 +68,6 @@
             <p>Gülümsemen için hazırlanmış küçük bir oda. İçeri girmek için hesabınla devam et.</p>
             <input type="text" id="username" class="auth-input" placeholder="Kullanıcı adı">
             <input type="password" id="password" class="auth-input" placeholder="Şifre">
-            <input type="email" id="signup-contact-email" class="auth-input" placeholder="E-posta (opsiyonel, destek için)" style="display:none;">
-            <p id="signup-email-note" style="display:none; color:var(--muted); font-size:.78rem; line-height:1.5; margin:-6px 0 13px; text-align:left;">
-                E-posta girmek zorunda değilsin. Girmezsen: şifreni unutursan otomatik sıfırlama linki gönderemeyiz,
-                bunun yerine Twitter'dan DM atarak bana ulaşabilirsin, birlikte çözeriz.
-            </p>
             <button id="auth-btn" class="btn">Giriş yap</button>
             <p class="toggle-auth" id="toggle-auth-btn">Hesabın yok mu? Kayıt ol</p>
             <p class="toggle-auth" id="forgot-password-btn" style="margin-top:6px;">Şifreni mi unuttun?</p>
@@ -175,8 +170,6 @@
             isLogin = !isLogin;
             authBtn.innerText = isLogin ? "Giriş yap" : "Kayıt ol";
             toggleAuthBtn.innerText = isLogin ? "Hesabın yok mu? Kayıt ol" : "Zaten hesabın var mı? Giriş yap";
-            document.getElementById('signup-contact-email').style.display = isLogin ? 'none' : 'block';
-            document.getElementById('signup-email-note').style.display = isLogin ? 'none' : 'block';
             document.getElementById('forgot-password-btn').style.display = isLogin ? 'block' : 'none';
         });
 
@@ -205,10 +198,8 @@
                     const userCred = await createUserWithEmailAndPassword(auth, loginEmail, password);
                     await updateProfile(userCred.user, { displayName: username });
 
-                    const contactEmail = document.getElementById('signup-contact-email').value.trim();
                     await setDoc(doc(db, "users", userCred.user.uid), {
                         username: username,
-                        contactEmail: contactEmail || null,
                         vip: false
                     });
                 }
