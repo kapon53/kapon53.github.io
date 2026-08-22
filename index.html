@@ -66,10 +66,16 @@
             <span class="auth-kicker">Kapon'un oyun odası</span>
             <h1>Biraz<br><em style="color:var(--coral);font-weight:500">oynayalım.</em></h1>
             <p>Gülümsemen için hazırlanmış küçük bir oda. İçeri girmek için hesabınla devam et.</p>
-            <input type="email" id="email" class="auth-input" placeholder="E-posta adresi">
+            <input type="text" id="username" class="auth-input" placeholder="Kullanıcı adı">
             <input type="password" id="password" class="auth-input" placeholder="Şifre">
+            <input type="email" id="signup-contact-email" class="auth-input" placeholder="E-posta (opsiyonel, destek için)" style="display:none;">
+            <p id="signup-email-note" style="display:none; color:var(--muted); font-size:.78rem; line-height:1.5; margin:-6px 0 13px; text-align:left;">
+                E-posta girmek zorunda değilsin. Girmezsen: şifreni unutursan otomatik sıfırlama linki gönderemeyiz,
+                bunun yerine Twitter'dan DM atarak bana ulaşabilirsin, birlikte çözeriz.
+            </p>
             <button id="auth-btn" class="btn">Giriş yap</button>
             <p class="toggle-auth" id="toggle-auth-btn">Hesabın yok mu? Kayıt ol</p>
+            <p class="toggle-auth" id="forgot-password-btn" style="margin-top:6px;">Şifreni mi unuttun?</p>
         </div>
     </section>
     <section id="dashboard-screen" class="screen">
@@ -104,7 +110,14 @@
         </div>
     </section>
 
-    <div id="profile-modal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModals()">&times;</span><h2>Profil ayarları</h2><input type="text" id="new-name" class="auth-input" placeholder="Yeni isim"><input type="text" id="new-photo-url" class="auth-input" placeholder="Profil fotoğrafı URL'si"><button class="btn" id="update-profile-btn">Profili güncelle</button></div></div>
+    <div id="profile-modal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModals()">&times;</span><h2>Profil ayarları</h2><input type="text" id="new-name" class="auth-input" placeholder="Yeni isim"><input type="text" id="new-photo-url" class="auth-input" placeholder="Profil fotoğrafı URL'si"><button class="btn" id="update-profile-btn">Profili güncelle</button>
+        <hr style="border:none;border-top:1px solid var(--line);margin:24px 0">
+        <h2 style="font-size:26px;">Şifre değiştir</h2>
+        <input type="password" id="current-password" class="auth-input" placeholder="Mevcut şifre">
+        <input type="password" id="new-password" class="auth-input" placeholder="Yeni şifre (en az 6 karakter)">
+        <button class="btn" id="change-password-btn">Şifreyi güncelle</button>
+        <p id="password-change-msg" style="font-size:.85em; margin-top:8px; min-height:1.2em;"></p>
+    </div></div>
     <div id="vip-modal" class="modal"><div class="modal-content" id="vip-modal-content"><span class="close-modal" onclick="closeModals()">&times;</span><div id="vip-games-list"><p style="color:var(--muted)">Yükleniyor...</p></div></div></div>
     <div id="game-player-overlay"><div class="game-player-top"><strong id="game-player-title">Oyun</strong><button id="close-game-player-btn" onclick="closeGamePlayer()">Kapat ×</button></div><iframe id="vip-game-frame"></iframe></div>
     <script type="module">
@@ -134,8 +147,8 @@
         };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, EmailAuthProvider, reauthenticateWithCredential, updatePassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -162,18 +175,42 @@
             isLogin = !isLogin;
             authBtn.innerText = isLogin ? "Giriş yap" : "Kayıt ol";
             toggleAuthBtn.innerText = isLogin ? "Hesabın yok mu? Kayıt ol" : "Zaten hesabın var mı? Giriş yap";
+            document.getElementById('signup-contact-email').style.display = isLogin ? 'none' : 'block';
+            document.getElementById('signup-email-note').style.display = isLogin ? 'none' : 'block';
+            document.getElementById('forgot-password-btn').style.display = isLogin ? 'block' : 'none';
         });
+
+        // Firebase e-posta formatı istediği için, kullanıcı adını görünmez bir
+        // "sahte e-posta"ya çeviriyoruz. Kullanıcı bunu asla görmüyor/yazmıyor.
+        function usernameToLoginEmail(username) {
+            const clean = username.trim().toLowerCase().replace(/[^a-z0-9_.-]/g, '');
+            return clean + '@kapon53.games';
+        }
 
         // --- Giriş / Kayıt İşlemi ---
         authBtn.addEventListener('click', async () => {
-            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
+
+            if (!username) {
+                alert('Bir kullanıcı adı yazmalısın.');
+                return;
+            }
+            const loginEmail = usernameToLoginEmail(username);
+
             try {
                 if(isLogin) {
-                    await signInWithEmailAndPassword(auth, email, password);
+                    await signInWithEmailAndPassword(auth, loginEmail, password);
                 } else {
-                    const userCred = await createUserWithEmailAndPassword(auth, email, password);
-                    await updateProfile(userCred.user, { displayName: "Yeni Oyuncu" });
+                    const userCred = await createUserWithEmailAndPassword(auth, loginEmail, password);
+                    await updateProfile(userCred.user, { displayName: username });
+
+                    const contactEmail = document.getElementById('signup-contact-email').value.trim();
+                    await setDoc(doc(db, "users", userCred.user.uid), {
+                        username: username,
+                        contactEmail: contactEmail || null,
+                        vip: false
+                    });
                 }
             } catch (error) {
                 alert("Hata: " + error.message);
@@ -219,6 +256,50 @@
                 alert("Profil güncellendi! Sayfayı yenileyin.");
                 location.reload();
             } catch(e) { alert(e.message); }
+        });
+
+        // --- Şifremi Unuttum (Giriş Ekranı) ---
+        // Giriş artık kullanıcı adıyla olduğu için Firebase'in otomatik e-posta ile
+        // şifre sıfırlama özelliğini kullanamıyoruz. Bunun yerine manuel destek yönlendirmesi.
+        document.getElementById('forgot-password-btn').addEventListener('click', () => {
+            alert('Şifreni unuttuysan bana Twitter\'dan DM at, birlikte hallederiz 💬');
+        });
+
+        // --- Profilden Şifre Değiştirme ---
+        document.getElementById('change-password-btn').addEventListener('click', async () => {
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const msgEl = document.getElementById('password-change-msg');
+
+            if (!currentPassword || !newPassword) {
+                msgEl.style.color = 'var(--coral)';
+                msgEl.innerText = 'Her iki alanı da doldurmalısın.';
+                return;
+            }
+            if (newPassword.length < 6) {
+                msgEl.style.color = 'var(--coral)';
+                msgEl.innerText = 'Yeni şifre en az 6 karakter olmalı.';
+                return;
+            }
+
+            msgEl.style.color = 'var(--muted)';
+            msgEl.innerText = 'Güncelleniyor...';
+            try {
+                const credential = EmailAuthProvider.credential(currentUser.email, currentPassword);
+                await reauthenticateWithCredential(currentUser, credential);
+                await updatePassword(currentUser, newPassword);
+                msgEl.style.color = '#3ba55d';
+                msgEl.innerText = 'Şifre güncellendi!';
+                document.getElementById('current-password').value = '';
+                document.getElementById('new-password').value = '';
+            } catch (e) {
+                msgEl.style.color = 'var(--coral)';
+                if (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') {
+                    msgEl.innerText = 'Mevcut şifre yanlış.';
+                } else {
+                    msgEl.innerText = 'Hata: ' + e.message;
+                }
+            }
         });
 
         // --- ANALİZ VE LOG SİSTEMİ (Herkese açık oyun tıklamaları) ---
