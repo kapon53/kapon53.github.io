@@ -6,7 +6,8 @@
     <title>Kapon | Oyun Odamız</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap');
-        :root{--ink:#20263b;--muted:#706d73;--paper:#fbf6ee;--cream:#eee6da;--coral:#ef7566;--yellow:#f4cf58;--lilac:#aaa3d5;--line:#d8cfbf}
+        :root{--ink:#20263b;--muted:#706d73;--paper:#fbf6ee;--paper-2:#f3eadf;--cream:#eee6da;--coral:#ef7566;--yellow:#f4cf58;--lilac:#aaa3d5;--line:#d8cfbf}
+        [data-theme="dark"]{--paper:#14162a;--paper-2:#1a1d33}
         *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;overflow-x:hidden}
         body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.14;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");mix-blend-mode:multiply}
         h1,h2,h3{font-family:'Fraunces',Georgia,serif;letter-spacing:-.055em}button,input{font:inherit}
@@ -18,14 +19,16 @@
         .auth-box h1{margin:12px 0 8px;font-size:clamp(40px,8vw,58px)}.auth-box p{color:var(--muted);font-size:.92rem;line-height:1.65}
         .auth-input{display:block;width:100%;padding:15px 17px;margin:13px 0;border:1px solid var(--line);border-radius:14px;background:#f6efe4;color:var(--ink);outline:0}.auth-input:focus{border-color:var(--coral);box-shadow:0 0 0 4px #ef756622}
         .btn,.play-btn,.logout-btn{border:0;border-radius:999px;cursor:pointer;font-weight:700;transition:transform .2s,box-shadow .2s}.btn{width:100%;padding:15px;background:var(--coral);color:#fff;box-shadow:0 8px 18px #ef756633}.btn:hover,.play-btn:hover{transform:translateY(-2px)}.toggle-auth{color:var(--muted);cursor:pointer;font-size:.85rem;text-decoration:underline}
-        #dashboard-screen{position:relative;display:none;align-items:center;flex-direction:column;padding:24px 20px 70px;background:linear-gradient(180deg,var(--paper),#f3eadf)}#dashboard-screen.active{display:flex}
+        #dashboard-screen{position:relative;display:none;align-items:center;flex-direction:column;padding:24px 20px 70px;background:linear-gradient(180deg,var(--paper),var(--paper-2))}#dashboard-screen.active{display:flex}
+        #theme-toggle-btn{position:fixed;top:16px;right:16px;z-index:900;width:46px;height:46px;border-radius:50%;border:2px solid var(--ink);background:var(--yellow);color:var(--ink);font-size:19px;cursor:pointer;display:grid;place-items:center;box-shadow:0 6px 14px rgba(0,0,0,.25);transition:transform .2s}
+        #theme-toggle-btn:hover{transform:scale(1.08)}
         .dashboard-wrap{position:relative;z-index:1;width:min(100%,1080px)}.header-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;margin-bottom:54px;border:1px solid var(--line);border-radius:22px;background:#fbf6eecc;box-shadow:0 6px 0 #20263b0c;backdrop-filter:blur(12px)}
         .brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:23px;font-weight:600}.brand span{display:grid;place-items:center;width:36px;height:36px;border:2px solid var(--ink);border-radius:11px;background:var(--yellow);font-size:16px}
         .profile-area{display:flex;align-items:center;gap:11px;cursor:pointer}.profile-pic{width:42px;height:42px;border:2px solid var(--ink);border-radius:14px;background:var(--yellow) center/cover}.profile-name{font-weight:700}.profile-caption{color:var(--muted);font-size:11px}.logout-btn{padding:11px 17px;background:var(--ink);color:#fff}
         .hero-copy{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:28px}.hero-copy h1{max-width:650px;margin:12px 0 0;font-size:clamp(50px,9vw,104px);line-height:.9}.hero-copy h1 em{color:var(--coral);font-weight:500}.hero-note{max-width:230px;color:var(--muted);font-size:14px;line-height:1.6}
         .game-list{display:grid;grid-template-columns:1fr;gap:17px}.game-row{display:flex;min-height:230px;flex-direction:column;align-items:flex-start;justify-content:space-between;padding:24px;border:1px solid var(--line);border-radius:25px;background:#fbf6ee;box-shadow:0 6px 0 #20263b0b;transition:transform .3s,box-shadow .3s}.game-row:hover{transform:translateY(-7px) rotate(-.5deg);box-shadow:0 14px 0 #20263b12,0 24px 40px #20263b12}.game-row:nth-child(1){background:linear-gradient(145deg,#fbf6ee 55%,#f4cf58)}.game-row:nth-child(2){background:linear-gradient(145deg,#fbf6ee 55%,#aaa3d5)}.game-row:nth-child(3){background:linear-gradient(145deg,#fbf6ee 55%,#8ab7c3)}.game-info h3{margin:0 0 9px;font-size:30px}.game-info p{margin:0;color:var(--muted);line-height:1.55}.play-btn{padding:12px 20px;background:var(--ink);color:#fff}.vip-row{min-height:150px;flex-direction:row;align-items:center;justify-content:space-between;background:var(--ink)!important;color:#fff}.vip-row .game-info h3{color:var(--yellow)}.vip-row .game-info p{color:#c7c1bd}.vip-row .play-btn{background:var(--coral)}
         .feedback{margin-top:48px;padding:26px;border:1px solid var(--line);border-radius:24px;background:#eee6da}.feedback h3{margin:0 0 15px;font-size:29px}.comment-input-area{display:flex;gap:10px}.comment-input-area input{flex:1;padding:13px 16px;border:1px solid var(--line);border-radius:13px;background:#fbf6ee}.comment-input-area .btn{width:auto;padding:12px 20px}.comment-item{padding:15px;margin-top:12px;border-radius:14px;background:#20263b0c}.comment-header{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.comment-text{margin-bottom:0}.delete-btn{background:transparent;border:0;color:var(--coral);cursor:pointer;text-decoration:underline;font-size:12px}
-        .modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;background:#20263bb8;backdrop-filter:blur(8px)}.modal.active{display:flex}.modal-content{width:min(100%,470px);padding:32px;border:1px solid var(--line);border-radius:27px;background:var(--paper);box-shadow:0 24px 70px #20263b55;text-align:center;transition:max-width .3s ease}.modal-content.vip-wide{width:min(100%,640px)}.close-modal{float:right;color:var(--ink);font-size:26px;font-weight:700;cursor:pointer}.modal-content h2{margin:12px 0 22px;font-size:40px}.vip-game-btn{width:100%;padding:14px;margin:6px 0;border:0;border-radius:999px;background:var(--coral);color:#fff;font-weight:700;cursor:pointer}
+        .modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;background:#20263bb8;backdrop-filter:blur(8px)}.modal.active{display:flex}.modal-content{width:min(100%,470px);padding:32px;border:1px solid var(--line);border-radius:27px;background:#fbf6ee;box-shadow:0 24px 70px #20263b55;text-align:center;transition:max-width .3s ease}.modal-content.vip-wide{width:min(100%,640px)}.close-modal{float:right;color:var(--ink);font-size:26px;font-weight:700;cursor:pointer}.modal-content h2{margin:12px 0 22px;font-size:40px}.vip-game-btn{width:100%;padding:14px;margin:6px 0;border:0;border-radius:999px;background:var(--coral);color:#fff;font-weight:700;cursor:pointer}
 
         /* --- VIP 8 Haneli Şifre Kutuları --- */
         .otp-container{display:flex;gap:8px;justify-content:center;margin:18px 0}
@@ -56,6 +59,7 @@
     </style>
 </head>
 <body>
+    <button id="theme-toggle-btn" title="Tema değiştir">🌙</button>
     <section id="auth-screen" class="screen active auth-screen">
         <div class="auth-box">
             <div class="brand-mark">⌁</div>
@@ -231,6 +235,19 @@
                 window.location.href = url;
             } catch(e) { console.error("Log error", e); window.location.href = url; }
         };
+
+        // --- Koyu / Açık Mod ---
+        const themeToggleBtn = document.getElementById('theme-toggle-btn');
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            themeToggleBtn.innerText = theme === 'dark' ? '☀️' : '🌙';
+            localStorage.setItem('kapon-theme', theme);
+        }
+        applyTheme(localStorage.getItem('kapon-theme') || 'light');
+        themeToggleBtn.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            applyTheme(current === 'dark' ? 'light' : 'dark');
+        });
 
         // --- Ekran Geçiş Yardımcısı ---
         function switchScreen(id) {
