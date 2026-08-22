@@ -24,11 +24,29 @@
         .profile-area{display:flex;align-items:center;gap:11px;cursor:pointer}.profile-pic{width:42px;height:42px;border:2px solid var(--ink);border-radius:14px;background:var(--yellow) center/cover}.profile-name{font-weight:700}.profile-caption{color:var(--muted);font-size:11px}.logout-btn{padding:11px 17px;background:var(--ink);color:#fff}
         .hero-copy{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:28px}.hero-copy h1{max-width:650px;margin:12px 0 0;font-size:clamp(50px,9vw,104px);line-height:.9}.hero-copy h1 em{color:var(--coral);font-weight:500}.hero-note{max-width:230px;color:var(--muted);font-size:14px;line-height:1.6}
         .game-list{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.game-row{display:flex;min-height:230px;flex-direction:column;align-items:flex-start;justify-content:space-between;padding:24px;border:1px solid var(--line);border-radius:25px;background:#fbf6ee;box-shadow:0 6px 0 #20263b0b;transition:transform .3s,box-shadow .3s}.game-row:hover{transform:translateY(-7px) rotate(-.5deg);box-shadow:0 14px 0 #20263b12,0 24px 40px #20263b12}.game-row:nth-child(1){background:linear-gradient(145deg,#fbf6ee 55%,#f4cf58)}.game-row:nth-child(2){background:linear-gradient(145deg,#fbf6ee 55%,#aaa3d5)}.game-row:nth-child(3){background:linear-gradient(145deg,#fbf6ee 55%,#8ab7c3)}.game-info h3{margin:0 0 9px;font-size:30px}.game-info p{margin:0;color:var(--muted);line-height:1.55}.play-btn{padding:12px 20px;background:var(--ink);color:#fff}.vip-row{grid-column:1/-1;min-height:150px;flex-direction:row;align-items:center;background:var(--ink)!important;color:#fff}.vip-row .game-info h3{color:var(--yellow)}.vip-row .game-info p{color:#c7c1bd}.vip-row .play-btn{background:var(--coral)}
-        .feedback{margin-top:48px;padding:26px;border:1px solid var(--line);border-radius:24px;background:#eee6da}.feedback h3{margin:0 0 15px;font-size:29px}.comment-input-area{display:flex;gap:10px}.comment-input-area input{flex:1;padding:13px 16px;border:1px solid var(--line);border-radius:13px;background:#fbf6ee}.comment-input-area .btn{width:auto;padding:12px 20px}.comment-item{padding:15px;margin-top:12px;border-radius:14px;background:#20263b0c}.comment-header{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.comment-text{margin-bottom:0}
-        .modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;background:#20263bb8;backdrop-filter:blur(8px)}.modal.active{display:flex}.modal-content{width:min(100%,470px);padding:32px;border:1px solid var(--line);border-radius:27px;background:var(--paper);box-shadow:0 24px 70px #20263b55;text-align:center}.close-modal{float:right;color:var(--ink);font-size:26px;font-weight:700;cursor:pointer}.modal-content h2{margin:12px 0 22px;font-size:40px}.vip-game-btn{width:100%;padding:14px;margin:6px 0;border:0;border-radius:999px;background:var(--coral);color:#fff;font-weight:700;cursor:pointer}
+        .feedback{margin-top:48px;padding:26px;border:1px solid var(--line);border-radius:24px;background:#eee6da}.feedback h3{margin:0 0 15px;font-size:29px}.comment-input-area{display:flex;gap:10px}.comment-input-area input{flex:1;padding:13px 16px;border:1px solid var(--line);border-radius:13px;background:#fbf6ee}.comment-input-area .btn{width:auto;padding:12px 20px}.comment-item{padding:15px;margin-top:12px;border-radius:14px;background:#20263b0c}.comment-header{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.comment-text{margin-bottom:0}.delete-btn{background:transparent;border:0;color:var(--coral);cursor:pointer;text-decoration:underline;font-size:12px}
+        .modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;background:#20263bb8;backdrop-filter:blur(8px)}.modal.active{display:flex}.modal-content{width:min(100%,470px);padding:32px;border:1px solid var(--line);border-radius:27px;background:var(--paper);box-shadow:0 24px 70px #20263b55;text-align:center;transition:max-width .3s ease}.modal-content.vip-wide{width:min(100%,640px)}.close-modal{float:right;color:var(--ink);font-size:26px;font-weight:700;cursor:pointer}.modal-content h2{margin:12px 0 22px;font-size:40px}.vip-game-btn{width:100%;padding:14px;margin:6px 0;border:0;border-radius:999px;background:var(--coral);color:#fff;font-weight:700;cursor:pointer}
+
+        /* --- VIP 8 Haneli Şifre Kutuları --- */
+        .otp-container{display:flex;gap:8px;justify-content:center;margin:18px 0}
+        .otp-box{width:36px;height:48px;text-align:center;font-size:1.3em;border-radius:12px;border:1px solid var(--line);background:#f6efe4;color:var(--ink);outline:0}
+        .otp-box:focus{border-color:var(--coral);box-shadow:0 0 0 4px #ef756622}
+
+        /* --- VIP Doğrulanmış Alan (kendine özgü koyu/sıcak tema) --- */
+        .vip-unlocked-header{text-align:center;margin-bottom:20px}
+        .vip-unlocked-header h2{margin:0 0 5px;color:var(--yellow)}
+        .vip-unlocked-header p{margin:0;color:#c7c1bd;font-size:.85rem}
+        .vip-modal-content.vip-wide{background:var(--ink);color:#fff;border-color:#3a4160}
+        .vip-modal-content.vip-wide .close-modal{color:#fff}
+        .vip-game-card{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:20px;border-radius:18px;margin-bottom:12px;background:#2b3252;border:1px solid #3a4160;text-align:left}
+        .vip-game-card .vip-card-info h3{margin:0 0 6px;color:var(--yellow);font-size:1.3em}
+        .vip-game-card .vip-card-info p{margin:0;color:#c7c1bd;font-size:.85rem}
+        .vip-play-btn{background:var(--coral);color:#fff;padding:10px 22px;border-radius:999px;border:0;font-weight:700;cursor:pointer;white-space:nowrap}
+        .vip-play-btn:hover{opacity:.9}
+
         #game-player-overlay{display:none;position:fixed;inset:0;z-index:2000;background:#090a10}.game-player-top{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#20263bee;color:#fff}.game-player-top strong{font-family:'Fraunces',serif;font-size:22px}#close-game-player-btn{padding:10px 16px;border:0;border-radius:999px;background:var(--coral);color:#fff;font-weight:700;cursor:pointer}#vip-game-frame{width:100%;height:100%;border:0;padding-top:62px}
         @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-        @media(max-width:760px){.auth-box{padding:32px 23px}.header-bar{margin-bottom:35px}.profile-name,.profile-caption{display:none}.hero-copy{display:block}.hero-note{margin-top:20px}.game-list{grid-template-columns:1fr}.game-row{min-height:205px}.vip-row{grid-column:auto;min-height:180px;flex-direction:column;align-items:flex-start}.vip-row .play-btn{width:100%}.comment-input-area{flex-direction:column}.comment-input-area .btn{width:100%}}
+        @media(max-width:760px){.auth-box{padding:32px 23px}.header-bar{margin-bottom:35px}.profile-name,.profile-caption{display:none}.hero-copy{display:block}.hero-note{margin-top:20px}.game-list{grid-template-columns:1fr}.game-row{min-height:205px}.vip-row{grid-column:auto;min-height:180px;flex-direction:column;align-items:flex-start}.vip-row .play-btn{width:100%}.comment-input-area{flex-direction:column}.comment-input-area .btn{width:100%}.otp-box{width:30px;height:42px}}
     </style>
 </head>
 <body>
@@ -58,11 +76,11 @@
                 <article class="game-row"><div class="game-info"><h3>Tetris</h3><p>Klasik blok dizme oyunu. Rekorunu kır.</p></div><button class="play-btn" onclick="startGame('Tetris','https://kapon53.github.io/tetris-oyunu/')">Oyunu aç →</button></article>
                 <article class="game-row vip-row"><div class="game-info"><span class="section-kicker">02 / sadece sana</span><h3>VIP odamız</h3><p>Sadece özel davetlilerin bildiği oyunlar ve küçük sürprizler.</p></div><button class="play-btn" onclick="openVipModal()">VIP kapısını aç →</button></article>
             </div>
-            <section class="feedback glass"><h3>Geri bildirimler</h3><div class="comment-input-area"><input type="text" id="comment-input" placeholder="Bir şeyler yaz..."><button class="btn" id="send-comment-btn">Gönder</button></div><div id="comments-container"></div></section>
+            <section class="feedback"><h3>Geri bildirimler</h3><div class="comment-input-area"><input type="text" id="comment-input" placeholder="Bir şeyler yaz..."><button class="btn" id="send-comment-btn">Gönder</button></div><div id="comments-container"></div></section>
         </div>
     </section>
     <div id="profile-modal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModals()">&times;</span><h2>Profil ayarları</h2><input type="text" id="new-name" class="auth-input" placeholder="Yeni isim"><input type="text" id="new-photo-url" class="auth-input" placeholder="Profil fotoğrafı URL'si"><button class="btn" id="update-profile-btn">Profili güncelle</button></div></div>
-    <div id="vip-modal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModals()">&times;</span><span class="section-kicker">Özel alan</span><h2>VIP odamız</h2><div id="vip-games-list"><p style="color:var(--muted)">Yükleniyor...</p></div></div></div>
+    <div id="vip-modal" class="modal"><div class="modal-content" id="vip-modal-content"><span class="close-modal" onclick="closeModals()">&times;</span><div id="vip-games-list"><p style="color:var(--muted)">Yükleniyor...</p></div></div></div>
     <div id="game-player-overlay"><div class="game-player-top"><strong id="game-player-title">Oyun</strong><button id="close-game-player-btn" onclick="closeGamePlayer()">Kapat ×</button></div><iframe id="vip-game-frame"></iframe></div>
     <script type="module">
         // --- SENİN BİREBİR FIREBASE AYARLARIN ---
@@ -80,11 +98,14 @@
         const ADMIN_UID = "cSO6CuRLeCht3Ei003OXSLDkta63";
 
         // VIP OYUNLARIN LİSTESİ — Firestore'daki "vip_games" koleksiyonundaki döküman ID'leri
-        // Yeni bir VIP oyun eklediğinde (Firestore'a yükledikten sonra) buraya bir satır daha ekle.
         const vipGamesMeta = {
-            kalpoyunu: "Kalp Oyunu",
+            kalp: "Kalp Oyunu",
             minigame: "Minigame"
             // bizimhikaye: "Bizim Hikaye"  <-- mario reposu bitince bu satırı aç ve Firestore'a yükle
+        };
+        const vipGamesDesc = {
+            kalp: "Sana özel, kalp temalı bir oyun 💕",
+            minigame: "Hediye kutusunu yakalayabilecek misin?"
         };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -97,7 +118,6 @@
 
         // İkincil "kapı" hesabı — VIP şifresini bilen herkesin geçici olarak
         // yükseltilmiş yetkiyle vip_games'i okuyabilmesi için ayrı bir Firebase örneği.
-        // Bu hesabın şifresi ASLA bu dosyada yazmıyor — kullanıcı ne yazarsa onu deniyoruz.
         const vipApp = initializeApp(firebaseConfig, "vipAccessApp");
         const vipAuth = getAuth(vipApp);
         const vipDb = getFirestore(vipApp);
@@ -106,7 +126,6 @@
         // --- DOM Elementleri ---
         const authScreen = document.getElementById('auth-screen');
         const dashboardScreen = document.getElementById('dashboard-screen');
-        const authTitle = document.getElementById('auth-title');
         const authBtn = document.getElementById('auth-btn');
         const toggleAuthBtn = document.getElementById('toggle-auth-btn');
 
@@ -116,9 +135,8 @@
         // --- Auth Toggle Mantığı ---
         toggleAuthBtn.addEventListener('click', () => {
             isLogin = !isLogin;
-            authTitle.innerText = isLogin ? "Sisteme Giriş" : "Yeni Kayıt";
-            authBtn.innerText = isLogin ? "Giriş Yap" : "Kayıt Ol";
-            toggleAuthBtn.innerText = isLogin ? "Hesabın yok mu? Kayıt Ol" : "Zaten hesabın var mı? Giriş Yap";
+            authBtn.innerText = isLogin ? "Giriş yap" : "Kayıt ol";
+            toggleAuthBtn.innerText = isLogin ? "Hesabın yok mu? Kayıt ol" : "Zaten hesabın var mı? Giriş yap";
         });
 
         // --- Giriş / Kayıt İşlemi ---
@@ -194,15 +212,13 @@
         };
 
         // --- VIP SİSTEMİ ---
-        // İki yol var: 1) Kişiye özel Firestore'da vip:true verilmiş olabilir (kalıcı VIP)
-        //              2) Kişi paylaşılan özel şifreyi (VIP kapı hesabının parolası) bilebilir
         window.openVipModal = async () => {
             document.getElementById('vip-modal').classList.add('active');
             const listEl = document.getElementById('vip-games-list');
-            listEl.innerHTML = "<p style='color:#aaa;'>Kontrol ediliyor...</p>";
+            listEl.innerHTML = "<p style='color:var(--muted)'>Kontrol ediliyor...</p>";
 
             if (!currentUser) {
-                listEl.innerHTML = "<p style='color:#ff3366;'>Önce giriş yapmalısın.</p>";
+                listEl.innerHTML = "<p style='color:var(--coral)'>Önce giriş yapmalısın.</p>";
                 return;
             }
 
@@ -216,44 +232,85 @@
                     renderPinForm(listEl);
                 }
             } catch (e) {
-                listEl.innerHTML = "<p style='color:#ff3366;'>Bir hata oluştu.</p>";
+                listEl.innerHTML = "<p style='color:var(--coral)'>Bir hata oluştu.</p>";
                 console.error(e);
             }
         };
 
         function renderVipGameList(listEl, dbInstance) {
-            listEl.innerHTML = "";
+            document.getElementById('vip-modal-content').classList.add('vip-wide');
+
             const entries = Object.entries(vipGamesMeta);
             if (entries.length === 0) {
-                listEl.innerHTML = "<p style='color:#aaa;'>Henüz VIP oyun eklenmedi.</p>";
+                listEl.innerHTML = "<p style='color:var(--muted)'>Henüz VIP oyun eklenmedi.</p>";
                 return;
             }
+
+            let html = `
+                <div class="vip-unlocked-header">
+                    <h2>VIP odamız 💕</h2>
+                    <p>Sana özel oyunlar</p>
+                </div>
+            `;
             entries.forEach(([gameId, gameName]) => {
-                const btn = document.createElement('button');
-                btn.className = 'vip-game-btn';
-                btn.innerText = gameName;
-                btn.onclick = () => window.openVipGame(gameId, gameName, dbInstance);
-                listEl.appendChild(btn);
+                const desc = vipGamesDesc[gameId] || "";
+                html += `
+                    <div class="vip-game-card">
+                        <div class="vip-card-info">
+                            <h3>${gameName}</h3>
+                            <p>${desc}</p>
+                        </div>
+                        <button class="vip-play-btn" data-game-id="${gameId}" data-game-name="${gameName}">Oyna</button>
+                    </div>
+                `;
+            });
+            listEl.innerHTML = html;
+
+            listEl.querySelectorAll('.vip-play-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    window.openVipGame(btn.dataset.gameId, btn.dataset.gameName, dbInstance);
+                });
             });
         }
 
         function renderPinForm(listEl) {
+            document.getElementById('vip-modal-content').classList.remove('vip-wide');
+
+            let boxesHTML = "";
+            for (let i = 0; i < 8; i++) {
+                boxesHTML += `<input type="text" inputmode="numeric" maxlength="1" class="otp-box" data-index="${i}">`;
+            }
+
             listEl.innerHTML = `
-                <p style="color:#ddd; margin-bottom:12px;">Özel şifreyi gir:</p>
-                <input type="password" id="vip-pin-input" class="auth-input" style="text-align:center; letter-spacing:3px;">
+                <span class="section-kicker">Özel alan</span>
+                <h2 style="margin:10px 0 4px;">VIP odamız</h2>
+                <p style="color:var(--muted); margin-bottom:6px;">Özel şifreyi gir:</p>
+                <div class="otp-container">${boxesHTML}</div>
                 <button class="vip-game-btn" id="vip-pin-submit-btn">Doğrula</button>
-                <p id="vip-pin-error" style="color:#ff3366; font-size:0.85em; margin-top:8px; min-height:1.2em;"></p>
+                <p id="vip-pin-error" style="color:var(--coral); font-size:0.85em; margin-top:8px; min-height:1.2em;"></p>
             `;
-            document.getElementById('vip-pin-submit-btn').addEventListener('click', handlePinSubmit);
-            document.getElementById('vip-pin-input').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') handlePinSubmit();
+
+            const boxes = Array.from(listEl.querySelectorAll('.otp-box'));
+            boxes.forEach((box, idx) => {
+                box.addEventListener('input', () => {
+                    box.value = box.value.replace(/[^0-9]/g, '');
+                    if (box.value && idx < boxes.length - 1) boxes[idx + 1].focus();
+                });
+                box.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !box.value && idx > 0) boxes[idx - 1].focus();
+                    if (e.key === 'Enter') handlePinSubmit();
+                });
             });
+            boxes[0].focus();
+
+            document.getElementById('vip-pin-submit-btn').addEventListener('click', handlePinSubmit);
         }
 
         async function handlePinSubmit() {
-            const pin = document.getElementById('vip-pin-input').value;
+            const boxes = Array.from(document.querySelectorAll('.otp-box'));
+            const pin = boxes.map(b => b.value).join('');
             const errorEl = document.getElementById('vip-pin-error');
-            errorEl.style.color = '#aaa';
+            errorEl.style.color = 'var(--muted)';
             errorEl.innerText = "Kontrol ediliyor...";
             try {
                 await signInWithEmailAndPassword(vipAuth, VIP_GATE_EMAIL, pin);
@@ -268,7 +325,7 @@
                     timestamp: serverTimestamp()
                 }).catch(() => {});
             } catch (e) {
-                errorEl.style.color = '#ff3366';
+                errorEl.style.color = 'var(--coral)';
                 errorEl.innerText = "Hatalı şifre.";
             }
         }
@@ -282,11 +339,11 @@
                     return;
                 }
                 const html = gameSnap.data().html;
+                document.getElementById('game-player-title').innerText = gameName;
                 document.getElementById('vip-game-frame').srcdoc = html;
                 document.getElementById('game-player-overlay').style.display = 'block';
                 window.closeModals();
 
-                // Erişim logu (opsiyonel, sana bilgi için)
                 addDoc(collection(db, "vip_logs"), {
                     userId: currentUser.uid,
                     userName: currentUser.displayName,
@@ -304,7 +361,7 @@
             document.getElementById('vip-game-frame').srcdoc = "";
         };
 
-        // --- YORUM SİSTEMİ (Kalıcı ve Yönetilebilir) ---
+        // --- YORUM SİSTEMİ (Ana sayfa "Geri bildirimler") ---
         const commentsContainer = document.getElementById('comments-container');
 
         document.getElementById('send-comment-btn').addEventListener('click', async () => {
@@ -352,6 +409,5 @@
             }
         };
     </script>
-
 </body>
 </html>
