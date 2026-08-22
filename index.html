@@ -59,6 +59,7 @@
         #vip-screen .game-row.vip-row .game-info h3{color:#ffd166}
         #vip-screen .game-row.vip-row .game-info p{color:#f2c9d6}
         #vip-screen .game-row.vip-row .play-btn{background:#ff5d8f;color:#fff}
+        .flower-wrap{display:flex;justify-content:center;margin-bottom:6px}
 
         .heart-particle{position:absolute;bottom:-40px;pointer-events:none;opacity:0;z-index:0;animation:floatHeart linear infinite}
         @keyframes floatHeart{
@@ -113,6 +114,20 @@
             <div class="hero-copy">
                 <div><span class="section-kicker">Sadece sana</span><h1>Sana özel<br><em>oyunlar.</em></h1></div>
                 <p class="hero-note">Burada sadece senin bildiğin küçük sürprizler var.</p>
+            </div>
+            <div class="flower-wrap">
+                <svg id="flower-svg" viewBox="0 0 200 220" width="140" height="154">
+                    <path class="draw-path" d="M100,120 C95,150 105,175 100,205" fill="none" stroke="#8fd6a8" stroke-width="3" stroke-linecap="round"/>
+                    <ellipse class="draw-path" cx="118" cy="165" rx="16" ry="8" transform="rotate(30 118 165)" fill="none" stroke="#8fd6a8" stroke-width="2.5"/>
+                    <ellipse class="draw-path" cx="116" cy="90" rx="20" ry="9" transform="rotate(0 116 90)" fill="none" stroke="#fbeaf0" stroke-width="2.5"/>
+                    <ellipse class="draw-path" cx="108" cy="76" rx="20" ry="9" transform="rotate(-60 108 76)" fill="none" stroke="#fbeaf0" stroke-width="2.5"/>
+                    <ellipse class="draw-path" cx="92" cy="76" rx="20" ry="9" transform="rotate(-120 92 76)" fill="none" stroke="#fbeaf0" stroke-width="2.5"/>
+                    <ellipse class="draw-path" cx="84" cy="90" rx="20" ry="9" transform="rotate(180 84 90)" fill="none" stroke="#fbeaf0" stroke-width="2.5"/>
+                    <ellipse class="draw-path" cx="92" cy="104" rx="20" ry="9" transform="rotate(120 92 104)" fill="none" stroke="#fbeaf0" stroke-width="2.5"/>
+                    <ellipse class="draw-path" cx="108" cy="104" rx="20" ry="9" transform="rotate(60 108 104)" fill="none" stroke="#fbeaf0" stroke-width="2.5"/>
+                    <circle class="draw-path" cx="100" cy="90" r="10" fill="none" stroke="#ffb703" stroke-width="2.5"/>
+                    <circle class="draw-path" cx="100" cy="90" r="5" fill="none" stroke="#ff8500" stroke-width="2.5"/>
+                </svg>
             </div>
             <div class="game-list" id="vip-screen-games-list"></div>
         </div>
@@ -390,9 +405,26 @@
             }
         }
 
+        function animateFlower() {
+            const svg = document.getElementById('flower-svg');
+            if (!svg) return;
+            const paths = svg.querySelectorAll('.draw-path');
+            paths.forEach((el, i) => {
+                const length = el.getTotalLength();
+                el.style.transition = 'none';
+                el.style.strokeDasharray = length;
+                el.style.strokeDashoffset = length;
+                void el.getBoundingClientRect();
+                el.style.transition = 'stroke-dashoffset 1s ease';
+                el.style.transitionDelay = (i * 0.12) + 's';
+                requestAnimationFrame(() => { el.style.strokeDashoffset = '0'; });
+            });
+        }
+
         function showVipScreen(dbInstance) {
             switchScreen('vip-screen');
             spawnHearts();
+            animateFlower();
             renderVipScreenGames(document.getElementById('vip-screen-games-list'), dbInstance);
         }
 
