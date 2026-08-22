@@ -49,11 +49,24 @@
 
         #game-player-overlay{display:none;position:fixed;inset:0;z-index:2000;background:#090a10}.game-player-top{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#20263bee;color:#fff}.game-player-top strong{font-family:'Fraunces',serif;font-size:22px}#close-game-player-btn{padding:10px 16px;border:0;border-radius:999px;background:var(--coral);color:#fff;font-weight:700;cursor:pointer}#vip-game-frame{width:100%;height:100%;border:0;padding-top:62px}
 
-        /* --- VIP Alanı: tam ekran ayrı bölüm (dashboard ile aynı mantık, koyu tema) --- */
-        #vip-screen{position:relative;display:none;align-items:center;flex-direction:column;padding:24px 20px 70px;background:linear-gradient(180deg,var(--ink),#141829)}#vip-screen.active{display:flex}
-        #vip-screen .hero-copy h1{color:#fff}
-        #vip-screen .hero-note{color:#c7c1bd}
+        /* --- VIP Alanı: tam ekran ayrı bölüm, romantik sıcak tema + yüzen kalp animasyonu --- */
+        #vip-screen{position:relative;overflow:hidden;display:none;align-items:center;flex-direction:column;padding:24px 20px 70px;background:linear-gradient(160deg,#2a0f1a,#5c1a34 45%,#2a0f1a)}#vip-screen.active{display:flex}
+        #vip-screen .hero-copy h1{color:#ffd6e2}
+        #vip-screen .hero-copy h1 em{color:#ff8fa3}
+        #vip-screen .hero-note{color:#e7b8c5}
         #vip-screen .header-bar .brand{color:var(--ink)}
+        #vip-screen .game-row.vip-row{background:linear-gradient(135deg,#4a1729,#742142)!important;border:1px solid #7a2f4c}
+        #vip-screen .game-row.vip-row .game-info h3{color:#ffd166}
+        #vip-screen .game-row.vip-row .game-info p{color:#f2c9d6}
+        #vip-screen .game-row.vip-row .play-btn{background:#ff5d8f;color:#fff}
+
+        .heart-particle{position:absolute;bottom:-40px;pointer-events:none;opacity:0;z-index:0;animation:floatHeart linear infinite}
+        @keyframes floatHeart{
+            0%{transform:translateY(0) translateX(0) rotate(0deg);opacity:0}
+            10%{opacity:.85}
+            85%{opacity:.5}
+            100%{transform:translateY(-110vh) translateX(var(--drift,20px)) rotate(20deg);opacity:0}
+        }
         @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
         @media(max-width:760px){.auth-box{padding:32px 23px}.header-bar{margin-bottom:35px}.profile-name,.profile-caption{display:none}.hero-copy{display:block}.hero-note{margin-top:20px}.game-list{grid-template-columns:1fr}.game-row{min-height:205px}.vip-row{grid-column:auto;min-height:180px;flex-direction:column;align-items:flex-start}.vip-row .play-btn{width:100%}.comment-input-area{flex-direction:column}.comment-input-area .btn{width:100%}.otp-box{width:30px;height:42px}}
     </style>
@@ -197,6 +210,7 @@
                 } else {
                     const userCred = await createUserWithEmailAndPassword(auth, loginEmail, password);
                     await updateProfile(userCred.user, { displayName: username });
+                    document.getElementById('user-display-name').innerText = username;
 
                     await setDoc(doc(db, "users", userCred.user.uid), {
                         username: username,
@@ -352,8 +366,33 @@
             }
         };
 
+        let heartsSpawned = false;
+        function spawnHearts() {
+            if (heartsSpawned) return;
+            heartsSpawned = true;
+            const container = document.getElementById('vip-screen');
+            const emojis = ['💕', '💗', '💖', '❤️'];
+            for (let i = 0; i < 18; i++) {
+                const heart = document.createElement('span');
+                heart.className = 'heart-particle';
+                heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                const left = Math.random() * 100;
+                const duration = 9 + Math.random() * 8;
+                const delay = Math.random() * 10;
+                const size = 14 + Math.random() * 14;
+                const drift = (Math.random() * 60 - 30) + 'px';
+                heart.style.left = left + '%';
+                heart.style.fontSize = size + 'px';
+                heart.style.animationDuration = duration + 's';
+                heart.style.animationDelay = delay + 's';
+                heart.style.setProperty('--drift', drift);
+                container.appendChild(heart);
+            }
+        }
+
         function showVipScreen(dbInstance) {
             switchScreen('vip-screen');
+            spawnHearts();
             renderVipScreenGames(document.getElementById('vip-screen-games-list'), dbInstance);
         }
 
