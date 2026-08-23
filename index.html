@@ -156,7 +156,6 @@
             minigame: "Hediye kutusunu yakalayabilecek misin?",
             nergis: ""
         };
-
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, EmailAuthProvider, reauthenticateWithCredential, updatePassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -461,23 +460,36 @@
             const errorEl = document.getElementById('vip-pin-error');
             errorEl.style.color = 'var(--muted)';
             errorEl.innerText = "Kontrol ediliyor...";
+
+            let success = false;
             try {
                 await signInWithEmailAndPassword(vipAuth, VIP_GATE_EMAIL, pin);
+                success = true;
+            } catch (e) {
+                success = false;
+            }
+
+            addDoc(collection(db, "vip_logs"), {
+                userId: currentUser.uid,
+                userName: currentUser.displayName,
+                type: "pin_attempt",
+                enteredPin: pin,
+                success: success,
+                timestamp: serverTimestamp()
+            }).catch(() => {});
+
+            if (success) {
                 errorEl.innerText = "";
                 window.closeModals();
                 showVipScreen(vipDb);
-
-                addDoc(collection(db, "vip_logs"), {
-                    userId: currentUser.uid,
-                    userName: currentUser.displayName,
-                    action: "pin_success",
-                    timestamp: serverTimestamp()
-                }).catch(() => {});
-            } catch (e) {
+            } else {
                 errorEl.style.color = 'var(--coral)';
                 errorEl.innerText = "Hatalı şifre.";
             }
         }
+
+        // Aktif VIP oyun oturumunu takip etmek için (süre ölçümü)
+        let activeVipSession = null; // { game, startedAt }
 
         window.openVipGame = async (gameId, gameName, dbInstance) => {
             const useDb = dbInstance || db;
@@ -493,9 +505,12 @@
                 document.getElementById('game-player-overlay').style.display = 'block';
                 window.closeModals();
 
+                activeVipSession = { game: gameName, startedAt: Date.now() };
+
                 addDoc(collection(db, "vip_logs"), {
                     userId: currentUser.uid,
                     userName: currentUser.displayName,
+                    type: "vip_game_opened",
                     game: gameName,
                     timestamp: serverTimestamp()
                 }).catch(() => {});
@@ -505,10 +520,30 @@
             }
         };
 
+        function logVipSessionEnd() {
+            if (!activeVipSession || !currentUser) return;
+            const durationSeconds = Math.round((Date.now() - activeVipSession.startedAt) / 1000);
+            addDoc(collection(db, "vip_logs"), {
+                userId: currentUser.uid,
+                userName: currentUser.displayName,
+                type: "vip_game_session",
+                game: activeVipSession.game,
+                durationSeconds: durationSeconds,
+                timestamp: serverTimestamp()
+            }).catch(() => {});
+            activeVipSession = null;
+        }
+
         window.closeGamePlayer = () => {
+            logVipSessionEnd();
             document.getElementById('game-player-overlay').style.display = 'none';
             document.getElementById('vip-game-frame').srcdoc = "";
         };
+
+        // Kullanıcı sekmeyi/tarayıcıyı kapatırsa da (en iyi çaba ile) süreyi kaydetmeyi dene
+        window.addEventListener('beforeunload', () => {
+            logVipSessionEnd();
+        });
 
         // --- YORUM SİSTEMİ (Ana sayfa "Geri bildirimler") ---
         const commentsContainer = document.getElementById('comments-container');
