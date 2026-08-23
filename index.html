@@ -148,13 +148,13 @@
         const vipGamesMeta = {
             kalp: "Kalp Oyunu",
             minigame: "Minigame",
-            nergis: "Nergis"
+            nergis: "🎁"
             // bizimhikaye: "Bizim Hikaye"  <-- mario reposu bitince bu satırı aç ve Firestore'a yükle
         };
         const vipGamesDesc = {
             kalp: "Sana özel, kalp temalı bir oyun 💕",
             minigame: "Hediye kutusunu yakalayabilecek misin?",
-            nergis: "Sana özel, çizerek beliren bir nergis 🌼"
+            nergis: ""
         };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -413,7 +413,7 @@
                 article.innerHTML = `
                     <div class="game-info">
                         <h3>${gameName}</h3>
-                        <p>${desc}</p>
+                        ${desc ? `<p>${desc}</p>` : ""}
                     </div>
                     <button class="play-btn">Oyunu aç →</button>
                 `;
