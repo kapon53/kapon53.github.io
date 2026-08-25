@@ -28,31 +28,43 @@
         .hero-copy{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:28px}.hero-copy h1{max-width:650px;margin:12px 0 0;font-size:clamp(50px,9vw,104px);line-height:.9}.hero-copy h1 em{color:var(--coral);font-weight:500}.hero-note{max-width:230px;color:var(--muted);font-size:14px;line-height:1.6}
         .game-list{display:grid;grid-template-columns:1fr;gap:17px}.game-row{display:flex;min-height:230px;flex-direction:column;align-items:flex-start;justify-content:space-between;padding:24px;border:1px solid var(--line);border-radius:25px;background:#fbf6ee;box-shadow:0 6px 0 #20263b0b;transition:transform .3s,box-shadow .3s}.game-row:hover{transform:translateY(-7px) rotate(-.5deg);box-shadow:0 14px 0 #20263b12,0 24px 40px #20263b12}.game-row:nth-child(1){background:linear-gradient(145deg,#fbf6ee 55%,#f4cf58)}.game-row:nth-child(2){background:linear-gradient(145deg,#fbf6ee 55%,#aaa3d5)}.game-row:nth-child(3){background:linear-gradient(145deg,#fbf6ee 55%,#8ab7c3)}.game-info h3{margin:0 0 9px;font-size:30px}.game-info p{margin:0;color:var(--muted);line-height:1.55}.play-btn{padding:12px 20px;background:var(--ink);color:#fff}.vip-row{min-height:150px;flex-direction:row;align-items:center;justify-content:space-between;background:var(--ink)!important;color:#fff}.vip-row .game-info h3{color:var(--yellow)}.vip-row .game-info p{color:#c7c1bd}.vip-row .play-btn{background:var(--coral)}
         .feedback{margin-top:48px;padding:26px;border:1px solid var(--line);border-radius:24px;background:#eee6da}.feedback h3{margin:0 0 15px;font-size:29px}.comment-input-area{display:flex;gap:10px}.comment-input-area input{flex:1;padding:13px 16px;border:1px solid var(--line);border-radius:13px;background:#fbf6ee}.comment-input-area .btn{width:auto;padding:12px 20px}.comment-item{padding:15px;margin-top:12px;border-radius:14px;background:#20263b0c}.comment-header{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.comment-text{margin-bottom:0}.delete-btn{background:transparent;border:0;color:var(--coral);cursor:pointer;text-decoration:underline;font-size:12px}
-        .modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;background:#20263bb8;backdrop-filter:blur(8px)}.modal.active{display:flex}.modal-content{width:min(100%,470px);padding:32px;border:1px solid var(--line);border-radius:27px;background:#fbf6ee;box-shadow:0 24px 70px #20263b55;text-align:center;transition:max-width .3s ease}.modal-content.vip-wide{width:min(100%,640px)}.close-modal{float:right;color:var(--ink);font-size:26px;font-weight:700;cursor:pointer}.modal-content h2{margin:12px 0 22px;font-size:40px}.vip-game-btn{width:100%;padding:14px;margin:6px 0;border:0;border-radius:999px;background:var(--coral);color:#fff;font-weight:700;cursor:pointer}
+        .modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;background:#20263bb8;backdrop-filter:blur(8px)}.modal.active{display:flex}.modal-content{width:min(100%,470px);padding:32px;border:1px solid var(--line);border-radius:27px;background:#fbf6ee;box-shadow:0 24px 70px #20263b55;text-align:center;transition:max-width .3s ease}.modal-content.vip-wide{width:min(100%,640px)}.close-modal{float:right;color:var(--ink);font-size:26px;font-weight:700;cursor:pointer}.modal-content h2{margin:12px 0 22px;font-size:40px}.vip-game-btn{width:100%;padding:14px;margin:6px 0;border:0;border-radius:999px;background:var(--coral);color:#fff;font-weight:700;cursor:pointer;transition: opacity 0.2s}
+        .vip-game-btn:disabled{opacity: 0.5; cursor: not-allowed;}
 
-        /* --- VIP 8 Haneli Orbital Şifre Kutuları --- */
+        /* --- DİNAMİK VIP ŞİFRE KUTULARI (Düz -> Çember -> Merkez) --- */
         .orbit-wrapper {
             position: relative;
-            width: 270px;
-            height: 270px;
-            margin: 20px auto 35px;
+            width: 100%;
+            height: 60px; /* Başlangıçta düz çizgi için gereken yükseklik */
+            margin: 20px auto 30px;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .orbit-wrapper.animating {
+            height: 240px; /* Çembere dönüşünce alanı genişlet */
         }
 
         .orbit-center {
             position: absolute;
-            width: 65px;
-            height: 65px;
+            width: 60px; height: 60px;
             border-radius: 50%;
             border: 2px dashed var(--line);
             background: var(--paper);
-            display: grid;
-            place-items: center;
-            z-index: 10;
-            transition: all 0.3s ease;
+            display: grid; place-items: center;
             font-size: 22px;
+            z-index: 10;
+            opacity: 0; 
+            transform: scale(0);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Çember animasyonu başladığında kilidi göster */
+        .orbit-wrapper.animating .orbit-center {
+            opacity: 1;
+            transform: scale(1);
         }
 
         .orbit-center.loading {
@@ -61,32 +73,38 @@
             color: var(--coral);
         }
 
-        @keyframes orbit-spin { 
-            100% { transform: rotate(360deg); } 
+        .orbit-center.success {
+            border-color: #3ba55d;
+            color: #3ba55d;
         }
 
-        .otp-box-orbit {
+        @keyframes orbit-spin { 100% { transform: rotate(360deg); } }
+
+        .otp-box-dynamic {
             position: absolute;
-            width: 38px;
-            height: 48px;
-            text-align: center;
-            font-size: 1.3em;
-            border-radius: 12px;
-            border: 1px solid var(--line);
-            background: #f6efe4;
-            color: var(--ink);
+            width: 36px; height: 48px;
+            text-align: center; font-size: 1.3em;
+            border-radius: 12px; border: 1px solid var(--line);
+            background: #f6efe4; color: var(--ink);
             outline: 0;
             z-index: 5;
-            transform: rotate(var(--angle)) translate(115px) rotate(calc(var(--angle) * -1));
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s, opacity 0.5s;
+            /* BAŞLANGIÇ: Yan yana düz dizilim (Index'e göre yatay kaydırma) */
+            transform: translate(calc((var(--index) - 3.5) * 44px), 0);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s, border-color 0.2s;
         }
 
-        .otp-box-orbit:focus {
+        .otp-box-dynamic:focus {
             border-color: var(--coral);
             box-shadow: 0 0 0 4px #ef756622;
         }
 
-        .otp-box-orbit.fly-in {
+        /* ADIM 1: Çembere Dizilme */
+        .orbit-wrapper.animating .otp-box-dynamic {
+            transform: rotate(var(--angle)) translate(105px) rotate(calc(var(--angle) * -1));
+        }
+
+        /* ADIM 2: Merkeze Uçma */
+        .orbit-wrapper.fly-in .otp-box-dynamic {
             transform: rotate(var(--angle)) translate(0px) rotate(calc(var(--angle) * -1)) scale(0.2);
             opacity: 0;
             pointer-events: none;
@@ -106,7 +124,6 @@
 
         #game-player-overlay{display:none;position:fixed;inset:0;z-index:2000;background:#090a10}.game-player-top{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#20263bee;color:#fff}.game-player-top strong{font-family:'Fraunces',serif;font-size:22px}#close-game-player-btn{padding:10px 16px;border:0;border-radius:999px;background:var(--coral);color:#fff;font-weight:700;cursor:pointer}#vip-game-frame{width:100%;height:100%;border:0;padding-top:62px}
 
-        /* --- VIP Alanı: tam ekran ayrı bölüm, romantik sıcak tema + yüzen kalp animasyonu --- */
         #vip-screen{position:relative;overflow:hidden;display:none;align-items:center;flex-direction:column;padding:24px 20px 70px;background:linear-gradient(160deg,#2a0f1a,#5c1a34 45%,#2a0f1a)}#vip-screen.active{display:flex}
         #vip-screen .hero-copy h1{color:#ffd6e2}
         #vip-screen .hero-copy h1 em{color:#ff8fa3}
@@ -460,7 +477,8 @@
             let boxesHTML = "";
             for (let i = 0; i < 8; i++) {
                 let angle = (i * 45) - 90;
-                boxesHTML += `<input type="text" inputmode="numeric" maxlength="1" class="otp-box-orbit" data-index="${i}" style="--angle: ${angle}deg;">`;
+                // Kutulara --index tanımlıyoruz, böylece başlangıçta yatay eksende yan yana dururlar
+                boxesHTML += `<input type="text" inputmode="numeric" maxlength="1" class="otp-box-dynamic" data-index="${i}" style="--index: ${i}; --angle: ${angle}deg;">`;
             }
 
             listEl.innerHTML = `
@@ -468,7 +486,7 @@
                 <h2 style="margin:10px 0 4px;">VIP odamız</h2>
                 <p style="color:var(--muted); margin-bottom:12px;">8 Haneli VIP şifresini gir:</p>
                 
-                <div class="orbit-wrapper">
+                <div class="orbit-wrapper" id="dynamic-orbit-wrapper">
                     <div class="orbit-center" id="orbit-center-icon">🔒</div>
                     ${boxesHTML}
                 </div>
@@ -477,7 +495,7 @@
                 <p id="vip-pin-error" style="color:var(--coral); font-size:0.85em; margin-top:8px; min-height:1.2em;"></p>
             `;
 
-            const boxes = Array.from(listEl.querySelectorAll('.otp-box-orbit'));
+            const boxes = Array.from(listEl.querySelectorAll('.otp-box-dynamic'));
             boxes.forEach((box, idx) => {
                 box.addEventListener('input', () => {
                     box.value = box.value.replace(/[^0-9]/g, '');
@@ -495,10 +513,12 @@
         }
 
         async function handlePinSubmit() {
-            const boxes = Array.from(document.querySelectorAll('.otp-box-orbit'));
+            const boxes = Array.from(document.querySelectorAll('.otp-box-dynamic'));
             const pin = boxes.map(b => b.value).join('');
             const errorEl = document.getElementById('vip-pin-error');
             const centerIcon = document.getElementById('orbit-center-icon');
+            const wrapper = document.getElementById('dynamic-orbit-wrapper');
+            const submitBtn = document.getElementById('vip-pin-submit-btn');
 
             if (pin.length < 8) {
                 errorEl.style.color = 'var(--coral)';
@@ -506,17 +526,28 @@
                 return;
             }
 
-            errorEl.innerText = "Doğrulanıyor...";
+            // 1. DÜZENDEN ÇEMBERE GEÇİŞ
+            errorEl.innerText = "Şifre işleniyor...";
             errorEl.style.color = 'var(--muted)';
+            submitBtn.disabled = true;
+            
+            wrapper.classList.add('animating'); // Çembere dönüş animasyonu
+            
+            // Çemberin oluşmasını bekle (0.6s css süresi kadar)
+            await new Promise(resolve => setTimeout(resolve, 600));
+
+            // 2. MERKEZE UÇUŞ (FLY-IN)
+            wrapper.classList.add('fly-in');
             centerIcon.innerHTML = "⏳";
             centerIcon.classList.add('loading');
+            errorEl.innerText = "Doğrulanıyor...";
 
-            boxes.forEach(box => box.classList.add('fly-in'));
-
-            await new Promise(resolve => setTimeout(resolve, 600));
+            // Uçuşu bekle
+            await new Promise(resolve => setTimeout(resolve, 500));
 
             let success = false;
             try {
+                // Firebase Doğrulaması
                 await signInWithEmailAndPassword(vipAuth, VIP_GATE_EMAIL, pin);
                 success = true;
             } catch (e) {
@@ -532,23 +563,29 @@
                 timestamp: serverTimestamp()
             }).catch(() => {});
 
+            // 3. SONUÇ
             if (success) {
                 errorEl.innerText = "";
                 centerIcon.innerHTML = "✅";
                 centerIcon.classList.remove('loading');
+                centerIcon.classList.add('success');
                 
+                // Başarı ikonunu biraz gösterip VIP alana geç
                 setTimeout(() => {
                     window.closeModals();
                     showVipScreen(vipDb);
-                }, 500); 
+                }, 600); 
             } else {
                 errorEl.style.color = 'var(--coral)';
                 errorEl.innerText = "Hatalı şifre, tekrar dene.";
+                
+                // Animasyonları geri sar, düz çizgiye geri dön
                 centerIcon.innerHTML = "🔒";
                 centerIcon.classList.remove('loading');
+                wrapper.classList.remove('fly-in', 'animating');
+                submitBtn.disabled = false;
                 
                 boxes.forEach(box => {
-                    box.classList.remove('fly-in');
                     box.value = ''; 
                 });
                 boxes[0].focus();
