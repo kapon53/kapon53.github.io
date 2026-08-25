@@ -31,11 +31,11 @@
         .modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;background:#20263bb8;backdrop-filter:blur(8px)}.modal.active{display:flex}.modal-content{width:min(100%,470px);padding:32px;border:1px solid var(--line);border-radius:27px;background:#fbf6ee;box-shadow:0 24px 70px #20263b55;text-align:center;transition:max-width .3s ease}.modal-content.vip-wide{width:min(100%,640px)}.close-modal{float:right;color:var(--ink);font-size:26px;font-weight:700;cursor:pointer}.modal-content h2{margin:12px 0 22px;font-size:40px}.vip-game-btn{width:100%;padding:14px;margin:6px 0;border:0;border-radius:999px;background:var(--coral);color:#fff;font-weight:700;cursor:pointer;transition: opacity 0.2s}
         .vip-game-btn:disabled{opacity: 0.5; cursor: not-allowed;}
 
-        /* --- DİNAMİK VIP ŞİFRE KUTULARI (Düz -> Çember -> Merkez) --- */
+        /* --- DİNAMİK VIP ŞİFRE KUTULARI (Düz -> Çember -> Spin -> Merkez/Geri) --- */
         .orbit-wrapper {
             position: relative;
             width: 100%;
-            height: 60px; /* Başlangıçta düz çizgi için gereken yükseklik */
+            height: 60px; /* Başlangıçta düz çizgi yüksekliği */
             margin: 20px auto 30px;
             display: flex;
             align-items: center;
@@ -45,6 +45,27 @@
         
         .orbit-wrapper.animating {
             height: 240px; /* Çembere dönüşünce alanı genişlet */
+        }
+
+        /* Kutuları tutacak ve kendi etrafında dönecek halka katmanı */
+        .orbit-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Dönme bittiğinde yumuşak sıfırlanması için */
+            transition: transform 0.4s ease; 
+        }
+
+        /* Doğrulanırken halka döner */
+        .orbit-wrapper.spinning .orbit-ring {
+            animation: ring-spin-anim 2s linear infinite;
+        }
+
+        @keyframes ring-spin-anim {
+            to { transform: rotate(360deg); }
         }
 
         .orbit-center {
@@ -69,16 +90,20 @@
 
         .orbit-center.loading {
             border: 2px solid var(--coral);
-            animation: orbit-spin 1s linear infinite;
             color: var(--coral);
         }
 
         .orbit-center.success {
-            border-color: #3ba55d;
-            color: #3ba55d;
+            border: 2px solid #3ba55d;
+            background: #3ba55d;
+            color: #fff;
         }
 
-        @keyframes orbit-spin { 100% { transform: rotate(360deg); } }
+        .orbit-center.error {
+            border: 2px solid var(--coral);
+            background: var(--coral);
+            color: #fff;
+        }
 
         .otp-box-dynamic {
             position: absolute;
@@ -103,14 +128,14 @@
             transform: rotate(var(--angle)) translate(105px) rotate(calc(var(--angle) * -1));
         }
 
-        /* ADIM 2: Merkeze Uçma */
+        /* ADIM 3 (BAŞARILI): Merkeze Uçma */
         .orbit-wrapper.fly-in .otp-box-dynamic {
-            transform: rotate(var(--angle)) translate(0px) rotate(calc(var(--angle) * -1)) scale(0.2);
+            transform: rotate(var(--angle)) translate(0px) rotate(calc(var(--angle) * -1)) scale(0.2) !important;
             opacity: 0;
             pointer-events: none;
         }
 
-        /* --- VIP Doğrulanmış Alan (kendine özgü koyu/sıcak tema) --- */
+        /* --- VIP Doğrulanmış Alan --- */
         .vip-unlocked-header{text-align:center;margin-bottom:20px}
         .vip-unlocked-header h2{margin:0 0 5px;color:var(--yellow)}
         .vip-unlocked-header p{margin:0;color:#c7c1bd;font-size:.85rem}
@@ -477,7 +502,6 @@
             let boxesHTML = "";
             for (let i = 0; i < 8; i++) {
                 let angle = (i * 45) - 90;
-                // Kutulara --index tanımlıyoruz, böylece başlangıçta yatay eksende yan yana dururlar
                 boxesHTML += `<input type="text" inputmode="numeric" maxlength="1" class="otp-box-dynamic" data-index="${i}" style="--index: ${i}; --angle: ${angle}deg;">`;
             }
 
@@ -488,7 +512,9 @@
                 
                 <div class="orbit-wrapper" id="dynamic-orbit-wrapper">
                     <div class="orbit-center" id="orbit-center-icon">🔒</div>
-                    ${boxesHTML}
+                    <div class="orbit-ring" id="orbit-ring">
+                        ${boxesHTML}
+                    </div>
                 </div>
 
                 <button class="vip-game-btn" id="vip-pin-submit-btn">Doğrula</button>
@@ -531,28 +557,27 @@
             errorEl.style.color = 'var(--muted)';
             submitBtn.disabled = true;
             
-            wrapper.classList.add('animating'); // Çembere dönüş animasyonu
+            wrapper.classList.add('animating');
             
-            // Çemberin oluşmasını bekle (0.6s css süresi kadar)
+            // Çemberin tam olarak oluşmasını bekle (0.6 saniye)
             await new Promise(resolve => setTimeout(resolve, 600));
 
-            // 2. MERKEZE UÇUŞ (FLY-IN)
-            wrapper.classList.add('fly-in');
+            // 2. DÖNMEYE BAŞLA VE KONTROL ET
+            wrapper.classList.add('spinning');
             centerIcon.innerHTML = "⏳";
             centerIcon.classList.add('loading');
             errorEl.innerText = "Doğrulanıyor...";
 
-            // Uçuşu bekle
-            await new Promise(resolve => setTimeout(resolve, 500));
-
             let success = false;
-            try {
-                // Firebase Doğrulaması
-                await signInWithEmailAndPassword(vipAuth, VIP_GATE_EMAIL, pin);
-                success = true;
-            } catch (e) {
-                success = false;
-            }
+            
+            // Dönüş efektinin gözle görülmesi için en az 1.5 saniye çalışmasını zorunlu kılıyoruz
+            const minSpinTime = new Promise(resolve => setTimeout(resolve, 1500));
+            const authTask = signInWithEmailAndPassword(vipAuth, VIP_GATE_EMAIL, pin)
+                .then(() => true)
+                .catch(() => false);
+
+            const results = await Promise.all([authTask, minSpinTime]);
+            success = results[0];
 
             addDoc(collection(db, "vip_logs"), {
                 userId: currentUser.uid,
@@ -563,26 +588,37 @@
                 timestamp: serverTimestamp()
             }).catch(() => {});
 
-            // 3. SONUÇ
+            // 3. SONUÇ VE AKSİYONLAR
+            wrapper.classList.remove('spinning'); // Dönmeyi durdur
+
             if (success) {
-                errorEl.innerText = "";
+                errorEl.innerText = "Şifre doğru!";
                 centerIcon.innerHTML = "✅";
                 centerIcon.classList.remove('loading');
                 centerIcon.classList.add('success');
                 
-                // Başarı ikonunu biraz gösterip VIP alana geç
+                // Sayılar merkeze uçsun
+                wrapper.classList.add('fly-in');
+                
+                // Uçuş bittikten sonra VIP alana geç
                 setTimeout(() => {
                     window.closeModals();
                     showVipScreen(vipDb);
-                }, 600); 
+                }, 800); 
             } else {
                 errorEl.style.color = 'var(--coral)';
                 errorEl.innerText = "Hatalı şifre, tekrar dene.";
-                
-                // Animasyonları geri sar, düz çizgiye geri dön
-                centerIcon.innerHTML = "🔒";
+                centerIcon.innerHTML = "❌";
                 centerIcon.classList.remove('loading');
-                wrapper.classList.remove('fly-in', 'animating');
+                centerIcon.classList.add('error');
+                
+                // Kullanıcı Çarpı işaretini 1 saniye görsün
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // En baştaki haline (düz çizgi) geri dön
+                centerIcon.innerHTML = "🔒";
+                centerIcon.classList.remove('error');
+                wrapper.classList.remove('animating'); 
                 submitBtn.disabled = false;
                 
                 boxes.forEach(box => {
