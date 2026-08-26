@@ -264,7 +264,7 @@
     <div id="vip-modal" class="modal"><div class="modal-content" id="vip-modal-content"><span class="close-modal" onclick="closeModals()">&times;</span><div id="vip-games-list"><p style="color:var(--muted)">Yükleniyor...</p></div></div></div>
     <div id="game-player-overlay"><div class="game-player-top"><strong id="game-player-title">Oyun</strong><button id="close-game-player-btn" onclick="closeGamePlayer()">Kapat ×</button></div><iframe id="vip-game-frame"></iframe></div>
 
-    <!-- AIR HOCKEY SCRIPTS (Yapay Zeka Fixi Dahil) -->
+    <!-- AIR HOCKEY SCRIPTS (Yapay Zeka Let Fixi Dahil) -->
     <script>
         const AH = {};
         (function(){
@@ -392,7 +392,7 @@
                 pMallet.py = pMallet.y;
 
                 // YAPAY ZEKA GÜNCELLEMESİ BAŞLANGICI
-                const targetX = Math.max(R_MALLET, Math.min(W - R_MALLET, puck.x + (puck.vx * 3)));
+                let targetX = Math.max(R_MALLET, Math.min(W - R_MALLET, puck.x + (puck.vx * 3)));
                 let targetY;
 
                 if (puck.vy < 0 && puck.y < H * 0.62) {
