@@ -9,7 +9,7 @@
            ANA SİTE CSS (Kapon Oyun Odamız)
            ========================================= */
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap'); /* Air Hockey Fontu */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
         
         :root{--ink:#20263b;--muted:#706d73;--paper:#fbf6ee;--paper-2:#f3eadf;--cream:#eee6da;--coral:#ef7566;--yellow:#f4cf58;--lilac:#aaa3d5;--line:#d8cfbf}
         [data-theme="dark"]{--paper:#14162a;--paper-2:#1a1d33}
@@ -168,7 +168,7 @@
             </header>
             <div class="hero-copy"><div><span class="section-kicker">01 / açık koleksiyon</span><h1>Bugün ne<br><em>oynayalım?</em></h1></div><p class="hero-note">Kısa bir tur, tatlı bir rekabet ya da yalnızca birlikte bir an.</p></div>
             <div class="game-list">
-                <!-- AIR HOCKEY EKLENDİ -->
+                <!-- AIR HOCKEY -->
                 <article class="game-row ah-row">
                     <div class="game-info"><h3>Air Hockey</h3><p>Diskini sürükle. Önce 7 sayıya ulaşan kazanır.</p></div>
                     <button class="play-btn" onclick="startAirHockeyGame()">Oyunu aç →</button>
@@ -197,7 +197,7 @@
         </div>
     </section>
 
-    <!-- AIR HOCKEY SCREEN (YENİ EKLENEN KISIM) -->
+    <!-- AIR HOCKEY SCREEN -->
     <section id="air-hockey-screen" class="screen">
         <button class="logout-btn ah-back-to-dash" onclick="exitAirHockeyGame()">← Ana Menü</button>
         <div id="ah-outer">
@@ -264,9 +264,9 @@
     <div id="vip-modal" class="modal"><div class="modal-content" id="vip-modal-content"><span class="close-modal" onclick="closeModals()">&times;</span><div id="vip-games-list"><p style="color:var(--muted)">Yükleniyor...</p></div></div></div>
     <div id="game-player-overlay"><div class="game-player-top"><strong id="game-player-title">Oyun</strong><button id="close-game-player-btn" onclick="closeGamePlayer()">Kapat ×</button></div><iframe id="vip-game-frame"></iframe></div>
 
-    <!-- AIR HOCKEY SCRIPTS (Global) -->
+    <!-- AIR HOCKEY SCRIPTS (Yapay Zeka Fixi Dahil) -->
     <script>
-        const AH = {}; // Air Hockey namespace to avoid pollution
+        const AH = {};
         (function(){
             "use strict";
 
@@ -384,20 +384,45 @@
 
             function physicsStep(){
                 if(!running) return;
-                pMallet.vx = pMallet.x - pMallet.px; pMallet.vy = pMallet.y - pMallet.py;
-                pMallet.px = pMallet.x; pMallet.py = pMallet.y;
-
-                const targetX = Math.max(R_MALLET, Math.min(W-R_MALLET, puck.x + (puck.vx*4)));
-                let targetY = (puck.vy < 0 && puck.y < H*0.62) ? Math.max(R_MALLET, Math.min(H/2 - R_MALLET - 4, puck.y - 6)) : H*0.22;
                 
-                const ease = 0.10, prevCx = cMallet.x, prevCy = cMallet.y;
-                cMallet.x += (targetX - cMallet.x) * ease; cMallet.y += (targetY - cMallet.y) * ease;
+                // Oyuncu hareketi
+                pMallet.vx = pMallet.x - pMallet.px; 
+                pMallet.vy = pMallet.y - pMallet.py;
+                pMallet.px = pMallet.x; 
+                pMallet.py = pMallet.y;
+
+                // YAPAY ZEKA GÜNCELLEMESİ BAŞLANGICI
+                const targetX = Math.max(R_MALLET, Math.min(W - R_MALLET, puck.x + (puck.vx * 3)));
+                let targetY;
+
+                if (puck.vy < 0 && puck.y < H * 0.62) {
+                    if (puck.y < cMallet.y - 5) {
+                        targetX = W / 2;
+                        targetY = R_MALLET + 5; 
+                    } else {
+                        targetY = Math.max(R_MALLET, Math.min(H/2 - R_MALLET - 4, puck.y - 18));
+                    }
+                } else {
+                    targetX = W / 2 + (puck.x - W / 2) * 0.25; 
+                    targetY = H * 0.22; 
+                }
+
+                const ease = 0.12, prevCx = cMallet.x, prevCy = cMallet.y;
+                cMallet.x += (targetX - cMallet.x) * ease; 
+                cMallet.y += (targetY - cMallet.y) * ease;
+                
                 cMallet.x = Math.max(R_MALLET, Math.min(W-R_MALLET, cMallet.x));
                 cMallet.y = Math.max(R_MALLET, Math.min(H/2 - R_MALLET - 4, cMallet.y));
-                cMallet.vx = cMallet.x - prevCx; cMallet.vy = cMallet.y - prevCy;
+                
+                cMallet.vx = cMallet.x - prevCx; 
+                cMallet.vy = cMallet.y - prevCy;
+                // YAPAY ZEKA GÜNCELLEMESİ BİTİŞİ
 
-                puck.x += puck.vx; puck.y += puck.vy;
-                puck.vx *= FRICTION; puck.vy *= FRICTION;
+                puck.x += puck.vx; 
+                puck.y += puck.vy;
+                puck.vx *= FRICTION; 
+                puck.vy *= FRICTION;
+                
                 puck.trail.push({x:puck.x, y:puck.y});
                 if(puck.trail.length > 10) puck.trail.shift();
 
@@ -413,11 +438,13 @@
                     else { puck.y = H - R_PUCK; puck.vy *= -0.96; sfxWallHit(); spawnSpark(puck.x, puck.y); }
                 }
 
-                collide(pMallet, "p"); collide(cMallet, "cpu");
+                collide(pMallet, "p"); 
+                collide(cMallet, "cpu");
 
                 const sp = Math.hypot(puck.vx, puck.vy);
                 if(sp > MAX_SPEED){ puck.vx = puck.vx/sp*MAX_SPEED; puck.vy = puck.vy/sp*MAX_SPEED; }
                 if(sp > 9 && !rallySpeedUp){ rallySpeedUp = true; showBanner("HIZLANIYOR!", "", "speed"); }
+                
                 updateParticles();
             }
 
@@ -425,9 +452,11 @@
                 const dx = puck.x - mallet.x, dy = puck.y - mallet.y, dist = Math.hypot(dx, dy), minDist = R_PUCK + R_MALLET;
                 if(dist < minDist && dist > 0){
                     const nx = dx/dist, ny = dy/dist;
-                    puck.x = mallet.x + nx*minDist; puck.y = mallet.y + ny*minDist;
+                    puck.x = mallet.x + nx*minDist; 
+                    puck.y = mallet.y + ny*minDist;
                     const malletSpeed = Math.hypot(mallet.vx, mallet.vy), impact = Math.max(malletSpeed*1.7, 3);
-                    puck.vx = nx*impact + mallet.vx*0.4; puck.vy = ny*impact + mallet.vy*0.4;
+                    puck.vx = nx*impact + mallet.vx*0.4; 
+                    puck.vy = ny*impact + mallet.vy*0.4;
                     const speedNow = Math.round(Math.hypot(puck.vx, puck.vy) * 30);
                     if(who === "p"){ match.streakP++; match.streakCPU = 0; if(speedNow > match.topSpeedP) match.topSpeedP = speedNow; if(malletSpeed > 9) match.powerP++; }
                     else { match.streakCPU++; match.streakP = 0; if(speedNow > match.topSpeedCPU) match.topSpeedCPU = speedNow; if(malletSpeed > 9) match.powerCPU++; }
