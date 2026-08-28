@@ -74,76 +74,11 @@
         @keyframes floatHeart{ 0%{transform:translateY(0) translateX(0) rotate(0deg);opacity:0} 10%{opacity:.85} 85%{opacity:.5} 100%{transform:translateY(-110vh) translateX(var(--drift,20px)) rotate(20deg);opacity:0} }
         @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
         @media(max-width:760px){.auth-box{padding:32px 23px}.header-bar{margin-bottom:35px}.profile-name,.profile-caption{display:none}.hero-copy{display:block}.hero-note{margin-top:20px}.game-list{grid-template-columns:1fr}.game-row{min-height:205px}.vip-row{grid-column:auto;min-height:180px;flex-direction:column;align-items:flex-start}.vip-row .play-btn{width:100%}.comment-input-area{flex-direction:column}.comment-input-area .btn{width:100%}}
-
-        /* =========================================
-           AIR HOCKEY CSS (İzole Edilmiş)
-           ========================================= */
-        #air-hockey-screen {
-            --ah-p-color: #00d4ff;
-            --ah-p-glow: rgba(0,212,255,.55);
-            --ah-c-color: #ff2d55;
-            --ah-c-glow: rgba(255,45,85,.55);
-            --ah-bg-0: #050810;
-            --ah-bg-1: #0b1220;
-            --ah-panel: rgba(255,255,255,.04);
-            --ah-panel-border: rgba(255,255,255,.08);
-            --ah-ink: #e8f3ff;
-            --ah-ink-dim: #7c8aa3;
-            
-            background: radial-gradient(1200px 700px at 50% -10%, #131c33 0%, var(--ah-bg-0) 55%), var(--ah-bg-0);
-            color: var(--ah-ink);
-            font-family: "Orbitron", "Segoe UI", system-ui, sans-serif;
-            overflow: hidden;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        #air-hockey-screen.active { display: flex; }
-        #ah-outer { display:flex; align-items:center; justify-content:center; min-height:100%; padding:18px; width: 100%; }
-        #ah-rig { display:flex; align-items:stretch; gap:0; filter: drop-shadow(0 30px 60px rgba(0,0,0,.55)); }
-        .ah-stat-panel { width:132px; flex-shrink:0; padding:16px 12px; background:linear-gradient(180deg, var(--ah-bg-1), #060a14); border:1px solid var(--ah-panel-border); display:flex; flex-direction:column; align-items:center; gap:2px; }
-        #ah-stat-left { border-radius:18px 0 0 18px; border-right:none; }
-        #ah-stat-right { border-radius:0 18px 18px 0; border-left:none; }
-        .ah-stat-name { font-size:10px; letter-spacing:4px; font-weight:700; margin-bottom:6px; color:var(--ah-ink-dim); }
-        .ah-stat-score { font-size:44px; font-weight:900; line-height:1; margin-bottom:12px; }
-        #ah-score-p { color:var(--ah-p-color); text-shadow:0 0 20px var(--ah-p-glow); }
-        #ah-score-cpu { color:var(--ah-c-color); text-shadow:0 0 20px var(--ah-c-glow); }
-        .ah-stat-row { display:flex; justify-content:space-between; width:100%; font-size:9px; letter-spacing:1px; color:var(--ah-ink-dim); margin:3px 0; }
-        .ah-stat-val { color:var(--ah-ink); font-weight:700; }
-        .ah-stat-footer { margin-top:auto; padding-top:12px; font-size:8px; letter-spacing:1.5px; color:var(--ah-ink-dim); text-align:center; opacity:.7; }
-        #ah-arena { position:relative; border:1px solid var(--ah-panel-border); background:#060c18; }
-        canvas#ah-c { display:block; border-radius:2px; }
-        #ah-mute-btn { position:absolute; top:10px; right:10px; width:30px; height:30px; border-radius:50%; border:1px solid var(--ah-panel-border); background:rgba(0,0,0,.35); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; z-index:5; }
-        #ah-ui { position:absolute; top:0; left:0; right:0; display:flex; justify-content:center; pointer-events:none; }
-        .ah-banner { margin-top:14%; text-align:center; opacity:0; transform:translateY(-10px) scale(.9); transition:opacity .18s ease, transform .18s ease; }
-        .ah-banner.show { opacity:1; transform:translateY(0) scale(1); }
-        .ah-banner .sub { font-size:12px; letter-spacing:6px; font-weight:700; color:#ffb648; text-shadow:0 0 14px rgba(255,182,72,.7); }
-        .ah-banner .main { font-size:38px; font-weight:900; letter-spacing:3px; margin-top:2px; }
-        .ah-banner.goal-p .main { color:var(--ah-p-color); text-shadow:0 0 24px var(--ah-p-glow); }
-        .ah-banner.goal-cpu .main { color:var(--ah-c-color); text-shadow:0 0 24px var(--ah-c-glow); }
-        .ah-screen-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(4,7,14,.86); backdrop-filter: blur(6px); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:10; }
-        .ah-screen-overlay.show { opacity:1; pointer-events:auto; }
-        .ah-box { text-align:center; }
-        .ah-go-face { font-size:46px; margin-bottom:6px; }
-        .ah-go-who { font-size:30px; font-weight:900; letter-spacing:2px; }
-        .ah-go-wins { margin-top:8px; font-size:11px; letter-spacing:3px; color:var(--ah-ink-dim); }
-        .ah-go-final { margin-top:2px; font-size:13px; letter-spacing:2px; color:var(--ah-ink); }
-        .ah-go-btn { margin-top:22px; padding:12px 30px; border-radius:999px; border:1px solid var(--ah-panel-border); background:linear-gradient(180deg, rgba(0,212,255,.16), rgba(0,212,255,.05)); color:var(--ah-ink); font-family:inherit; font-weight:700; letter-spacing:2px; font-size:12px; cursor:pointer; }
-        .ah-go-btn:hover { background:rgba(0,212,255,.25); }
-        #ah-ready-screen .ah-box p { color:var(--ah-ink-dim); font-size:11px; letter-spacing:1.5px; max-width:220px; line-height:1.7; margin:10px auto 0; }
-        #ah-ready-screen .title { font-size:22px; font-weight:900; letter-spacing:3px; color:var(--ah-ink); }
-        #ah-ready-screen .title span { color:var(--ah-p-color); text-shadow:0 0 20px var(--ah-p-glow); }
-        
-        .ah-back-to-dash { position: absolute; top: 20px; left: 20px; z-index: 100; font-family: 'DM Sans', sans-serif; }
     </style>
 </head>
 <body>
     <button id="theme-toggle-btn" title="Tema değiştir">🌙</button>
     
-    <!-- AUTH SCREEN -->
     <section id="auth-screen" class="screen active auth-screen">
         <div class="auth-box">
             <div class="brand-mark">⌁</div>
@@ -158,7 +93,6 @@
         </div>
     </section>
     
-    <!-- DASHBOARD SCREEN -->
     <section id="dashboard-screen" class="screen">
         <div class="dashboard-wrap">
             <header class="header-bar">
@@ -168,11 +102,12 @@
             </header>
             <div class="hero-copy"><div><span class="section-kicker">01 / açık koleksiyon</span><h1>Bugün ne<br><em>oynayalım?</em></h1></div><p class="hero-note">Kısa bir tur, tatlı bir rekabet ya da yalnızca birlikte bir an.</p></div>
             <div class="game-list">
-                <!-- AIR HOCKEY -->
+                
                 <article class="game-row ah-row">
                     <div class="game-info"><h3>Air Hockey</h3><p>Diskini sürükle. Önce 7 sayıya ulaşan kazanır.</p></div>
-                    <button class="play-btn" onclick="startAirHockeyGame()">Oyunu aç →</button>
+                    <button class="play-btn" onclick="startGame('Air Hockey','https://kapon53.github.io/buzhokeyi/')">Oyunu aç →</button>
                 </article>
+
                 <article class="game-row"><div class="game-info"><h3>Minigame</h3><p>Hediye kutusunu yakalayabilecek misin?</p></div><button class="play-btn" onclick="startGame('Minigame','https://kapon53.github.io/minigame/')">Oyunu aç →</button></article>
                 <article class="game-row"><div class="game-info"><h3>Block Blast</h3><p>Blokları doğru yerlere bırak ve kombo yap.</p></div><button class="play-btn" onclick="startGame('Block Blast','https://kapon53.github.io/blockblast/')">Oyunu aç →</button></article>
                 <article class="game-row"><div class="game-info"><h3>Tetris</h3><p>Klasik blok dizme oyunu. Rekorunu kır.</p></div><button class="play-btn" onclick="startGame('Tetris','https://kapon53.github.io/tetris-oyunu/')">Oyunu aç →</button></article>
@@ -182,7 +117,6 @@
         </div>
     </section>
 
-    <!-- VIP SCREEN -->
     <section id="vip-screen" class="screen">
         <div class="dashboard-wrap">
             <header class="header-bar">
@@ -197,62 +131,6 @@
         </div>
     </section>
 
-    <!-- AIR HOCKEY SCREEN -->
-    <section id="air-hockey-screen" class="screen">
-        <button class="logout-btn ah-back-to-dash" onclick="exitAirHockeyGame()">← Ana Menü</button>
-        <div id="ah-outer">
-            <div id="ah-rig">
-                <div id="ah-stat-left" class="ah-stat-panel">
-                    <div class="ah-stat-name" style="color:var(--ah-p-color)">SEN</div>
-                    <div class="ah-stat-score" id="ah-score-p">0</div>
-                    <div class="ah-stat-row"><span>SERİ</span><span class="ah-stat-val" id="ah-stat-p-streak">0</span></div>
-                    <div class="ah-stat-row"><span>MAX HIZ</span><span class="ah-stat-val" id="ah-stat-p-speed">0</span></div>
-                    <div class="ah-stat-row"><span>SERT VURUŞ</span><span class="ah-stat-val" id="ah-stat-p-power">0</span></div>
-                    <div class="ah-stat-footer">7 SAYIYA<br>KADAR</div>
-                </div>
-
-                <div id="ah-arena">
-                    <canvas id="ah-c"></canvas>
-                    <div id="ah-mute-btn">🔇</div>
-                    <div id="ah-ui">
-                        <div class="ah-banner" id="ah-banner">
-                            <div class="sub" id="ah-banner-sub">HIZLANIYOR!</div>
-                            <div class="main" id="ah-banner-main">GOL!</div>
-                        </div>
-                    </div>
-
-                    <div class="ah-screen-overlay show" id="ah-ready-screen">
-                        <div class="ah-box">
-                            <div class="title">AIR <span>HOCKEY</span></div>
-                            <p>Fareni ya da parmağını kullanarak diskini sürükle.<br>Önce 7 sayıya ulaşan kazanır.</p>
-                            <button class="ah-go-btn" id="ah-btn-start">BAŞLA</button>
-                        </div>
-                    </div>
-
-                    <div class="ah-screen-overlay" id="ah-gameover-screen">
-                        <div class="ah-box">
-                            <div class="ah-go-face" id="ah-go-face">🏆</div>
-                            <div class="ah-go-who" id="ah-go-who">SEN KAZANDIN</div>
-                            <div class="ah-go-wins" id="ah-go-wins">MAÇ · SET</div>
-                            <div class="ah-go-final" id="ah-go-final">7 - 3</div>
-                            <button class="ah-go-btn" id="ah-btn-again">TEKRAR OYNA</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="ah-stat-right" class="ah-stat-panel">
-                    <div class="ah-stat-name" style="color:var(--ah-c-color)">CPU</div>
-                    <div class="ah-stat-score" id="ah-score-cpu">0</div>
-                    <div class="ah-stat-row"><span>SERİ</span><span class="ah-stat-val" id="ah-stat-cpu-streak">0</span></div>
-                    <div class="ah-stat-row"><span>MAX HIZ</span><span class="ah-stat-val" id="ah-stat-cpu-speed">0</span></div>
-                    <div class="ah-stat-row"><span>SERT VURUŞ</span><span class="ah-stat-val" id="ah-stat-cpu-power">0</span></div>
-                    <div class="ah-stat-footer">7 SAYIYA<br>KADAR</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- MODALS & OVERLAYS -->
     <div id="profile-modal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModals()">&times;</span><h2>Profil ayarları</h2><input type="text" id="new-name" class="auth-input" placeholder="Yeni isim"><input type="text" id="new-photo-url" class="auth-input" placeholder="Profil fotoğrafı URL'si"><button class="btn" id="update-profile-btn">Profili güncelle</button>
         <hr style="border:none;border-top:1px solid var(--line);margin:24px 0">
         <h2 style="font-size:26px;">Şifre değiştir</h2>
@@ -264,272 +142,6 @@
     <div id="vip-modal" class="modal"><div class="modal-content" id="vip-modal-content"><span class="close-modal" onclick="closeModals()">&times;</span><div id="vip-games-list"><p style="color:var(--muted)">Yükleniyor...</p></div></div></div>
     <div id="game-player-overlay"><div class="game-player-top"><strong id="game-player-title">Oyun</strong><button id="close-game-player-btn" onclick="closeGamePlayer()">Kapat ×</button></div><iframe id="vip-game-frame"></iframe></div>
 
-    <!-- AIR HOCKEY SCRIPTS (Yapay Zeka Let Fixi Dahil) -->
-    <script>
-        const AH = {};
-        (function(){
-            "use strict";
-
-            const CV = document.getElementById("ah-c");
-            if (!CV) return;
-            const G = CV.getContext("2d");
-            const W = 460, H = 640;
-            CV.width = W; CV.height = H;
-            CV.style.width = W + "px";
-            CV.style.height = H + "px";
-
-            const DOM = {
-                scoreP: document.getElementById("ah-score-p"),
-                scoreCPU: document.getElementById("ah-score-cpu"),
-                pStreak: document.getElementById("ah-stat-p-streak"),
-                pSpeed: document.getElementById("ah-stat-p-speed"),
-                pPower: document.getElementById("ah-stat-p-power"),
-                cpuStreak: document.getElementById("ah-stat-cpu-streak"),
-                cpuSpeed: document.getElementById("ah-stat-cpu-speed"),
-                cpuPower: document.getElementById("ah-stat-cpu-power"),
-                banner: document.getElementById("ah-banner"),
-                bannerSub: document.getElementById("ah-banner-sub"),
-                bannerMain: document.getElementById("ah-banner-main"),
-                readyEl: document.getElementById("ah-ready-screen"),
-                gameoverEl: document.getElementById("ah-gameover-screen"),
-                goFace: document.getElementById("ah-go-face"),
-                goWho: document.getElementById("ah-go-who"),
-                goFinal: document.getElementById("ah-go-final"),
-                muteBtn: document.getElementById("ah-mute-btn"),
-            };
-
-            let audioCtx = null, muted = true;
-            function getAudio(){
-                if(!audioCtx){ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-                if(audioCtx.state === "suspended") audioCtx.resume();
-                return audioCtx;
-            }
-            function blip(freq, dur, type, vol){
-                if(muted) return;
-                const ctx = getAudio();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = type || "sine";
-                osc.frequency.value = freq;
-                gain.gain.value = vol || 0.08;
-                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
-                osc.connect(gain).connect(ctx.destination);
-                osc.start();
-                osc.stop(ctx.currentTime + dur);
-            }
-            const sfxWallHit = () => blip(220, 0.08, "square", 0.05);
-            const sfxPaddleHit = (power) => blip(300 + power*4, 0.12, "sawtooth", 0.09);
-            const sfxGoal = () => { blip(120, 0.35, "sine", 0.12); setTimeout(()=>blip(180,0.3,"sine",0.1), 90); };
-            const sfxWin = () => { [440,554,659,880].forEach((f,i)=> setTimeout(()=>blip(f,0.3,"triangle",0.1), i*110)); };
-
-            DOM.muteBtn.onclick = function(){
-                muted = !muted;
-                DOM.muteBtn.textContent = muted ? "🔇" : "🔊";
-                if(!muted) getAudio();
-            };
-
-            const R_PUCK = 13, R_MALLET = 24, GOAL_W = 150;
-            const GOAL_Y0 = W/2 - GOAL_W/2, GOAL_Y1 = W/2 + GOAL_W/2;
-            const GOAL_DEPTH = 22, FRICTION = 0.994, MAX_SPEED = 16, WIN_SCORE = 7;
-
-            let puck, pMallet, cMallet, running=false, rallySpeedUp=false;
-            let particles = [];
-            let match = { scoreP:0, scoreCPU:0, streakP:0, streakCPU:0, topSpeedP:0, topSpeedCPU:0, powerP:0, powerCPU:0 };
-
-            function resetPositions(servingTo){
-                puck = { x: W/2, y: H/2, vx: (Math.random()-0.5)*2, vy: (servingTo === "p" ? 1 : -1) * 3.2, trail: [] };
-                pMallet = { x:W/2, y:H - 70, vx:0, vy:0, px:W/2, py:H-70 };
-                cMallet = { x:W/2, y:70, vx:0, vy:0 };
-                rallySpeedUp = false;
-            }
-
-            function startGameLoop(){
-                DOM.readyEl.classList.remove("show");
-                DOM.gameoverEl.classList.remove("show");
-                match = { scoreP:0, scoreCPU:0, streakP:0, streakCPU:0, topSpeedP:0, topSpeedCPU:0, powerP:0, powerCPU:0 };
-                updateStats();
-                resetPositions(Math.random() < 0.5 ? "p" : "cpu");
-                running = true;
-                if(!animId) loop();
-            }
-
-            document.getElementById("ah-btn-start").onclick = startGameLoop;
-            document.getElementById("ah-btn-again").onclick = startGameLoop;
-
-            function updateStats(){
-                DOM.scoreP.textContent = match.scoreP; DOM.scoreCPU.textContent = match.scoreCPU;
-                DOM.pStreak.textContent = match.streakP; DOM.pSpeed.textContent = match.topSpeedP; DOM.pPower.textContent = match.powerP;
-                DOM.cpuStreak.textContent = match.streakCPU; DOM.cpuSpeed.textContent = match.topSpeedCPU; DOM.cpuPower.textContent = match.powerCPU;
-            }
-
-            const rect = () => CV.getBoundingClientRect();
-            function pointerPos(e){
-                const r = rect();
-                const cx = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
-                const cy = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
-                return { x: cx * (W / r.width), y: cy * (H / r.height) };
-            }
-            function onDown(e){ if(running) getAudio(); }
-            function onMove(e){
-                if(!pMallet || !running) return;
-                const p = pointerPos(e);
-                pMallet.x = Math.max(R_MALLET, Math.min(W - R_MALLET, p.x));
-                pMallet.y = Math.max(H/2 + R_MALLET + 4, Math.min(H - R_MALLET, p.y));
-                e.preventDefault && e.preventDefault();
-            }
-            CV.addEventListener("mousedown", onDown);
-            CV.addEventListener("mousemove", onMove);
-            CV.addEventListener("touchstart", (e)=>{onDown(e); onMove(e);}, {passive:false});
-            CV.addEventListener("touchmove", onMove, {passive:false});
-
-            function physicsStep(){
-                if(!running) return;
-                
-                // Oyuncu hareketi
-                pMallet.vx = pMallet.x - pMallet.px; 
-                pMallet.vy = pMallet.y - pMallet.py;
-                pMallet.px = pMallet.x; 
-                pMallet.py = pMallet.y;
-
-                // YAPAY ZEKA GÜNCELLEMESİ BAŞLANGICI
-                let targetX = Math.max(R_MALLET, Math.min(W - R_MALLET, puck.x + (puck.vx * 3)));
-                let targetY;
-
-                if (puck.vy < 0 && puck.y < H * 0.62) {
-                    if (puck.y < cMallet.y - 5) {
-                        targetX = W / 2;
-                        targetY = R_MALLET + 5; 
-                    } else {
-                        targetY = Math.max(R_MALLET, Math.min(H/2 - R_MALLET - 4, puck.y - 18));
-                    }
-                } else {
-                    targetX = W / 2 + (puck.x - W / 2) * 0.25; 
-                    targetY = H * 0.22; 
-                }
-
-                const ease = 0.12, prevCx = cMallet.x, prevCy = cMallet.y;
-                cMallet.x += (targetX - cMallet.x) * ease; 
-                cMallet.y += (targetY - cMallet.y) * ease;
-                
-                cMallet.x = Math.max(R_MALLET, Math.min(W-R_MALLET, cMallet.x));
-                cMallet.y = Math.max(R_MALLET, Math.min(H/2 - R_MALLET - 4, cMallet.y));
-                
-                cMallet.vx = cMallet.x - prevCx; 
-                cMallet.vy = cMallet.y - prevCy;
-                // YAPAY ZEKA GÜNCELLEMESİ BİTİŞİ
-
-                puck.x += puck.vx; 
-                puck.y += puck.vy;
-                puck.vx *= FRICTION; 
-                puck.vy *= FRICTION;
-                
-                puck.trail.push({x:puck.x, y:puck.y});
-                if(puck.trail.length > 10) puck.trail.shift();
-
-                if(puck.x - R_PUCK < 0){ puck.x = R_PUCK; puck.vx *= -0.96; sfxWallHit(); spawnSpark(puck.x, puck.y); }
-                if(puck.x + R_PUCK > W){ puck.x = W - R_PUCK; puck.vx *= -0.96; sfxWallHit(); spawnSpark(puck.x, puck.y); }
-
-                if(puck.y - R_PUCK < 0){
-                    if(puck.x > GOAL_Y0 && puck.x < GOAL_Y1){ if(puck.y < -R_PUCK*2) return scoreGoal("p"); } 
-                    else { puck.y = R_PUCK; puck.vy *= -0.96; sfxWallHit(); spawnSpark(puck.x, puck.y); }
-                }
-                if(puck.y + R_PUCK > H){
-                    if(puck.x > GOAL_Y0 && puck.x < GOAL_Y1){ if(puck.y > H + R_PUCK*2) return scoreGoal("cpu"); } 
-                    else { puck.y = H - R_PUCK; puck.vy *= -0.96; sfxWallHit(); spawnSpark(puck.x, puck.y); }
-                }
-
-                collide(pMallet, "p"); 
-                collide(cMallet, "cpu");
-
-                const sp = Math.hypot(puck.vx, puck.vy);
-                if(sp > MAX_SPEED){ puck.vx = puck.vx/sp*MAX_SPEED; puck.vy = puck.vy/sp*MAX_SPEED; }
-                if(sp > 9 && !rallySpeedUp){ rallySpeedUp = true; showBanner("HIZLANIYOR!", "", "speed"); }
-                
-                updateParticles();
-            }
-
-            function collide(mallet, who){
-                const dx = puck.x - mallet.x, dy = puck.y - mallet.y, dist = Math.hypot(dx, dy), minDist = R_PUCK + R_MALLET;
-                if(dist < minDist && dist > 0){
-                    const nx = dx/dist, ny = dy/dist;
-                    puck.x = mallet.x + nx*minDist; 
-                    puck.y = mallet.y + ny*minDist;
-                    const malletSpeed = Math.hypot(mallet.vx, mallet.vy), impact = Math.max(malletSpeed*1.7, 3);
-                    puck.vx = nx*impact + mallet.vx*0.4; 
-                    puck.vy = ny*impact + mallet.vy*0.4;
-                    const speedNow = Math.round(Math.hypot(puck.vx, puck.vy) * 30);
-                    if(who === "p"){ match.streakP++; match.streakCPU = 0; if(speedNow > match.topSpeedP) match.topSpeedP = speedNow; if(malletSpeed > 9) match.powerP++; }
-                    else { match.streakCPU++; match.streakP = 0; if(speedNow > match.topSpeedCPU) match.topSpeedCPU = speedNow; if(malletSpeed > 9) match.powerCPU++; }
-                    updateStats(); sfxPaddleHit(malletSpeed); spawnSpark(puck.x, puck.y, who === "p" ? "#00d4ff" : "#ff2d55");
-                }
-            }
-
-            function scoreGoal(scorer){
-                running = false;
-                if(scorer === "p"){ match.scoreP++; } else { match.scoreCPU++; }
-                updateStats(); sfxGoal();
-                showBanner(scorer === "p" ? "SEN GOL ATTIN" : "CPU GOL ATTI", "GOL!", scorer === "p" ? "goal-p" : "goal-cpu");
-                setTimeout(()=>{ hideBanner(); if(match.scoreP >= WIN_SCORE || match.scoreCPU >= WIN_SCORE){ endMatch(match.scoreP > match.scoreCPU ? "p" : "cpu"); } else { resetPositions(scorer === "p" ? "cpu" : "p"); running = true; } }, 1200);
-            }
-
-            function endMatch(winner){
-                sfxWin();
-                DOM.goFace.textContent = winner === "p" ? "🏆" : "💀"; DOM.goWho.textContent = winner === "p" ? "SEN KAZANDIN" : "CPU KAZANDI";
-                DOM.goWho.style.color = winner === "p" ? "var(--ah-p-color)" : "var(--ah-c-color)"; DOM.goFinal.textContent = match.scoreP + " - " + match.scoreCPU;
-                DOM.gameoverEl.classList.add("show");
-            }
-
-            function showBanner(sub, main, cls){ DOM.bannerSub.textContent = sub; DOM.bannerMain.textContent = main || sub; DOM.banner.className = "ah-banner show " + cls; if(main === ""){ setTimeout(hideBanner, 700); } }
-            function hideBanner(){ DOM.banner.className = "ah-banner"; }
-
-            function spawnSpark(x, y, color){ for(let i=0;i<8;i++){ const a = Math.random()*Math.PI*2, sp = 1 + Math.random()*3; particles.push({ x, y, vx: Math.cos(a)*sp, vy: Math.sin(a)*sp, life: 1, color: color || "#8fd8ff" }); } }
-            function updateParticles(){ for(let i=particles.length-1;i>=0;i--){ const p = particles[i]; p.x += p.vx; p.y += p.vy; p.vx *= 0.92; p.vy *= 0.92; p.life -= 0.045; if(p.life <= 0) particles.splice(i,1); } }
-
-            function draw(){
-                G.clearRect(0,0,W,H);
-                const grad = G.createLinearGradient(0,0,0,H); grad.addColorStop(0, "#0c1830"); grad.addColorStop(0.5, "#0a1424"); grad.addColorStop(1, "#150a16"); G.fillStyle = grad; G.fillRect(0,0,W,H);
-                G.strokeStyle = "rgba(255,255,255,.14)"; G.setLineDash([6,8]); G.lineWidth = 2; G.beginPath(); G.moveTo(0,H/2); G.lineTo(W,H/2); G.stroke(); G.setLineDash([]);
-                G.beginPath(); G.arc(W/2, H/2, 54, 0, Math.PI*2); G.strokeStyle = "rgba(255,255,255,.14)"; G.lineWidth = 2; G.stroke(); G.beginPath(); G.arc(W/2, H/2, 3, 0, Math.PI*2); G.fillStyle = "rgba(255,255,255,.3)"; G.fill();
-                drawGoal(GOAL_Y0, GOAL_Y1, 0, "#ff2d55"); drawGoal(GOAL_Y0, GOAL_Y1, H, "#00d4ff"); drawGoalPosts(GOAL_Y0, GOAL_Y1, 0); drawGoalPosts(GOAL_Y0, GOAL_Y1, H);
-                G.strokeStyle = "rgba(255,255,255,.18)"; G.lineWidth = 3; G.strokeRect(1.5,1.5,W-3,H-3);
-                particles.forEach(p=>{ G.globalAlpha = Math.max(p.life,0); G.fillStyle = p.color; G.beginPath(); G.arc(p.x, p.y, 2.4, 0, Math.PI*2); G.fill(); }); G.globalAlpha = 1;
-                puck.trail.forEach((t,i)=>{ G.globalAlpha = (i/puck.trail.length) * 0.25; G.fillStyle = "#ffffff"; G.beginPath(); G.arc(t.x, t.y, R_PUCK*0.7, 0, Math.PI*2); G.fill(); }); G.globalAlpha = 1;
-                drawDisc(puck.x, puck.y, R_PUCK, "#ffffff", "rgba(255,255,255,.5)");
-                drawMallet(cMallet.x, cMallet.y, "#ff2d55"); drawMallet(pMallet.x, pMallet.y, "#00d4ff");
-            }
-
-            function drawGoal(y0,y1,y,color){
-                const dir = y === 0 ? 1 : -1, edgeY = y === 0 ? 2 : H-2, backY = edgeY + dir * GOAL_DEPTH; G.save(); G.beginPath(); G.moveTo(y0, edgeY); G.lineTo(y0 + 6, backY); G.lineTo(y1 - 6, backY); G.lineTo(y1, edgeY); G.closePath(); const pocketGrad = G.createLinearGradient(0, edgeY, 0, backY); pocketGrad.addColorStop(0, "rgba(0,0,0,.05)"); pocketGrad.addColorStop(1, "rgba(0,0,0,.75)"); G.fillStyle = pocketGrad; G.fill(); G.strokeStyle = "rgba(255,255,255,.10)"; G.lineWidth = 1; for(let i=1;i<6;i++){ const fx0 = y0 + (y1-y0)*(i/6), fx1 = y0 + 6 + ((y1-6)-(y0+6))*(i/6); G.beginPath(); G.moveTo(fx0, edgeY); G.lineTo(fx1, backY); G.stroke(); } for(let i=1;i<3;i++){ const fy = edgeY + dir*GOAL_DEPTH*(i/3), t = i/3; G.beginPath(); G.moveTo(y0 + 6*t, fy); G.lineTo(y1 - 6*t, fy); G.stroke(); } G.strokeStyle = color; G.lineWidth = 4; G.shadowColor = color; G.shadowBlur = 16; G.beginPath(); G.moveTo(y0, edgeY); G.lineTo(y1, edgeY); G.stroke(); G.restore();
-            }
-
-            function drawGoalPosts(y0,y1,y){ const dir = y === 0 ? 1 : -1, edgeY = y === 0 ? 2 : H-2, backY = edgeY + dir * GOAL_DEPTH; G.save(); G.strokeStyle = "rgba(255,255,255,.5)"; G.lineWidth = 3; G.lineCap = "round"; [y0, y1].forEach(px=>{ G.beginPath(); G.moveTo(px, edgeY); G.lineTo(px + (px===y0?6:-6), backY); G.stroke(); }); G.restore(); }
-            function drawDisc(x,y,r,fill,glow){ G.save(); G.shadowColor = glow; G.shadowBlur = 18; G.beginPath(); G.arc(x,y,r,0,Math.PI*2); G.fillStyle = fill; G.fill(); G.restore(); }
-            function drawMallet(x,y,color){ G.save(); G.shadowColor = color; G.shadowBlur = 22; G.beginPath(); G.arc(x,y,R_MALLET,0,Math.PI*2); G.strokeStyle = color; G.lineWidth = 3; G.stroke(); G.beginPath(); G.arc(x,y,R_MALLET-4,0,Math.PI*2); G.fillStyle = "rgba(10,16,28,.55)"; G.fill(); G.beginPath(); G.arc(x,y,5,0,Math.PI*2); G.fillStyle = color; G.shadowBlur = 12; G.fill(); G.restore(); }
-
-            let animId = null;
-            function loop(){ physicsStep(); draw(); animId = requestAnimationFrame(loop); }
-
-            // API Exposure
-            AH.initAndShow = () => { DOM.readyEl.classList.add("show"); DOM.gameoverEl.classList.remove("show"); resetPositions("p"); draw(); };
-            AH.pause = () => { running = false; };
-            AH.resume = () => { if(!DOM.readyEl.classList.contains("show") && !DOM.gameoverEl.classList.contains("show")) running = true; };
-        })();
-        
-        // Window level globals to toggle screens
-        window.startAirHockeyGame = function() {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('air-hockey-screen').classList.add('active');
-            if(window.logGameStart) window.logGameStart("Air Hockey");
-            AH.initAndShow();
-        };
-        window.exitAirHockeyGame = function() {
-            AH.pause();
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('dashboard-screen').classList.add('active');
-        };
-    </script>
-
-    <!-- FIREBASE AND MAIN LOGIC -->
     <script type="module">
         const firebaseConfig = {
             apiKey: "AIzaSyBDQp_5qHOxSbq_zRTwFqAY_kepLnDq6dw",
