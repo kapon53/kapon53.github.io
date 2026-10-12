@@ -5,124 +5,400 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kapon | Oyun Odamız</title>
     <style>
-        /* =========================================
-           ANA SİTE CSS (Kapon Oyun Odamız)
-           ========================================= */
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        
-        :root{--ink:#20263b;--muted:#706d73;--paper:#fbf6ee;--paper-2:#f3eadf;--cream:#eee6da;--coral:#ef7566;--yellow:#f4cf58;--lilac:#aaa3d5;--line:#d8cfbf}
-        [data-theme="dark"]{--paper:#14162a;--paper-2:#1a1d33}
-        *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;overflow-x:hidden}
-        body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.14;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");mix-blend-mode:multiply}
-        h1,h2,h3{font-family:'Fraunces',Georgia,serif;letter-spacing:-.055em}button,input{font:inherit}
-        .screen{display:none;min-height:100vh;width:100%;opacity:0;transition:opacity .45s ease}.screen.active{display:flex;opacity:1}
-        .auth-screen{align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at 15% 15%,#f4cf58 0 9%,transparent 10%),radial-gradient(circle at 85% 85%,#aaa3d5 0 11%,transparent 12%),var(--paper)}
-        .auth-box{width:min(100%,440px);padding:42px;border:1px solid var(--line);border-radius:30px;background:rgba(251,246,238,.9);box-shadow:12px 14px 0 rgba(32,38,59,.08),0 25px 60px rgba(32,38,59,.12);text-align:center;animation:rise .6s ease}
-        .brand-mark{display:grid;place-items:center;margin:0 auto 22px;width:56px;height:56px;border:2px solid var(--ink);border-radius:18px;background:var(--yellow);font-size:25px}
-        .auth-kicker,.section-kicker{color:var(--coral);font:600 .66rem 'DM Sans',sans-serif;letter-spacing:.22em;text-transform:uppercase}
-        .auth-box h1{margin:12px 0 8px;font-size:clamp(40px,8vw,58px)}.auth-box p{color:var(--muted);font-size:.92rem;line-height:1.65}
-        .auth-input{display:block;width:100%;padding:15px 17px;margin:13px 0;border:1px solid var(--line);border-radius:14px;background:#f6efe4;color:var(--ink);outline:0}.auth-input:focus{border-color:var(--coral);box-shadow:0 0 0 4px #ef756622}
-        .btn,.play-btn,.logout-btn{border:0;border-radius:999px;cursor:pointer;font-weight:700;transition:transform .2s,box-shadow .2s}.btn{width:100%;padding:15px;background:var(--coral);color:#fff;box-shadow:0 8px 18px #ef756633}.btn:hover,.play-btn:hover{transform:translateY(-2px)}.toggle-auth{color:var(--muted);cursor:pointer;font-size:.85rem;text-decoration:underline}
-        #dashboard-screen{position:relative;display:none;align-items:center;flex-direction:column;padding:24px 20px 70px;background:linear-gradient(180deg,var(--paper),var(--paper-2))}#dashboard-screen.active{display:flex}
-        #theme-toggle-btn{position:fixed;top:16px;right:16px;z-index:900;width:46px;height:46px;border-radius:50%;border:2px solid var(--ink);background:var(--yellow);color:var(--ink);font-size:19px;cursor:pointer;display:grid;place-items:center;box-shadow:0 6px 14px rgba(0,0,0,.25);transition:transform .2s}
-        #theme-toggle-btn:hover{transform:scale(1.08)}
-        .dashboard-wrap{position:relative;z-index:1;width:min(100%,1080px)}.header-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;margin-bottom:54px;border:1px solid var(--line);border-radius:22px;background:#fbf6eecc;box-shadow:0 6px 0 #20263b0c;backdrop-filter:blur(12px)}
-        .brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:23px;font-weight:600}.brand span{display:grid;place-items:center;width:36px;height:36px;border:2px solid var(--ink);border-radius:11px;background:var(--yellow);font-size:16px}
-        .profile-area{display:flex;align-items:center;gap:11px;cursor:pointer}.profile-pic{width:42px;height:42px;border:2px solid var(--ink);border-radius:14px;background:var(--yellow) center/cover}.profile-name{font-weight:700}.profile-caption{color:var(--muted);font-size:11px}.logout-btn{padding:11px 17px;background:var(--ink);color:#fff}
-        .hero-copy{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:28px}.hero-copy h1{max-width:650px;margin:12px 0 0;font-size:clamp(50px,9vw,104px);line-height:.9}.hero-copy h1 em{color:var(--coral);font-weight:500}.hero-note{max-width:230px;color:var(--muted);font-size:14px;line-height:1.6}
-        .game-list{display:grid;grid-template-columns:1fr;gap:17px}.game-row{display:flex;min-height:230px;flex-direction:column;align-items:flex-start;justify-content:space-between;padding:24px;border:1px solid var(--line);border-radius:25px;background:#fbf6ee;box-shadow:0 6px 0 #20263b0b;transition:transform .3s,box-shadow .3s}.game-row:hover{transform:translateY(-7px) rotate(-.5deg);box-shadow:0 14px 0 #20263b12,0 24px 40px #20263b12}.game-row:nth-child(1){background:linear-gradient(145deg,#fbf6ee 55%,#f4cf58)}.game-row:nth-child(2){background:linear-gradient(145deg,#fbf6ee 55%,#aaa3d5)}.game-row:nth-child(3){background:linear-gradient(145deg,#fbf6ee 55%,#8ab7c3)}.game-row.ah-row{background:linear-gradient(145deg,#fbf6ee 55%,#00d4ff);} .game-row.trafik-row{background:linear-gradient(145deg,#fbf6ee 55%,#c6ff3d);} .game-info h3{margin:0 0 9px;font-size:30px}.game-info p{margin:0;color:var(--muted);line-height:1.55}.play-btn{padding:12px 20px;background:var(--ink);color:#fff}.vip-row{min-height:150px;flex-direction:row;align-items:center;justify-content:space-between;background:var(--ink)!important;color:#fff}.vip-row .game-info h3{color:var(--yellow)}.vip-row .game-info p{color:#c7c1bd}.vip-row .play-btn{background:var(--coral)}
-        .feedback{margin-top:48px;padding:26px;border:1px solid var(--line);border-radius:24px;background:#eee6da}.feedback h3{margin:0 0 15px;font-size:29px}.comment-input-area{display:flex;gap:10px}.comment-input-area input{flex:1;padding:13px 16px;border:1px solid var(--line);border-radius:13px;background:#fbf6ee}.comment-input-area .btn{width:auto;padding:12px 20px}.comment-item{padding:15px;margin-top:12px;border-radius:14px;background:#20263b0c}.comment-header{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.comment-text{margin-bottom:0}.delete-btn{background:transparent;border:0;color:var(--coral);cursor:pointer;text-decoration:underline;font-size:12px}
-        .modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;background:#20263bb8;backdrop-filter:blur(8px)}.modal.active{display:flex}.modal-content{width:min(100%,470px);padding:32px;border:1px solid var(--line);border-radius:27px;background:#fbf6ee;box-shadow:0 24px 70px #20263b55;text-align:center;transition:max-width .3s ease}.modal-content.vip-wide{width:min(100%,640px)}.close-modal{float:right;color:var(--ink);font-size:26px;font-weight:700;cursor:pointer}.modal-content h2{margin:12px 0 22px;font-size:40px}.vip-game-btn{width:100%;padding:14px;margin:6px 0;border:0;border-radius:999px;background:var(--coral);color:#fff;font-weight:700;cursor:pointer;transition: opacity 0.2s}
-        .vip-game-btn:disabled{opacity: 0.5; cursor: not-allowed;}
-        
-        .orbit-wrapper { position: relative; width: 100%; height: 60px; margin: 20px auto 30px; display: flex; align-items: center; justify-content: center; transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-        .orbit-wrapper.animating { height: 240px; }
-        .orbit-ring { position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; transition: transform 0.4s ease; }
-        .orbit-wrapper.spinning .orbit-ring { animation: ring-spin-anim 2s linear infinite; }
-        @keyframes ring-spin-anim { to { transform: rotate(360deg); } }
-        .orbit-center { position: absolute; width: 60px; height: 60px; border-radius: 50%; border: 2px dashed var(--line); background: var(--paper); display: grid; place-items: center; font-size: 22px; z-index: 10; opacity: 0; transform: scale(0); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .orbit-wrapper.animating .orbit-center { opacity: 1; transform: scale(1); }
-        .orbit-center.loading { border: 2px solid var(--coral); color: var(--coral); }
-        .orbit-center.success { border: 2px solid #3ba55d; background: #3ba55d; color: #fff; }
-        .orbit-center.error { border: 2px solid var(--coral); background: var(--coral); color: #fff; }
-        .otp-box-dynamic { position: absolute; width: 36px; height: 48px; text-align: center; font-size: 1.3em; border-radius: 12px; border: 1px solid var(--line); background: #f6efe4; color: var(--ink); outline: 0; z-index: 5; transform: translate(calc((var(--index) - 3.5) * 44px), 0); transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s, border-color 0.2s; }
-        .otp-box-dynamic:focus { border-color: var(--coral); box-shadow: 0 0 0 4px #ef756622; }
-        .orbit-wrapper.animating .otp-box-dynamic { transform: rotate(var(--angle)) translate(105px) rotate(calc(var(--angle) * -1)); }
-        .orbit-wrapper.fly-in .otp-box-dynamic { transform: rotate(var(--angle)) translate(0px) rotate(calc(var(--angle) * -1)) scale(0.2) !important; opacity: 0; pointer-events: none; }
-        .vip-unlocked-header{text-align:center;margin-bottom:20px}
-        .vip-unlocked-header h2{margin:0 0 5px;color:var(--yellow)}
-        .vip-unlocked-header p{margin:0;color:#c7c1bd;font-size:.85rem}
-        .vip-modal-content.vip-wide{background:var(--ink);color:#fff;border-color:#3a4160}
-        .vip-modal-content.vip-wide .close-modal{color:#fff}
-        .vip-game-card{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:20px;border-radius:18px;margin-bottom:12px;background:#2b3252;border:1px solid #3a4160;text-align:left}
-        .vip-game-card .vip-card-info h3{margin:0 0 6px;color:var(--yellow);font-size:1.3em}
-        .vip-game-card .vip-card-info p{margin:0;color:#c7c1bd;font-size:.85rem}
-        .vip-play-btn{background:var(--coral);color:#fff;padding:10px 22px;border-radius:999px;border:0;font-weight:700;cursor:pointer;white-space:nowrap}
-        .vip-play-btn:hover{opacity:.9}
-        #game-player-overlay{display:none;position:fixed;inset:0;z-index:2000;background:#090a10}.game-player-top{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#20263bee;color:#fff}.game-player-top strong{font-family:'Fraunces',serif;font-size:22px}#close-game-player-btn{padding:10px 16px;border:0;border-radius:999px;background:var(--coral);color:#fff;font-weight:700;cursor:pointer}#vip-game-frame{width:100%;height:100%;border:0;padding-top:62px}
-        #vip-screen{position:relative;overflow:hidden;display:none;align-items:center;flex-direction:column;padding:24px 20px 70px;background:linear-gradient(160deg,#2a0f1a,#5c1a34 45%,#2a0f1a)}#vip-screen.active{display:flex}
-        #vip-screen .hero-copy h1{color:#ffd6e2}
-        #vip-screen .hero-copy h1 em{color:#ff8fa3}
-        #vip-screen .hero-note{color:#e7b8c5}
-        #vip-screen .header-bar .brand{color:var(--ink)}
-        #vip-screen .game-row.vip-row{background:linear-gradient(135deg,#4a1729,#742142)!important;border:1px solid #7a2f4c}
-        #vip-screen .game-row.vip-row .game-info h3{color:#ffd166}
-        #vip-screen .game-row.vip-row .game-info p{color:#f2c9d6}
-        #vip-screen .game-row.vip-row .play-btn{background:#ff5d8f;color:#fff}
+        @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:wght@400;500;700&display=swap');
+
+        /* =========================================================
+           KAPON OYUN ODASI
+           Fikir: oyun odasındaki fiziksel şeyler gibi duran,
+           kalın çerçeveli ve sert gölgeli düz renkli parçalar.
+           ========================================================= */
+        :root{
+            --bg:#efeeff; --text:#151337; --muted:#5b5883; --card:#ffffff;
+            --ol:#151337; --sh:#151337; --focus:#3d3dff;
+            --cobalt:#3d3dff; --pink:#ff5fa2; --sun:#ffd23f; --mint:#3ddc97; --tang:#ff8a3d; --sky:#6fd3ff;
+            --on:#151337;                       /* düz renkli yüzeylerin üstündeki yazı rengi (her temada koyu) */
+            --fd:'Bricolage Grotesque','DM Sans',system-ui,sans-serif;
+            --fb:'DM Sans',system-ui,sans-serif;
+            --r:26px;
+            color-scheme:light;
+        }
+        :root[data-theme="dark"]{
+            --bg:#0f0d2b; --text:#f1efff; --muted:#a9a6d6; --card:#1b1850;
+            --ol:#05041a; --sh:#05041a; --focus:#6fd3ff;
+            color-scheme:dark;
+        }
+        *{box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.55 var(--fb);overflow-x:hidden}
+        body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+            background-image:radial-gradient(color-mix(in srgb,var(--text) 15%,transparent) 1.3px,transparent 1.7px);background-size:26px 26px}
+        h1,h2,h3{font-family:var(--fd);font-weight:800;margin:0}
+        button,input{font:inherit;color:inherit}
+        :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+
+        /* ---------- ekranlar ---------- */
+        .screen{display:none;position:relative;z-index:1;min-height:100vh;width:100%}
+        .screen.active{display:flex;animation:screenIn .4s ease both}
+        @keyframes screenIn{from{opacity:0}to{opacity:1}}
+
+        /* ---------- düğmeler ---------- */
+        .btn,.play-btn,.logout-btn,.vip-game-btn,.vip-play-btn{
+            cursor:pointer;border:3px solid var(--ol);border-radius:999px;padding:13px 24px;
+            font:700 16px var(--fd);letter-spacing:-.01em;color:var(--on);
+            box-shadow:4px 4px 0 var(--sh);transition:transform .12s,box-shadow .12s}
+        .btn:hover:not(:disabled),.play-btn:hover,.logout-btn:hover,.vip-game-btn:hover:not(:disabled),.vip-play-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--sh)}
+        .btn:active:not(:disabled),.play-btn:active,.logout-btn:active,.vip-game-btn:active:not(:disabled),.vip-play-btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--sh)}
+        .btn,.vip-game-btn{width:100%;background:var(--pink)}
+        .vip-game-btn:disabled{opacity:.55;cursor:not-allowed}
+        .logout-btn{background:var(--card);color:var(--text);padding:10px 18px}
+        .play-btn{background:var(--on);color:#fff;border-color:var(--on)}
+        .vip-play-btn{background:var(--sun)}
+
+        /* ---------- giriş ekranı ---------- */
+        .auth-screen{align-items:center;justify-content:center;padding:24px;overflow:hidden}
+        .auth-decor .em{position:absolute;opacity:1}
+        .auth-decor .d1{top:11%;left:9%;scale:1.5}
+        .auth-decor .d2{top:16%;right:10%;scale:1.4}
+        .auth-decor .d3{bottom:12%;left:13%;scale:1.4}
+        .auth-decor .d4{bottom:14%;right:12%;scale:1.3}
+        .auth-box{position:relative;z-index:2;width:min(100%,460px);padding:40px 36px 34px;border:3px solid var(--ol);border-radius:32px;background:var(--card);box-shadow:10px 10px 0 var(--sh);text-align:left;animation:pop .45s cubic-bezier(.2,.9,.2,1) both}
+        @keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+        .brand-mark{display:grid;place-items:center;width:56px;height:56px;margin-bottom:22px;border:3px solid var(--ol);border-radius:16px;background:var(--sun);color:var(--on);font:800 28px var(--fd);rotate:-6deg;box-shadow:3px 3px 0 var(--sh)}
+        .auth-kicker,.section-kicker{display:inline-block;margin-bottom:6px;color:var(--muted);font-weight:700;font-size:.9rem}
+        .auth-box h1{font-size:clamp(46px,9vw,68px);line-height:.9;letter-spacing:-.05em;margin:4px 0 14px}
+        .auth-box p{color:var(--muted);font-size:.97rem;margin:0 0 18px}
+        .auth-input{display:block;width:100%;padding:15px 18px;margin:12px 0;border:3px solid var(--ol);border-radius:16px;background:var(--bg);color:var(--text);outline:0;font-weight:500}
+        .auth-input::placeholder{color:var(--muted)}
+        .auth-input:focus{border-color:var(--cobalt);box-shadow:4px 4px 0 var(--cobalt)}
+        .auth-box .btn{margin-top:8px}
+        .toggle-auth{color:var(--muted);cursor:pointer;font-size:.9rem;text-decoration:underline;text-underline-offset:3px;margin:16px 0 0!important;text-align:center}
+        .toggle-auth:hover{color:var(--text)}
+
+        /* ---------- tema düğmesi ---------- */
+        #theme-toggle-btn{position:fixed;right:16px;bottom:16px;z-index:900;width:50px;height:50px;border:3px solid var(--ol);border-radius:16px;background:var(--sun);color:var(--on);font-size:20px;cursor:pointer;display:grid;place-items:center;box-shadow:4px 4px 0 var(--sh);transition:transform .12s,box-shadow .12s}
+        #theme-toggle-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--sh)}
+        #theme-toggle-btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--sh)}
+
+        /* ---------- panel iskeleti ---------- */
+        #dashboard-screen,#vip-screen{flex-direction:column;align-items:center;padding:20px 20px 110px}
+        #dashboard-screen,#vip-screen{display:none}
+        #dashboard-screen.active,#vip-screen.active{display:flex}
+        .dashboard-wrap{position:relative;z-index:1;width:min(100%,1120px)}
+
+        .header-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:3px solid var(--ol);border-radius:22px;background:var(--card);box-shadow:5px 5px 0 var(--sh)}
+        .brand{display:flex;align-items:center;gap:10px;font:800 25px var(--fd);letter-spacing:-.045em}
+        .brand span{display:grid;place-items:center;width:40px;height:40px;border:3px solid var(--ol);border-radius:12px;background:var(--sun);color:var(--on);font-size:21px;rotate:-6deg}
+        .profile-area{display:flex;align-items:center;gap:11px;margin-left:auto;padding:4px 12px 4px 4px;border-radius:16px;cursor:pointer}
+        .profile-area:hover{background:color-mix(in srgb,var(--text) 8%,transparent)}
+        .profile-pic{width:42px;height:42px;border:3px solid var(--ol);border-radius:13px;background:var(--mint) center/cover}
+        .profile-name{font:700 16px/1.1 var(--fd)}
+        .profile-caption{color:var(--muted);font-size:12px}
+
+        /* ---------- karşılama ---------- */
+        .hero-copy{display:grid;grid-template-columns:1fr minmax(0,300px);align-items:end;gap:28px;margin:clamp(34px,7vw,76px) 0 clamp(30px,5vw,54px)}
+        .hero-copy h1{font-size:clamp(60px,13vw,176px);line-height:.82;letter-spacing:-.06em}
+        .hero-copy h1 .ln{display:block;overflow:hidden;padding-bottom:.07em}
+        .hero-copy h1 .ln span{display:block;transform:translateY(106%);animation:lineUp .9s cubic-bezier(.2,.8,.2,1) forwards}
+        .hero-copy h1 .ln:nth-child(2) span{animation-delay:.14s}
+        @keyframes lineUp{to{transform:none}}
+        .hero-note{margin:0 0 .6em;color:var(--muted);font-size:1.12rem;line-height:1.5;max-width:30ch}
+
+        /* ---------- oyun parçaları ---------- */
+        .game-list{display:grid;grid-template-columns:repeat(12,1fr);gap:28px}
+        .game-row{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:24px;min-height:268px;padding:24px;border:3px solid var(--ol);border-radius:var(--r);background:var(--c,var(--card));color:var(--on);box-shadow:7px 7px 0 var(--sh);transition:translate .14s,box-shadow .14s}
+        .game-row:hover{translate:-2px -2px;box-shadow:10px 10px 0 var(--sh)}
+        .game-info{position:relative;z-index:2}
+        .game-info h3{font-size:clamp(30px,3.2vw,42px);line-height:.92;letter-spacing:-.045em;margin:0 0 9px}
+        .game-info p{margin:0;max-width:27ch;font-weight:500;line-height:1.45}
+        .game-row .play-btn{align-self:flex-start;position:relative;z-index:2}
+        #dashboard-screen .game-row{grid-column:span 4}
+        .ah-row{--c:var(--mint);rotate:-.7deg}
+        .mini-row{--c:var(--sun);rotate:.6deg}
+        .blast-row{--c:var(--sky);rotate:-.5deg}
+        .tetris-row{--c:var(--pink);grid-column:span 5!important;rotate:.5deg}
+        #dashboard-screen .vip-row{grid-column:span 7;--c:#3b0f30;color:#ffd7e8;border-color:var(--ol);min-height:268px;overflow:hidden}
+        #dashboard-screen .vip-row:before{content:"\2665  \2665  \2665  \2665  \2665  \2665  \2665  \2665  \2665  \2665  \2665  \2665";position:absolute;inset:-8px 0 auto;padding:10px 0 0 10px;color:#ff5fa2;opacity:.18;font-size:34px;line-height:1.3;letter-spacing:.35em;overflow:hidden;height:130px;pointer-events:none}
+        #dashboard-screen .vip-row .game-info h3{color:var(--sun)}
+        #dashboard-screen .vip-row .game-info p{color:#f2c3d8}
+        #dashboard-screen .vip-row .game-info .section-kicker{color:#ff8fb7}
+        #dashboard-screen .vip-row .play-btn{background:var(--pink);color:var(--on);border-color:#12040f}
+
+        /* ---------- çizilmiş simgeler ---------- */
+        .em{position:absolute;top:18px;right:18px;pointer-events:none}
+        .em-rink{width:74px;height:104px;border:3px solid var(--ol);border-radius:16px;background:#d9fff3;rotate:8deg}
+        .em-rink:before{content:"";position:absolute;left:0;right:0;top:50%;height:3px;background:var(--ol);translate:0 -50%}
+        .em-rink:after{content:"";position:absolute;left:50%;top:50%;width:30px;height:30px;border:3px solid var(--ol);border-radius:50%;translate:-50% -50%}
+        .em-rink .puck{position:absolute;left:41%;top:58%;width:13px;height:13px;border-radius:50%;background:var(--ol);z-index:1}
+        .em-rink .mal{position:absolute;width:24px;height:24px;border:3px solid var(--ol);border-radius:50%;z-index:1}
+        .em-rink .m1{left:10px;top:8px;background:var(--pink)}
+        .em-rink .m2{right:10px;bottom:8px;background:var(--cobalt)}
+        .em-gift{width:90px;height:90px;rotate:-8deg}
+        .em-gift .box,.em-gift .lid{position:absolute;border:3px solid var(--ol);background:var(--pink)}
+        .em-gift .box{left:9px;right:9px;bottom:0;height:54px;border-radius:8px}
+        .em-gift .lid{left:3px;right:3px;bottom:48px;height:23px;border-radius:8px;z-index:1}
+        .em-gift .box:after,.em-gift .lid:after{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:15px;translate:-50% 0;background:var(--sun);border-inline:3px solid var(--ol)}
+        .em-gift .bow{position:absolute;left:50%;bottom:66px;width:40px;height:24px;translate:-50% 0;z-index:2}
+        .em-gift .bow:before,.em-gift .bow:after{content:"";position:absolute;top:0;width:20px;height:20px;border:3px solid var(--ol);background:var(--sun)}
+        .em-gift .bow:before{left:0;rotate:-24deg;border-radius:50% 50% 50% 0}
+        .em-gift .bow:after{right:0;rotate:24deg;border-radius:50% 50% 0 50%}
+        .em-blocks{display:grid;grid-template-columns:repeat(3,26px);gap:4px;rotate:6deg}
+        .em-blocks i{display:block;width:26px;height:26px;border:3px solid var(--ol);border-radius:7px;background:var(--pink)}
+        .em-blocks i:nth-child(2),.em-blocks i:nth-child(8){background:var(--sun)}
+        .em-blocks i:nth-child(3),.em-blocks i:nth-child(7){background:var(--mint)}
+        .em-blocks i:nth-child(4),.em-blocks i:nth-child(9){background:#fff}
+        .em-blocks i:nth-child(5){background:transparent;border-style:dashed}
+        .em-tetris{display:grid;grid-template-columns:repeat(4,23px);grid-auto-rows:23px;gap:3px;rotate:-6deg}
+        .em-tetris i{display:block;border:3px solid var(--ol);border-radius:6px;background:var(--sun)}
+
+        /* ---------- ana oyun: araba yarışı ---------- */
+        .game-row.trafik-row{grid-column:1/-1!important;min-height:clamp(380px,48vw,500px);padding:clamp(24px,4vw,40px);overflow:hidden;color:#fff;
+            background:linear-gradient(#3d3dff 0,#7a3dff 28%,#ff5fa2 52%,#ffd23f 62%,#ffd23f 100%);box-shadow:9px 9px 0 var(--sh)}
+        .trafik-row .game-info h3{font-size:clamp(44px,7vw,92px);line-height:.85;letter-spacing:-.055em;color:#fff;text-shadow:3px 3px 0 var(--ol)}
+        .trafik-row .game-info p{max-width:30ch;font-size:clamp(16px,1.6vw,19px);color:#fff;font-weight:700;text-shadow:2px 2px 0 var(--ol);margin-top:14px}
+        .trafik-row .play-btn{background:var(--sun);color:var(--on);border-color:var(--ol);font-size:clamp(17px,1.6vw,20px);padding:15px 32px}
+        .trafik-row .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;position:relative;z-index:2}
+        .chip{padding:5px 13px;border:3px solid var(--ol);border-radius:999px;background:#fff;color:var(--on);font:700 13px var(--fd)}
+        .sticker{position:absolute;top:20px;right:22px;z-index:4;padding:7px 16px;border:3px solid var(--ol);border-radius:999px;background:var(--sun);color:var(--on);font:800 17px var(--fd);rotate:8deg;box-shadow:3px 3px 0 var(--sh)}
+        .scene{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+        .scene .sun{position:absolute;left:62%;bottom:38%;width:30%;aspect-ratio:1;translate:-50% 50%;border-radius:50%;background:#fff3b0;border:3px solid var(--ol);clip-path:inset(0 0 50% 0)}
+        .scene .city{position:absolute;left:0;right:0;bottom:38%;height:22%;background:#1b1650;
+            clip-path:polygon(0 100%,0 55%,4% 55%,4% 30%,8% 30%,8% 62%,13% 62%,13% 18%,18% 18%,18% 50%,23% 50%,23% 70%,29% 70%,29% 36%,33% 36%,33% 12%,38% 12%,38% 58%,44% 58%,44% 40%,50% 40%,50% 66%,56% 66%,56% 24%,61% 24%,61% 52%,67% 52%,67% 34%,72% 34%,72% 14%,77% 14%,77% 60%,83% 60%,83% 42%,89% 42%,89% 26%,94% 26%,94% 56%,100% 56%,100% 100%)}
+        .scene .floor{position:absolute;left:0;right:0;bottom:0;height:38%;perspective:240px;overflow:hidden;background:#241f6e}
+        .scene .plane{position:absolute;left:-70%;right:-70%;top:0;height:260%;transform-origin:50% 0;transform:rotateX(63deg);
+            background:repeating-linear-gradient(0deg,#fff 0 12px,transparent 12px 46px) 50% 0/1.3% 46px repeat-y,
+                       linear-gradient(90deg,#241f6e 0 40%,#ffd23f 40% 41%,#14123a 41% 59%,#ffd23f 59% 60%,#241f6e 60%);
+            animation:roadRun .55s linear infinite}
+        @keyframes roadRun{from{background-position:50% 0,0 0}to{background-position:50% 46px,0 0}}
+        .car{position:absolute;width:10em;height:5.1em;font-size:clamp(9px,1.6vw,17px);animation:bob .42s ease-in-out infinite alternate}
+        @keyframes bob{to{translate:0 -.12em}}
+        .car .roof{position:absolute;left:15%;right:15%;top:0;height:48%;background:#00c2dd;border:.2em solid var(--ol);border-bottom:0;border-radius:1.2em 1.2em 0 0;clip-path:polygon(0 100%,10% 0,90% 0,100% 100%)}
+        .car .roof:after{content:"";position:absolute;left:14%;right:14%;top:16%;bottom:0;background:#12143c;clip-path:polygon(0 100%,8% 0,92% 0,100% 100%)}
+        .car .body{position:absolute;left:0;right:0;top:34%;height:52%;background:linear-gradient(#5af0ff,#00c2dd);border:.2em solid var(--ol);border-radius:1em .8em .6em .6em}
+        .car .tl{position:absolute;top:26%;width:19%;height:26%;background:#ff3b4e;border:.14em solid var(--ol);border-radius:.3em;box-shadow:0 0 1em #ff3b4e}
+        .car .tl.l{left:5%}.car .tl.r{right:5%}
+        .car .plate{position:absolute;left:38%;right:38%;top:58%;height:22%;background:#fff;border:.13em solid var(--ol);border-radius:.2em}
+        .car .wh{position:absolute;bottom:0;width:20%;height:22%;background:var(--ol);border-radius:.3em}
+        .car .wh.l{left:6%}.car .wh.r{right:6%}
+        .car .jet{position:absolute;bottom:-.9em;width:14%;height:1.2em;border-radius:50%;background:radial-gradient(#fff,#6fd3ff 45%,transparent 70%);animation:jet .16s linear infinite alternate}
+        .car .jet.l{left:14%}.car .jet.r{right:14%}
+        @keyframes jet{to{scale:.7 1.5;opacity:.75}}
+        .car.hero{left:60%;bottom:3%}
+        .car.far1{left:47%;bottom:25%;font-size:clamp(4px,.7vw,8px);filter:hue-rotate(150deg)}
+        .car.far2{left:55%;bottom:21%;font-size:clamp(5px,.9vw,10px);filter:hue-rotate(-60deg) saturate(1.2);animation-delay:.2s}
+
+        /* ---------- geri bildirim panosu ---------- */
+        .feedback{margin-top:clamp(52px,8vw,96px)}
+        .feedback h3{font-size:clamp(40px,7vw,78px);line-height:.88;letter-spacing:-.055em;margin:0 0 10px}
+        .feedback .sub{margin:0 0 22px;color:var(--muted);max-width:44ch}
+        .comment-input-area{display:flex;border:3px solid var(--ol);border-radius:999px;background:var(--card);box-shadow:6px 6px 0 var(--sh);overflow:hidden;max-width:720px}
+        .comment-input-area input{flex:1;min-width:0;border:0;background:transparent;padding:16px 22px;outline:0;color:var(--text);font-weight:500}
+        .comment-input-area input::placeholder{color:var(--muted)}
+        .comment-input-area input:focus-visible{outline:0}
+        .comment-input-area:focus-within{outline:3px solid var(--focus);outline-offset:3px}
+        .comment-input-area .btn{width:auto;border:0;border-left:3px solid var(--ol);border-radius:0;box-shadow:none;background:var(--sun);transform:none!important}
+        .comment-input-area .btn:hover{background:var(--tang)}
+        #comments-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:26px;margin-top:34px}
+        .comment-item{padding:16px 18px 18px;border:3px solid var(--ol);border-radius:6px 22px 22px 22px;background:var(--sun);color:var(--on);box-shadow:5px 5px 0 var(--sh)}
+        .comment-item:nth-child(5n+2){background:var(--pink)}
+        .comment-item:nth-child(5n+3){background:var(--mint)}
+        .comment-item:nth-child(5n+4){background:var(--sky)}
+        .comment-item:nth-child(5n+5){background:var(--tang)}
+        .comment-item:nth-child(odd){rotate:-1deg}
+        .comment-item:nth-child(even){rotate:.9deg}
+        .comment-header{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px}
+        .comment-header strong{font:800 17px var(--fd);letter-spacing:-.02em}
+        .comment-text{margin:6px 0 0;line-height:1.45;overflow-wrap:anywhere;font-weight:500}
+        .delete-btn{background:transparent;border:0;color:var(--on);cursor:pointer;text-decoration:underline;font-size:12px;font-weight:700;padding:2px}
+        .empty-note{grid-column:1/-1;margin:0;padding:22px;border:3px dashed var(--ol);border-radius:20px;color:var(--muted);font-weight:500}
+        .site-footer{margin-top:70px;color:var(--muted);font-size:14px}
+
+        /* ---------- pencereler ---------- */
+        .modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(15,13,43,.72);backdrop-filter:blur(6px)}
+        .modal.active{display:flex;animation:screenIn .2s ease both}
+        .modal-content{position:relative;width:min(100%,480px);max-height:92vh;overflow:auto;padding:34px 30px 30px;border:3px solid var(--ol);border-radius:30px;background:var(--card);box-shadow:9px 9px 0 var(--sh);text-align:center;animation:pop .35s cubic-bezier(.2,.9,.2,1) both}
+        .modal-content h2{font-size:clamp(32px,6vw,42px);line-height:.92;letter-spacing:-.05em;margin:6px 0 18px}
+        .close-modal{position:absolute;top:14px;right:14px;display:grid;place-items:center;width:38px;height:38px;border:3px solid var(--ol);border-radius:12px;background:var(--sun);color:var(--on);font:800 22px/1 var(--fd);cursor:pointer;box-shadow:3px 3px 0 var(--sh)}
+        .close-modal:active{translate:2px 2px;box-shadow:1px 1px 0 var(--sh)}
+        .modal-content hr{border:none;border-top:3px dashed var(--ol);margin:26px 0;opacity:.35}
+
+        /* VIP şifre yörüngesi */
+        .orbit-wrapper{--step:44px;--orb:105px;position:relative;width:100%;height:60px;margin:18px auto 26px;display:flex;align-items:center;justify-content:center;transition:height .6s cubic-bezier(.4,0,.2,1)}
+        .orbit-wrapper.animating{height:240px}
+        .orbit-ring{position:absolute;width:100%;height:100%;display:flex;align-items:center;justify-content:center;transition:transform .4s ease}
+        .orbit-wrapper.spinning .orbit-ring{animation:ring-spin-anim 2s linear infinite}
+        @keyframes ring-spin-anim{to{transform:rotate(360deg)}}
+        .orbit-center{position:absolute;width:62px;height:62px;border-radius:50%;border:3px dashed var(--ol);background:var(--bg);display:grid;place-items:center;font-size:23px;z-index:10;opacity:0;transform:scale(0);transition:all .5s cubic-bezier(.4,0,.2,1)}
+        .orbit-wrapper.animating .orbit-center{opacity:1;transform:scale(1)}
+        .orbit-center.loading{border:3px solid var(--cobalt);background:var(--sun)}
+        .orbit-center.success{border:3px solid var(--ol);background:var(--mint)}
+        .orbit-center.error{border:3px solid var(--ol);background:var(--pink)}
+        .otp-box-dynamic{position:absolute;width:36px;height:48px;text-align:center;font:800 1.3em var(--fd);border-radius:11px;border:3px solid var(--ol);background:var(--bg);color:var(--text);outline:0;z-index:5;transform:translate(calc((var(--index) - 3.5) * var(--step)),0);transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .4s,border-color .2s}
+        .otp-box-dynamic:focus{border-color:var(--cobalt);box-shadow:3px 3px 0 var(--cobalt)}
+        .orbit-wrapper.animating .otp-box-dynamic{transform:rotate(var(--angle)) translate(var(--orb)) rotate(calc(var(--angle) * -1))}
+        .orbit-wrapper.fly-in .otp-box-dynamic{transform:rotate(var(--angle)) translate(0px) rotate(calc(var(--angle) * -1)) scale(.2)!important;opacity:0;pointer-events:none}
+        #vip-pin-error{font-weight:700}
+
+        /* ---------- oyun oynatıcı ---------- */
+        #game-player-overlay{display:none;position:fixed;inset:0;z-index:2000;background:#0b0a22}
+        .game-player-top{position:absolute;top:0;left:0;right:0;z-index:2;height:62px;display:flex;justify-content:space-between;align-items:center;padding:0 16px;background:#151337;border-bottom:3px solid #05041a;color:#fff}
+        .game-player-top strong{font:800 22px var(--fd);letter-spacing:-.03em}
+        #close-game-player-btn{padding:9px 18px;border:3px solid #05041a;border-radius:999px;background:var(--sun);color:#151337;font:700 15px var(--fd);cursor:pointer;box-shadow:3px 3px 0 #05041a}
+        #vip-game-frame{width:100%;height:100%;border:0;padding-top:62px}
+
+        /* ---------- VIP odası ---------- */
+        #vip-screen{position:relative;overflow:hidden;background:#2b0b24;color:#ffd7e8}
+        #vip-screen .header-bar{background:#4a1239;border-color:#12040f;box-shadow:5px 5px 0 #12040f}
+        #vip-screen .brand{color:#ffe3ef}
+        #vip-screen .logout-btn{background:var(--pink);color:var(--on);border-color:#12040f;box-shadow:4px 4px 0 #12040f}
+        #vip-screen .hero-copy h1{color:#ffd1e3}
+        #vip-screen .hero-note{color:#e7a9c4}
+        #vip-screen .section-kicker{color:#ff8fb7}
+        #vip-screen .game-list{grid-template-columns:1fr}
+        #vip-screen .game-row.vip-row{flex-direction:row;align-items:center;justify-content:space-between;min-height:130px;grid-column:auto;rotate:0deg;background:var(--pink);color:var(--on);border-color:#12040f;box-shadow:7px 7px 0 #12040f}
+        #vip-screen .game-row.vip-row:nth-child(even){background:var(--sun)}
+        #vip-screen .game-row.vip-row .game-info h3{color:var(--on)}
+        #vip-screen .game-row.vip-row .game-info p{color:var(--on)}
+        #vip-screen .game-row.vip-row .play-btn{align-self:center;background:var(--on);color:#fff;border-color:var(--on);box-shadow:4px 4px 0 #12040f}
         .heart-particle{position:absolute;bottom:-40px;pointer-events:none;opacity:0;z-index:0;animation:floatHeart linear infinite}
-        @keyframes floatHeart{ 0%{transform:translateY(0) translateX(0) rotate(0deg);opacity:0} 10%{opacity:.85} 85%{opacity:.5} 100%{transform:translateY(-110vh) translateX(var(--drift,20px)) rotate(20deg);opacity:0} }
-        @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-        @media(max-width:760px){.auth-box{padding:32px 23px}.header-bar{margin-bottom:35px}.profile-name,.profile-caption{display:none}.hero-copy{display:block}.hero-note{margin-top:20px}.game-list{grid-template-columns:1fr}.game-row{min-height:205px}.vip-row{grid-column:auto;min-height:180px;flex-direction:column;align-items:flex-start}.vip-row .play-btn{width:100%}.comment-input-area{flex-direction:column}.comment-input-area .btn{width:100%}}
+        @keyframes floatHeart{0%{transform:translateY(0) translateX(0) rotate(0);opacity:0}10%{opacity:.85}85%{opacity:.5}100%{transform:translateY(-110vh) translateX(var(--drift,20px)) rotate(20deg);opacity:0}}
+
+        /* ---------- küçük ekranlar ---------- */
+        @media(max-width:900px){
+            #dashboard-screen .game-row{grid-column:span 6}
+            .tetris-row{grid-column:span 6!important}
+            #dashboard-screen .vip-row{grid-column:1/-1}
+            .hero-copy{grid-template-columns:1fr}
+            .auth-decor .em{display:none}
+        }
+        @media(max-width:620px){
+            #dashboard-screen,#vip-screen{padding:14px 14px 100px}
+            .game-list{gap:22px}
+            #dashboard-screen .game-row,.tetris-row{grid-column:1/-1!important}
+            .game-row{min-height:230px}
+            .profile-name,.profile-caption{display:none}
+            .profile-area{padding:4px}
+            .brand{font-size:21px}
+            .auth-box{padding:32px 24px 28px}
+            .game-row.trafik-row{min-height:420px}
+            .trafik-row .game-info h3{font-size:clamp(44px,15vw,64px)}
+            .car.hero{left:52%}
+            .comment-input-area .btn{padding:14px 18px}
+            #vip-screen .game-row.vip-row{flex-direction:column;align-items:flex-start}
+            #vip-screen .game-row.vip-row .play-btn{align-self:flex-start}
+            .modal-content{padding:30px 20px 24px}
+        }
+        @media(max-width:420px){
+            .orbit-wrapper{--step:37px;--orb:86px}
+            .otp-box-dynamic{width:32px;height:44px;border-radius:10px}
+        }
+        @media(prefers-reduced-motion:reduce){
+            *,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+            .hero-copy h1 .ln span{transform:none}
+        }
     </style>
 </head>
 <body>
-    <button id="theme-toggle-btn" title="Tema değiştir">🌙</button>
-    
+    <button id="theme-toggle-btn" title="Temayı değiştir" aria-label="Temayı değiştir">🌙</button>
+
     <section id="auth-screen" class="screen active auth-screen">
+        <div class="auth-decor" aria-hidden="true">
+            <div class="em em-rink d1"><b class="puck"></b><b class="mal m1"></b><b class="mal m2"></b></div>
+            <div class="em em-gift d2"><b class="bow"></b><b class="lid"></b><b class="box"></b></div>
+            <div class="em em-blocks d3"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="em em-tetris d4">
+                <i style="grid-area:1/2;background:var(--pink)"></i>
+                <i style="grid-area:2/1;background:var(--pink)"></i><i style="grid-area:2/2;background:var(--pink)"></i><i style="grid-area:2/3;background:var(--pink)"></i>
+                <i style="grid-area:3/3;background:var(--mint)"></i><i style="grid-area:3/4;background:var(--mint)"></i>
+                <i style="grid-area:4/1;background:var(--sun)"></i><i style="grid-area:4/2;background:var(--sun)"></i><i style="grid-area:4/3;background:var(--sky)"></i><i style="grid-area:4/4;background:var(--sky)"></i>
+            </div>
+        </div>
         <div class="auth-box">
-            <div class="brand-mark">⌁</div>
+            <div class="brand-mark">K</div>
             <span class="auth-kicker">Kapon'un oyun odası</span>
-            <h1>Biraz<br><em style="color:var(--coral);font-weight:500">oynayalım.</em></h1>
+            <h1>Biraz<br>oynayalım.</h1>
             <p>Gülümsemen için hazırlanmış küçük bir oda. İçeri girmek için hesabınla devam et.</p>
-            <input type="text" id="username" class="auth-input" placeholder="Kullanıcı adı">
-            <input type="password" id="password" class="auth-input" placeholder="Şifre">
+            <input type="text" id="username" class="auth-input" placeholder="Kullanıcı adı" autocomplete="username">
+            <input type="password" id="password" class="auth-input" placeholder="Şifre" autocomplete="current-password">
             <button id="auth-btn" class="btn">Giriş yap</button>
             <p class="toggle-auth" id="toggle-auth-btn">Hesabın yok mu? Kayıt ol</p>
-            <p class="toggle-auth" id="forgot-password-btn" style="margin-top:6px;">Şifreni mi unuttun?</p>
+            <p class="toggle-auth" id="forgot-password-btn" style="margin-top:6px!important;">Şifreni mi unuttun?</p>
         </div>
     </section>
-    
+
     <section id="dashboard-screen" class="screen">
         <div class="dashboard-wrap">
             <header class="header-bar">
-                <div class="brand"><span>⌁</span> kapon oyun</div>
+                <div class="brand"><span>K</span> kapon oyun</div>
                 <div class="profile-area" onclick="openProfileModal()"><div class="profile-pic" id="user-pp"></div><div><div class="profile-name" id="user-display-name">Oyuncu</div><div class="profile-caption">Profil ayarları</div></div></div>
                 <button class="logout-btn" id="logout-btn">Çıkış</button>
             </header>
-            <div class="hero-copy"><div><span class="section-kicker">01 / açık koleksiyon</span><h1>Bugün ne<br><em>oynayalım?</em></h1></div><p class="hero-note">Kısa bir tur, tatlı bir rekabet ya da yalnızca birlikte bir an.</p></div>
+
+            <div class="hero-copy">
+                <h1><span class="ln"><span>Bugün ne</span></span><span class="ln"><span>oynayalım?</span></span></h1>
+                <p class="hero-note">Kısa bir tur, tatlı bir rekabet ya da yalnızca birlikte bir an.</p>
+            </div>
+
             <div class="game-list">
-                
-                <!-- Yeni Eklenen Oyun: Araba Yarışı -->
                 <article class="game-row trafik-row">
-                    <div class="game-info">
-                        <h3>Araba Yarışı</h3>
-                        <p>Arabaları solla, makas at, kombo yap ve garajını geliştir.</p>
+                    <span class="sticker">Yeni</span>
+                    <div class="scene" aria-hidden="true">
+                        <div class="sun"></div><div class="city"></div>
+                        <div class="floor"><div class="plane"></div></div>
+                        <div class="car far1"><i class="roof"></i><i class="body"></i><i class="tl l"></i><i class="tl r"></i><i class="wh l"></i><i class="wh r"></i></div>
+                        <div class="car far2"><i class="roof"></i><i class="body"></i><i class="tl l"></i><i class="tl r"></i><i class="wh l"></i><i class="wh r"></i></div>
+                        <div class="car hero"><i class="roof"></i><i class="body"></i><i class="tl l"></i><i class="tl r"></i><i class="plate"></i><i class="wh l"></i><i class="wh r"></i><i class="jet l"></i><i class="jet r"></i></div>
                     </div>
-                    <button class="play-btn" onclick="startGame('Araba Yarışı','https://kapon53.github.io/arabayarisi/')">Oyunu aç →</button>
+                    <div class="game-info">
+                        <h3>Araba<br>Yarışı</h3>
+                        <p>Arabaları solla, makas at, kombo yap ve garajını geliştir.</p>
+                        <div class="chips"><span class="chip">7 dünya</span><span class="chip">50 araç</span><span class="chip">Polis kaçışı</span></div>
+                    </div>
+                    <button class="play-btn" onclick="startGame('Araba Yarışı','https://kapon53.github.io/arabayarisi/')">Oyunu aç</button>
                 </article>
 
                 <article class="game-row ah-row">
-                    <div class="game-info"><h3>Air Hockey</h3><p>Diskini sürükle. Önce 7 sayıya ulaşan kazanır.</p></div>
-                    <button class="play-btn" onclick="startGame('Air Hockey','https://kapon53.github.io/buzhokeyi/')">Oyunu aç →</button>
+                    <div class="em em-rink"><b class="puck"></b><b class="mal m1"></b><b class="mal m2"></b></div>
+                    <div class="game-info"><h3>Air<br>Hockey</h3><p>Diskini sürükle. Önce 7 sayıya ulaşan kazanır.</p></div>
+                    <button class="play-btn" onclick="startGame('Air Hockey','https://kapon53.github.io/buzhokeyi/')">Oyunu aç</button>
                 </article>
 
-                <article class="game-row"><div class="game-info"><h3>Minigame</h3><p>Hediye kutusunu yakalayabilecek misin?</p></div><button class="play-btn" onclick="startGame('Minigame','https://kapon53.github.io/minigame/')">Oyunu aç →</button></article>
-                <article class="game-row"><div class="game-info"><h3>Block Blast</h3><p>Blokları doğru yerlere bırak ve kombo yap.</p></div><button class="play-btn" onclick="startGame('Block Blast','https://kapon53.github.io/blockblast/')">Oyunu aç →</button></article>
-                <article class="game-row"><div class="game-info"><h3>Tetris</h3><p>Klasik blok dizme oyunu. Rekorunu kır.</p></div><button class="play-btn" onclick="startGame('Tetris','https://kapon53.github.io/tetris-oyunu/')">Oyunu aç →</button></article>
-                <article class="game-row vip-row"><div class="game-info"><span class="section-kicker">02 / sadece sana</span><h3>VIP odamız</h3><p>Sadece özel davetlilerin bildiği oyunlar ve küçük sürprizler.</p></div><button class="play-btn" onclick="openVipModal()">VIP kapısını aç →</button></article>
+                <article class="game-row mini-row">
+                    <div class="em em-gift"><b class="bow"></b><b class="lid"></b><b class="box"></b></div>
+                    <div class="game-info"><h3>Mini<br>game</h3><p>Hediye kutusunu yakalayabilecek misin?</p></div>
+                    <button class="play-btn" onclick="startGame('Minigame','https://kapon53.github.io/minigame/')">Oyunu aç</button>
+                </article>
+
+                <article class="game-row blast-row">
+                    <div class="em em-blocks"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                    <div class="game-info"><h3>Block<br>Blast</h3><p>Blokları doğru yerlere bırak ve kombo yap.</p></div>
+                    <button class="play-btn" onclick="startGame('Block Blast','https://kapon53.github.io/blockblast/')">Oyunu aç</button>
+                </article>
+
+                <article class="game-row tetris-row">
+                    <div class="em em-tetris">
+                        <i style="grid-area:1/2;background:var(--sun)"></i>
+                        <i style="grid-area:2/1;background:var(--sun)"></i><i style="grid-area:2/2;background:var(--sun)"></i><i style="grid-area:2/3;background:var(--sun)"></i>
+                        <i style="grid-area:3/3;background:var(--mint)"></i><i style="grid-area:3/4;background:var(--mint)"></i>
+                        <i style="grid-area:4/1;background:#fff"></i><i style="grid-area:4/2;background:#fff"></i><i style="grid-area:4/3;background:var(--sky)"></i><i style="grid-area:4/4;background:var(--sky)"></i>
+                    </div>
+                    <div class="game-info"><h3>Tetris</h3><p>Klasik blok dizme oyunu. Rekorunu kır.</p></div>
+                    <button class="play-btn" onclick="startGame('Tetris','https://kapon53.github.io/tetris-oyunu/')">Oyunu aç</button>
+                </article>
+
+                <article class="game-row vip-row">
+                    <div class="game-info"><span class="section-kicker">Sadece sana</span><h3>VIP odamız</h3><p>Sadece özel davetlilerin bildiği oyunlar ve küçük sürprizler.</p></div>
+                    <button class="play-btn" onclick="openVipModal()">VIP kapısını aç</button>
+                </article>
             </div>
-            <section class="feedback"><h3>Geri bildirimler</h3><div class="comment-input-area"><input type="text" id="comment-input" placeholder="Bir şeyler yaz..."><button class="btn" id="send-comment-btn">Gönder</button></div><div id="comments-container"></div></section>
+
+            <section class="feedback">
+                <h3>Geri bildirimler</h3>
+                <p class="sub">Bir oyunda takıldığın ya da bir fikrin varsa panoya not bırak.</p>
+                <div class="comment-input-area"><input type="text" id="comment-input" placeholder="Bir şeyler yaz..." aria-label="Geri bildirim"><button class="btn" id="send-comment-btn">Gönder</button></div>
+                <div id="comments-container"></div>
+            </section>
+
+            <footer class="site-footer">Kapon Stüdyo, gülümsemen için.</footer>
         </div>
     </section>
 
@@ -130,25 +406,25 @@
         <div class="dashboard-wrap">
             <header class="header-bar">
                 <div class="brand"><span>💕</span> VIP odamız</div>
-                <button class="logout-btn" id="vip-back-btn">← Ana menü</button>
+                <button class="logout-btn" id="vip-back-btn">Ana menü</button>
             </header>
             <div class="hero-copy">
-                <div><span class="section-kicker">Sadece sana</span><h1>Sana özel<br><em>oyunlar.</em></h1></div>
+                <h1><span class="ln"><span>Sana özel</span></span><span class="ln"><span>oyunlar.</span></span></h1>
                 <p class="hero-note">Burada sadece senin bildiğin küçük sürprizler var.</p>
             </div>
             <div class="game-list" id="vip-screen-games-list"></div>
         </div>
     </section>
 
-    <div id="profile-modal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModals()">&times;</span><h2>Profil ayarları</h2><input type="text" id="new-name" class="auth-input" placeholder="Yeni isim"><input type="text" id="new-photo-url" class="auth-input" placeholder="Profil fotoğrafı URL'si"><button class="btn" id="update-profile-btn">Profili güncelle</button>
-        <hr style="border:none;border-top:1px solid var(--line);margin:24px 0">
-        <h2 style="font-size:26px;">Şifre değiştir</h2>
-        <input type="password" id="current-password" class="auth-input" placeholder="Mevcut şifre">
-        <input type="password" id="new-password" class="auth-input" placeholder="Yeni şifre (en az 6 karakter)">
+    <div id="profile-modal" class="modal"><div class="modal-content"><span class="close-modal" role="button" tabindex="0" aria-label="Kapat" onclick="closeModals()">&times;</span><h2>Profil ayarları</h2><input type="text" id="new-name" class="auth-input" placeholder="Yeni isim"><input type="text" id="new-photo-url" class="auth-input" placeholder="Profil fotoğrafı URL'si"><button class="btn" id="update-profile-btn">Profili güncelle</button>
+        <hr>
+        <h2 style="font-size:28px;">Şifre değiştir</h2>
+        <input type="password" id="current-password" class="auth-input" placeholder="Mevcut şifre" autocomplete="current-password">
+        <input type="password" id="new-password" class="auth-input" placeholder="Yeni şifre (en az 6 karakter)" autocomplete="new-password">
         <button class="btn" id="change-password-btn">Şifreyi güncelle</button>
-        <p id="password-change-msg" style="font-size:.85em; margin-top:8px; min-height:1.2em;"></p>
+        <p id="password-change-msg" style="font-size:.9em; margin-top:10px; min-height:1.2em; font-weight:700;"></p>
     </div></div>
-    <div id="vip-modal" class="modal"><div class="modal-content" id="vip-modal-content"><span class="close-modal" onclick="closeModals()">&times;</span><div id="vip-games-list"><p style="color:var(--muted)">Yükleniyor...</p></div></div></div>
+    <div id="vip-modal" class="modal"><div class="modal-content" id="vip-modal-content"><span class="close-modal" role="button" tabindex="0" aria-label="Kapat" onclick="closeModals()">&times;</span><div id="vip-games-list"><p style="color:var(--muted)">Yükleniyor...</p></div></div></div>
     <div id="game-player-overlay"><div class="game-player-top"><strong id="game-player-title">Oyun</strong><button id="close-game-player-btn" onclick="closeGamePlayer()">Kapat ×</button></div><iframe id="vip-game-frame"></iframe></div>
 
     <script type="module">
@@ -164,7 +440,7 @@
         const ADMIN_UID = "cSO6CuRLeCht3Ei003OXSLDkta63";
         const vipGamesMeta = { kalp: "Kalp Oyunu", minigame: "Minigame", nergis: "🎁" };
         const vipGamesDesc = { kalp: "Sana özel, kalp temalı bir oyun 💕", minigame: "Hediye kutusunu yakalayabilecek misin?", nergis: "" };
-        
+
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, EmailAuthProvider, reauthenticateWithCredential, updatePassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -183,7 +459,10 @@
         const authBtn = document.getElementById('auth-btn');
         const toggleAuthBtn = document.getElementById('toggle-auth-btn');
 
-        let isLogin = true; let currentUser = null;
+        let isLogin = true; let currentUser = null; let unsubComments = null;
+
+        // Kullanıcıdan gelen metni HTML'e koymadan önce kaçışla (yorumlarda script çalışmasın)
+        function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
         toggleAuthBtn.addEventListener('click', () => {
             isLogin = !isLogin;
@@ -217,36 +496,38 @@
                 if(user.photoURL) document.getElementById('user-pp').style.backgroundImage = `url(${user.photoURL})`;
                 loadComments();
             } else {
+                if (unsubComments) { unsubComments(); unsubComments = null; }
                 currentUser = null; dashboardScreen.classList.remove('active'); authScreen.classList.add('active');
             }
         });
 
         window.openProfileModal = () => document.getElementById('profile-modal').classList.add('active');
         window.closeModals = () => document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+        document.querySelectorAll('.close-modal').forEach(b => b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.closeModals(); } }));
 
         document.getElementById('update-profile-btn').addEventListener('click', async () => {
             try { await updateProfile(currentUser, { displayName: document.getElementById('new-name').value || currentUser.displayName, photoURL: document.getElementById('new-photo-url').value || currentUser.photoURL }); alert("Profil güncellendi! Sayfayı yenileyin."); location.reload(); } catch(e) { alert(e.message); }
         });
 
         document.getElementById('forgot-password-btn').addEventListener('click', () => alert('Şifreni unuttuysan bana Twitter\'dan DM at, birlikte hallederiz 💬'));
-        
+
         document.getElementById('change-password-btn').addEventListener('click', async () => {
             const currentPassword = document.getElementById('current-password').value, newPassword = document.getElementById('new-password').value, msgEl = document.getElementById('password-change-msg');
-            if (!currentPassword || !newPassword) return msgEl.style.color = 'var(--coral)', msgEl.innerText = 'Her iki alanı da doldurmalısın.';
-            if (newPassword.length < 6) return msgEl.style.color = 'var(--coral)', msgEl.innerText = 'Yeni şifre en az 6 karakter olmalı.';
+            if (!currentPassword || !newPassword) return msgEl.style.color = 'var(--pink)', msgEl.innerText = 'Her iki alanı da doldurmalısın.';
+            if (newPassword.length < 6) return msgEl.style.color = 'var(--pink)', msgEl.innerText = 'Yeni şifre en az 6 karakter olmalı.';
             msgEl.style.color = 'var(--muted)'; msgEl.innerText = 'Güncelleniyor...';
             try {
                 const credential = EmailAuthProvider.credential(currentUser.email, currentPassword);
                 await reauthenticateWithCredential(currentUser, credential); await updatePassword(currentUser, newPassword);
-                msgEl.style.color = '#3ba55d'; msgEl.innerText = 'Şifre güncellendi!'; document.getElementById('current-password').value = ''; document.getElementById('new-password').value = '';
-            } catch (e) { msgEl.style.color = 'var(--coral)'; msgEl.innerText = (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') ? 'Mevcut şifre yanlış.' : 'Hata: ' + e.message; }
+                msgEl.style.color = 'var(--mint)'; msgEl.innerText = 'Şifre güncellendi!'; document.getElementById('current-password').value = ''; document.getElementById('new-password').value = '';
+            } catch (e) { msgEl.style.color = 'var(--pink)'; msgEl.innerText = (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') ? 'Mevcut şifre yanlış.' : 'Hata: ' + e.message; }
         });
 
         window.logGameStart = async (gameName) => {
             if(!currentUser) return;
             try { await addDoc(collection(db, "analytics_logs"), { userId: currentUser.uid, userName: currentUser.displayName, game: gameName, action: "Started Game", timestamp: serverTimestamp() }); } catch(e) {}
         };
-        
+
         window.startGame = async (gameName, url) => {
             await window.logGameStart(gameName);
             window.location.href = url;
@@ -280,18 +561,18 @@
 
         function showVipScreen(dbInstance) { switchScreen('vip-screen'); spawnHearts(); renderVipScreenGames(document.getElementById('vip-screen-games-list'), dbInstance); }
         function renderVipScreenGames(listEl, dbInstance) {
-            const entries = Object.entries(vipGamesMeta); if (entries.length === 0) return listEl.innerHTML = "<p style='color:#c7c1bd'>Henüz VIP oyun eklenmedi.</p>";
+            const entries = Object.entries(vipGamesMeta); if (entries.length === 0) return listEl.innerHTML = "<p style='color:#e7a9c4'>Henüz VIP oyun eklenmedi.</p>";
             listEl.innerHTML = "";
             entries.forEach(([gameId, gameName]) => {
                 const desc = vipGamesDesc[gameId] || ""; const article = document.createElement('article'); article.className = 'game-row vip-row';
-                article.innerHTML = `<div class="game-info"><h3>${gameName}</h3>${desc ? `<p>${desc}</p>` : ""}</div><button class="play-btn">Oyunu aç →</button>`;
+                article.innerHTML = `<div class="game-info"><h3>${gameName}</h3>${desc ? `<p>${desc}</p>` : ""}</div><button class="play-btn">Oyunu aç</button>`;
                 article.querySelector('.play-btn').addEventListener('click', () => window.openVipGame(gameId, gameName, dbInstance)); listEl.appendChild(article);
             });
         }
 
         function renderPinForm(listEl) {
             let boxesHTML = ""; for (let i = 0; i < 8; i++) { boxesHTML += `<input type="text" inputmode="numeric" maxlength="1" class="otp-box-dynamic" data-index="${i}" style="--index: ${i}; --angle: ${(i * 45) - 90}deg;">`; }
-            listEl.innerHTML = `<span class="section-kicker">Özel alan</span><h2 style="margin:10px 0 4px;">VIP odamız</h2><p style="color:var(--muted); margin-bottom:12px;">8 Haneli VIP şifresini gir:</p><div class="orbit-wrapper" id="dynamic-orbit-wrapper"><div class="orbit-center" id="orbit-center-icon">🔒</div><div class="orbit-ring" id="orbit-ring">${boxesHTML}</div></div><button class="vip-game-btn" id="vip-pin-submit-btn">Doğrula</button><p id="vip-pin-error" style="color:var(--coral); font-size:0.85em; margin-top:8px; min-height:1.2em;"></p>`;
+            listEl.innerHTML = `<span class="section-kicker">Özel alan</span><h2>VIP odamız</h2><p style="color:var(--muted); margin:0 0 12px;">8 haneli VIP şifreni gir:</p><div class="orbit-wrapper" id="dynamic-orbit-wrapper"><div class="orbit-center" id="orbit-center-icon">🔒</div><div class="orbit-ring" id="orbit-ring">${boxesHTML}</div></div><button class="vip-game-btn" id="vip-pin-submit-btn">Doğrula</button><p id="vip-pin-error" style="color:var(--pink); font-size:0.9em; margin-top:10px; min-height:1.2em;"></p>`;
             const boxes = Array.from(listEl.querySelectorAll('.otp-box-dynamic'));
             boxes.forEach((box, idx) => {
                 box.addEventListener('input', () => { box.value = box.value.replace(/[^0-9]/g, ''); if (box.value && idx < boxes.length - 1) boxes[idx + 1].focus(); });
@@ -303,7 +584,7 @@
 
         async function handlePinSubmit() {
             const boxes = Array.from(document.querySelectorAll('.otp-box-dynamic')), pin = boxes.map(b => b.value).join(''), errorEl = document.getElementById('vip-pin-error'), centerIcon = document.getElementById('orbit-center-icon'), wrapper = document.getElementById('dynamic-orbit-wrapper'), submitBtn = document.getElementById('vip-pin-submit-btn');
-            if (pin.length < 8) return errorEl.style.color = 'var(--coral)', errorEl.innerText = "Lütfen 8 haneyi de doldur.";
+            if (pin.length < 8) return errorEl.style.color = 'var(--pink)', errorEl.innerText = "Lütfen 8 haneyi de doldur.";
             errorEl.innerText = "Şifre işleniyor..."; errorEl.style.color = 'var(--muted)'; submitBtn.disabled = true; wrapper.classList.add('animating');
             await new Promise(resolve => setTimeout(resolve, 600));
             wrapper.classList.add('spinning'); centerIcon.innerHTML = "⏳"; centerIcon.classList.add('loading'); errorEl.innerText = "Doğrulanıyor...";
@@ -313,16 +594,16 @@
             addDoc(collection(db, "vip_logs"), { userId: currentUser.uid, userName: currentUser.displayName, type: "pin_attempt", enteredPin: pin, success: success, timestamp: serverTimestamp() }).catch(() => {});
             wrapper.classList.remove('spinning');
             if (success) {
-                errorEl.innerText = "Şifre doğru!"; centerIcon.innerHTML = "✅"; centerIcon.classList.remove('loading'); centerIcon.classList.add('success'); wrapper.classList.add('fly-in');
-                setTimeout(() => { window.closeModals(); showVipScreen(vipDb); }, 800); 
+                errorEl.style.color = 'var(--mint)'; errorEl.innerText = "Şifre doğru!"; centerIcon.innerHTML = "✅"; centerIcon.classList.remove('loading'); centerIcon.classList.add('success'); wrapper.classList.add('fly-in');
+                setTimeout(() => { window.closeModals(); showVipScreen(vipDb); }, 800);
             } else {
-                errorEl.style.color = 'var(--coral)'; errorEl.innerText = "Hatalı şifre, tekrar dene."; centerIcon.innerHTML = "❌"; centerIcon.classList.remove('loading'); centerIcon.classList.add('error');
+                errorEl.style.color = 'var(--pink)'; errorEl.innerText = "Hatalı şifre, tekrar dene."; centerIcon.innerHTML = "❌"; centerIcon.classList.remove('loading'); centerIcon.classList.add('error');
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 centerIcon.innerHTML = "🔒"; centerIcon.classList.remove('error'); wrapper.classList.remove('animating'); submitBtn.disabled = false; boxes.forEach(box => box.value = ''); boxes[0].focus();
             }
         }
 
-        let activeVipSession = null; 
+        let activeVipSession = null;
         window.openVipGame = async (gameId, gameName, dbInstance) => {
             try {
                 const gameSnap = await getDoc(doc(dbInstance || db, "vip_games", gameId)); if (!gameSnap.exists()) return alert("Oyun bulunamadı.");
@@ -340,7 +621,21 @@
 
         const commentsContainer = document.getElementById('comments-container');
         document.getElementById('send-comment-btn').addEventListener('click', async () => { const text = document.getElementById('comment-input').value; if(text.trim() === "") return; await addDoc(collection(db, "comments"), { userId: currentUser.uid, userName: currentUser.displayName, text: text, timestamp: serverTimestamp() }); document.getElementById('comment-input').value = ""; });
-        function loadComments() { onSnapshot(query(collection(db, "comments"), orderBy("timestamp", "desc")), (snapshot) => { commentsContainer.innerHTML = ""; snapshot.forEach((docSnap) => { const data = docSnap.data(); const div = document.createElement('div'); div.className = 'comment-item'; let deleteBtnHTML = ""; if(currentUser.uid === data.userId || currentUser.uid === ADMIN_UID) { deleteBtnHTML = `<button class="delete-btn" onclick="deleteComment('${docSnap.id}')">Sil</button>`; } div.innerHTML = `<div class="comment-header"><strong>${data.userName}</strong>${deleteBtnHTML}</div><p class="comment-text">${data.text}</p>`; commentsContainer.appendChild(div); }); }); }
+        document.getElementById('comment-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('send-comment-btn').click(); });
+
+        function loadComments() {
+            if (unsubComments) unsubComments();
+            unsubComments = onSnapshot(query(collection(db, "comments"), orderBy("timestamp", "desc")), (snapshot) => {
+                commentsContainer.innerHTML = "";
+                if (snapshot.empty) { commentsContainer.innerHTML = '<p class="empty-note">Panoda henüz not yok. İlk notu sen bırak.</p>'; return; }
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data(); const div = document.createElement('div'); div.className = 'comment-item'; let deleteBtnHTML = "";
+                    if(currentUser && (currentUser.uid === data.userId || currentUser.uid === ADMIN_UID)) { deleteBtnHTML = `<button class="delete-btn" onclick="deleteComment('${docSnap.id}')">Sil</button>`; }
+                    div.innerHTML = `<div class="comment-header"><strong>${esc(data.userName)}</strong>${deleteBtnHTML}</div><p class="comment-text">${esc(data.text)}</p>`;
+                    commentsContainer.appendChild(div);
+                });
+            });
+        }
         window.deleteComment = async (commentId) => { if(confirm("Bu yorumu silmek istiyor musun?")) await deleteDoc(doc(db, "comments", commentId)); };
     </script>
 </body>
